@@ -9,22 +9,33 @@ import Cocoa
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-
     
-
-
+    private let keyInputManager = KeyInputManager()
+    private var timer: Timer?
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-    }
+        let options: NSDictionary = [kAXTrustedCheckOptionPrompt.takeRetainedValue() as NSString: true]
+        if !AXIsProcessTrustedWithOptions(options) {
+            print("Accessibility is not allowed for this app")
+//            timer = Timer.scheduledTimer(
+//                withTimeInterval: 3.0,
+//                repeats: true
+//            ) { _ in self.relaunchIfProcessTrusted() }
+        }
 
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+        keyInputManager.start()
     }
-
-    func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
         return true
     }
-
-
+    
+    private func relaunchIfProcessTrusted() {
+        if AXIsProcessTrusted() {
+            let task = Process()
+            task.executableURL = URL(fileURLWithPath: Bundle.main.executablePath!)
+            try! task.run()
+            NSApplication.shared.terminate(self)
+        }
+    }
 }
-
