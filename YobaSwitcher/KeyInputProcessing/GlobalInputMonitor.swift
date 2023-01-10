@@ -7,25 +7,25 @@
 
 import CoreGraphics
 
-protocol GlobalInputMonitorDelegate: AnyObject {
-    func mouseDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
-    
-    func keyDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
-    
-    func keyUp(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
-    
-    func flagsChanged(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
-}
-
 protocol GlobalInputMonitorProtocol: AnyObject {
-    var delegate: GlobalInputMonitorDelegate? { get set }
+    var handler: GlobalInputMonitorHandler? { get set }
     
     func start()
 }
 
+protocol GlobalInputMonitorHandler: AnyObject {
+    func handleKeyDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
+    
+    func handleKeyUp(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
+    
+    func handleFlagsChange(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
+    
+    func handleMouseDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
+}
+
 // Tracks specific input events such as keystrokes and mouse clicks
 final class GlobalInputMonitor: GlobalInputMonitorProtocol {
-    weak var delegate: GlobalInputMonitorDelegate?
+    weak var handler: GlobalInputMonitorHandler?
     private var eventTap: CFMachPort?
     
     func start() {
@@ -71,18 +71,18 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
         switch eventType {
         case .keyDown:
             print("keyDown: \(keyCode)")
-            return delegate?.keyDown(event: event, proxy: proxy)
+            return handler?.handleKeyDown(event: event, proxy: proxy)
         
         case .keyUp:
             print("keyUp: \(keyCode), flags: \(event.flags)")
-            return delegate?.keyUp(event: event, proxy: proxy)
+            return handler?.handleKeyUp(event: event, proxy: proxy)
             
         case .flagsChanged:
             print("flagsChanged: \(keyCode), flags: \(event.flags)")
-            return delegate?.flagsChanged(event: event, proxy: proxy)
+            return handler?.handleFlagsChange(event: event, proxy: proxy)
             
         case .leftMouseDown, .rightMouseDown, .otherMouseDown:
-            return delegate?.mouseDown(event: event, proxy: proxy)
+            return handler?.handleMouseDown(event: event, proxy: proxy)
             
         case .tapDisabledByTimeout:
             print("tapDisabledByTimeout")

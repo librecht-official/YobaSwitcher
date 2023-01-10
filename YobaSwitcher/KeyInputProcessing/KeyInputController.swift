@@ -8,7 +8,10 @@
 import Carbon
 import CoreGraphics
 
-final class KeyInputController: GlobalInputMonitorDelegate {
+final class KeyInputController: GlobalInputMonitorHandler {
+    let keyboard: VirtualKeyboardProtocol
+    let systemWide: SystemWideAccessibility
+    let mainQueue: DispatchQueueProtocol
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps "option" key
     private(set) var keysBuffer: [Int64] = [] {
         didSet { print("keysBuffer: \(keysBuffer)") }
@@ -17,23 +20,31 @@ final class KeyInputController: GlobalInputMonitorDelegate {
     private(set) var optionKeyIsDownExclusively: Bool = false {
         didSet { print("optionKeyIsDownExclusively: \(optionKeyIsDownExclusively)") }
     }
-
-    // MARK: GlobalInputMonitorDelegate
     
-    func keyDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
+    init(keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility, mainQueue: DispatchQueueProtocol = DispatchQueue.main) {
+        self.keyboard = keyboard
+        self.systemWide = systemWide
+        self.mainQueue = mainQueue
+    }
+
+    // MARK: GlobalInputMonitorHandler
+    
+    @discardableResult
+    func handleKeyDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
         optionKeyIsDownExclusively = false
         
         let keyCode = event.getIntegerValueField(.keyboardEventKeycode)
         
         if keyCode == kVK_ANSI_Z && event.flags.contains([.maskControl, .maskAlternate]) {
             print("ctrl+opt+Z")//⌃⌥Z
-            replaceSelectedText()
+            changeSelectedTextCase()
             return nil
         }
         return event
     }
     
-    func keyUp(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
+    @discardableResult
+    func handleKeyUp(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
         modifyKeyBuffer(with: event)
         return event
     }
@@ -56,7 +67,8 @@ final class KeyInputController: GlobalInputMonitorDelegate {
         keysBuffer.append(keyCode)
     }
     
-    func flagsChanged(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
+    @discardableResult
+    func handleFlagsChange(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
         if isItOptionKeyDownExclusively(event) {
             optionKeyIsDownExclusively = true
         }
@@ -69,7 +81,8 @@ final class KeyInputController: GlobalInputMonitorDelegate {
         return event
     }
     
-    func mouseDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
+    @discardableResult
+    func handleMouseDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
         optionKeyIsDownExclusively = false
         keysBuffer = []
         
@@ -83,7 +96,7 @@ final class KeyInputController: GlobalInputMonitorDelegate {
     }
     
     private func isItPossibleShortCut(_ event: CGEvent) -> Bool {
-        event.flags.contains(.maskAlternate)
+        return event.flags.contains(.maskAlternate)
         || event.flags.contains(.maskCommand)
         || event.flags.contains(.maskControl)
         || event.flags.contains(.maskSecondaryFn)
@@ -112,69 +125,36 @@ final class KeyInputController: GlobalInputMonitorDelegate {
         print("retype keys buffer: \(keysBuffer)")
         
         // Delay here because "option" key is still down until we return from the callback. If no delay - each "Delete" event will remove 1 word instead of 1 character.
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) { [keysBuffer] in
-            for _ in keysBuffer {
-                CGEvent.keyDown(CGKeyCode(kVK_Delete))?.tapPostEvent(proxy)
-                CGEvent.keyUp(CGKeyCode(kVK_Delete))?.tapPostEvent(proxy)
+        mainQueue.asyncAfter(timeInterval: .milliseconds(100)) {
+            for _ in self.keysBuffer {
+                self.keyboard.postKeyDown(kVK_Delete, proxy)
+                self.keyboard.postKeyUp(kVK_Delete, proxy)
             }
                     
-            self.switchInputSource()
+            self.keyboard.switchInputSource()
             
-            for key in keysBuffer {
-                CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(key), keyDown: true)?.tapPostEvent(proxy)
-                CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(key), keyDown: false)?.tapPostEvent(proxy)
+            for key in self.keysBuffer {
+                self.keyboard.postKeyDown(Int(key), proxy)
+                self.keyboard.postKeyUp(Int(key), proxy)
             }
         }
         
         return event
     }
     
-    func switchInputSource() {
-        let inputSourceCriteria = [
-            kTISPropertyInputSourceCategory: kTISCategoryKeyboardInputSource as Any,
-            kTISPropertyInputSourceIsSelectCapable: true
-        ]  as CFDictionary
-        let sourceList = InputSource.fetchList(filter: inputSourceCriteria)
-        
-        guard let nonSelectedSource = sourceList.first(where: { !$0.isSelected }) else {
-            return
-        }
-        
-        print(sourceList)
-        
-        TISSelectInputSource(nonSelectedSource.asTISInputSource)
-    }
-    
-    func replaceSelectedText() {
-        let systemWide = AXUIElementCreateSystemWide()
-        
-        var focusedUIElementRef: CFTypeRef?
-        let result1 = AXUIElementCopyAttributeValue(systemWide, kAXFocusedUIElementAttribute as CFString, &focusedUIElementRef)
-        guard let focusedUIElement = focusedUIElementRef, CFGetTypeID(focusedUIElement) == AXUIElementGetTypeID(), result1 == .success else {
-            print("No focused element: \(result1)")
-            return
-        }
-        
-        var selectedTextRef: CFTypeRef?
-        let result2 = AXUIElementCopyAttributeValue(focusedUIElement as! AXUIElement, kAXSelectedTextAttribute as CFString, &selectedTextRef)
-        guard let selectedText = selectedTextRef as? String, result2 == .success else {
-            print("No selected text: \(result2)")
-            return
-        }
-        
-        print("selectedText: \(selectedText)")
+    private func changeSelectedTextCase() {
+        guard let focusedElement = systemWide.focusedElement() else { return }
+        let selectedText = focusedElement.selectedText
         
         if selectedText.isEmpty {
             print("selected text is empty")
             return
         }
-        var isSettable = DarwinBoolean(false)
-        let result3 = AXUIElementIsAttributeSettable(focusedUIElement as! AXUIElement, kAXSelectedTextAttribute as CFString, &isSettable)
-        print("isSettable: \(isSettable), result3: \(result3)")
-
-        if isSettable.boolValue {
-            let result4 = AXUIElementSetAttributeValue(focusedUIElement as! AXUIElement, kAXSelectedTextAttribute as CFString, selectedText.uppercased() as CFString)
-            print("result4: \(result4)")
+        let uppercasedText = selectedText.uppercased()
+        if selectedText == uppercasedText {
+            focusedElement.selectedText = selectedText.lowercased()
+        } else {
+            focusedElement.selectedText = selectedText.uppercased()
         }
     }
 }

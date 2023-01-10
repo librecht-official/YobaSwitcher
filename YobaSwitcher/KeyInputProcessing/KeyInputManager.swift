@@ -12,12 +12,12 @@ final class KeyInputManager {
     let inputMonitor: GlobalInputMonitorProtocol
     
     init(inputMonitor: GlobalInputMonitorProtocol = GlobalInputMonitor()) {
-        self.keyInputController = KeyInputController()
+        self.keyInputController = KeyInputController(keyboard: VirtualKeyboard(), systemWide: SystemWide())
         self.inputMonitor = inputMonitor
     }
     
     func start() {
-        inputMonitor.delegate = keyInputController
+        inputMonitor.handler = keyInputController
         inputMonitor.start()
     }
 }
