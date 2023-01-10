@@ -15,10 +15,17 @@
 		F592B24F296DBC5900CAF8AD /* InputSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B24E296DBC5900CAF8AD /* InputSource.swift */; };
 		F592B251296DBD4B00CAF8AD /* GlobalInputMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */; };
 		F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B252296DBE1600CAF8AD /* CGEventExt.swift */; };
+		F592B25B296DC13200CAF8AD /* KeyTapsControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B25A296DC13200CAF8AD /* KeyTapsControllerTests.swift */; };
+		F592B263296DC29100CAF8AD /* GlobalInputListenerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B262296DC29100CAF8AD /* GlobalInputListenerMock.swift */; };
+		F592B266296DC43000CAF8AD /* Stubbing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B265296DC43000CAF8AD /* Stubbing.swift */; };
+		F592B268296DC80100CAF8AD /* Assertion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B267296DC80100CAF8AD /* Assertion.swift */; };
 		F592B279296DEC6B00CAF8AD /* KeyInputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B278296DEC6B00CAF8AD /* KeyInputManager.swift */; };
 		F592B27B296E002700CAF8AD /* VirtualKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */; };
 		F592B27D296E071D00CAF8AD /* SystemWideAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */; };
 		F592B27F296E09B200CAF8AD /* DispatchExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27E296E09B200CAF8AD /* DispatchExt.swift */; };
+		F592B281296E0C3500CAF8AD /* VirtualKeyboardMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B280296E0C3500CAF8AD /* VirtualKeyboardMock.swift */; };
+		F592B283296E0DA400CAF8AD /* SystemWideAccessibilityMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B282296E0DA400CAF8AD /* SystemWideAccessibilityMock.swift */; };
+		F592B285296E0E5400CAF8AD /* DispatchQueueMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B284296E0E5400CAF8AD /* DispatchQueueMock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,10 +49,18 @@
 		F592B24E296DBC5900CAF8AD /* InputSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSource.swift; sourceTree = "<group>"; };
 		F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputMonitor.swift; sourceTree = "<group>"; };
 		F592B252296DBE1600CAF8AD /* CGEventExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGEventExt.swift; sourceTree = "<group>"; };
+		F592B258296DC13100CAF8AD /* YobaSwitcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YobaSwitcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F592B25A296DC13200CAF8AD /* KeyTapsControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyTapsControllerTests.swift; sourceTree = "<group>"; };
+		F592B262296DC29100CAF8AD /* GlobalInputListenerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputListenerMock.swift; sourceTree = "<group>"; };
+		F592B265296DC43000CAF8AD /* Stubbing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stubbing.swift; sourceTree = "<group>"; };
+		F592B267296DC80100CAF8AD /* Assertion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assertion.swift; sourceTree = "<group>"; };
 		F592B278296DEC6B00CAF8AD /* KeyInputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyInputManager.swift; sourceTree = "<group>"; };
 		F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualKeyboard.swift; sourceTree = "<group>"; };
 		F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideAccessibility.swift; sourceTree = "<group>"; };
 		F592B27E296E09B200CAF8AD /* DispatchExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchExt.swift; sourceTree = "<group>"; };
+		F592B280296E0C3500CAF8AD /* VirtualKeyboardMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualKeyboardMock.swift; sourceTree = "<group>"; };
+		F592B282296E0DA400CAF8AD /* SystemWideAccessibilityMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideAccessibilityMock.swift; sourceTree = "<group>"; };
+		F592B284296E0E5400CAF8AD /* DispatchQueueMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueueMock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				F54E94DC2961C2980066D33F /* YobaSwitcher */,
+				F592B259296DC13100CAF8AD /* YobaSwitcherTests */,
 				F54E94DB2961C2980066D33F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -78,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				F54E94DA2961C2980066D33F /* YobaSwitcher.app */,
+				F592B258296DC13100CAF8AD /* YobaSwitcherTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,6 +127,36 @@
 			path = KeyInputProcessing;
 			sourceTree = "<group>";
 		};
+		F592B259296DC13100CAF8AD /* YobaSwitcherTests */ = {
+			isa = PBXGroup;
+			children = (
+				F592B264296DC41B00CAF8AD /* Infrastructure */,
+				F592B261296DC28400CAF8AD /* Mocks */,
+				F592B25A296DC13200CAF8AD /* KeyTapsControllerTests.swift */,
+			);
+			path = YobaSwitcherTests;
+			sourceTree = "<group>";
+		};
+		F592B261296DC28400CAF8AD /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				F592B262296DC29100CAF8AD /* GlobalInputListenerMock.swift */,
+				F592B280296E0C3500CAF8AD /* VirtualKeyboardMock.swift */,
+				F592B282296E0DA400CAF8AD /* SystemWideAccessibilityMock.swift */,
+				F592B284296E0E5400CAF8AD /* DispatchQueueMock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		F592B264296DC41B00CAF8AD /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				F592B265296DC43000CAF8AD /* Stubbing.swift */,
+				F592B267296DC80100CAF8AD /* Assertion.swift */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -129,6 +176,24 @@
 			productName = YobaSwitcher;
 			productReference = F54E94DA2961C2980066D33F /* YobaSwitcher.app */;
 			productType = "com.apple.product-type.application";
+		};
+		F592B257296DC13100CAF8AD /* YobaSwitcherTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F592B25E296DC13200CAF8AD /* Build configuration list for PBXNativeTarget "YobaSwitcherTests" */;
+			buildPhases = (
+				F592B254296DC13100CAF8AD /* Sources */,
+				F592B255296DC13100CAF8AD /* Frameworks */,
+				F592B256296DC13100CAF8AD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F592B25D296DC13200CAF8AD /* PBXTargetDependency */,
+			);
+			name = YobaSwitcherTests;
+			productName = YobaSwitcherTests;
+			productReference = F592B258296DC13100CAF8AD /* YobaSwitcherTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -163,6 +228,7 @@
 			projectRoot = "";
 			targets = (
 				F54E94D92961C2980066D33F /* YobaSwitcher */,
+				F592B257296DC13100CAF8AD /* YobaSwitcherTests */,
 			);
 		};
 /* End PBXProject section */
@@ -201,6 +267,20 @@
 				F592B27F296E09B200CAF8AD /* DispatchExt.swift in Sources */,
 				F54E94E02961C2980066D33F /* ViewController.swift in Sources */,
 				F54E94DE2961C2980066D33F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F592B254296DC13100CAF8AD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F592B285296E0E5400CAF8AD /* DispatchQueueMock.swift in Sources */,
+				F592B266296DC43000CAF8AD /* Stubbing.swift in Sources */,
+				F592B281296E0C3500CAF8AD /* VirtualKeyboardMock.swift in Sources */,
+				F592B25B296DC13200CAF8AD /* KeyTapsControllerTests.swift in Sources */,
+				F592B283296E0DA400CAF8AD /* SystemWideAccessibilityMock.swift in Sources */,
+				F592B268296DC80100CAF8AD /* Assertion.swift in Sources */,
+				F592B263296DC29100CAF8AD /* GlobalInputListenerMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +473,40 @@
 			};
 			name = Release;
 		};
+		F592B25F296DC13200CAF8AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BFCZTEYG58;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcherTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YobaSwitcher.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/YobaSwitcher";
+			};
+			name = Debug;
+		};
+		F592B260296DC13200CAF8AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BFCZTEYG58;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcherTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YobaSwitcher.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/YobaSwitcher";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -410,6 +524,15 @@
 			buildConfigurations = (
 				F54E94EA2961C29A0066D33F /* Debug */,
 				F54E94EB2961C29A0066D33F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F592B25E296DC13200CAF8AD /* Build configuration list for PBXNativeTarget "YobaSwitcherTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F592B25F296DC13200CAF8AD /* Debug */,
+				F592B260296DC13200CAF8AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
