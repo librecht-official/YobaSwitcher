@@ -113,6 +113,54 @@ final class KeyInputControllerTests: XCTestCase {
         Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
+    
+    /// Type "hello world", press Q while holding Option, so the character is œ. Release keys and press Option normally. It should do nothing
+    func testTypeAlternateCharacter_Q_1() {
+        // given
+        let input = Keystrokes.hello_world + Keystrokes.altQ_1 + Keystrokes.option
+        
+        // when
+        for event in input {
+            performKeystrokeEvent(event)
+        }
+        
+        // then
+        XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
+        Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
+        XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
+    }
+    
+    /// Type "hello world", press Q while holding Option, so the character is œ. Release keys and press Option normally. It should do nothing
+    func testTypeAlternateCharacter_Q_2() {
+        // given
+        let input = Keystrokes.hello_world + Keystrokes.altQ_2 + Keystrokes.option
+        
+        // when
+        for event in input {
+            performKeystrokeEvent(event)
+        }
+        
+        // then
+        XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
+        Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
+        XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
+    }
+    
+    /// Type "hello world", click mouse and press Option. It should do nothing
+    func testTypeAndClickMouse() {
+        // given
+        let input = Keystrokes.hello_world + [.mouseDown] + Keystrokes.option
+        
+        // when
+        for event in input {
+            performKeystrokeEvent(event)
+        }
+        
+        // then
+        XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
+        Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
+        XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
+    }
 }
 
 // MARK: Helpers
@@ -183,6 +231,20 @@ enum Keystrokes {
         .keyDown(Keystroke(keyCode: kVK_ANSI_C, flags: [.maskCommand, .maskNonCoalesced])),
         .flagsChanged(Keystroke(keyCode: kVK_Command)),
         .keyUp(Keystroke(keyCode: kVK_ANSI_C)),
+    ]
+    
+    static let altQ_1: [KeystrokeEvent] = [
+        .flagsChanged(Keystroke(keyCode: kVK_Option, flags: [.maskAlternate, .maskNonCoalesced])),
+        .keyDown(Keystroke(keyCode: kVK_ANSI_Q, flags: [.maskAlternate, .maskNonCoalesced])),
+        .keyUp(Keystroke(keyCode: kVK_ANSI_Q, flags: [.maskAlternate, .maskNonCoalesced])),
+        .flagsChanged(Keystroke(keyCode: kVK_Option)),
+    ]
+    
+    static let altQ_2: [KeystrokeEvent] = [
+        .flagsChanged(Keystroke(keyCode: kVK_Option, flags: [.maskAlternate, .maskNonCoalesced])),
+        .keyDown(Keystroke(keyCode: kVK_ANSI_Q, flags: [.maskAlternate, .maskNonCoalesced])),
+        .flagsChanged(Keystroke(keyCode: kVK_Option)),
+        .keyUp(Keystroke(keyCode: kVK_ANSI_Q)),
     ]
     
     static func backspaces(count: Int) -> [KeystrokeEvent] {

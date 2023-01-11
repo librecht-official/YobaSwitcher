@@ -144,9 +144,9 @@
 		F592B259296DC13100CAF8AD /* YobaSwitcherTests */ = {
 			isa = PBXGroup;
 			children = (
+				F592B25A296DC13200CAF8AD /* KeyInputControllerTests.swift */,
 				F592B264296DC41B00CAF8AD /* Infrastructure */,
 				F592B261296DC28400CAF8AD /* Mocks */,
-				F592B25A296DC13200CAF8AD /* KeyInputControllerTests.swift */,
 			);
 			path = YobaSwitcherTests;
 			sourceTree = "<group>";
