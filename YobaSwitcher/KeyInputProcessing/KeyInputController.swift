@@ -13,7 +13,7 @@ final class KeyInputController: GlobalInputMonitorHandler {
     let systemWide: SystemWideAccessibility
     let mainQueue: DispatchQueueProtocol
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps "option" key
-    private(set) var keysBuffer: [Int64] = [] {
+    private(set) var keysBuffer: [Int] = [] {
         didSet { Log.debug("keysBuffer: \(keysBuffer)") }
     }
     // A flag to track if "Option" key is tapped (down) with no other keys
@@ -31,40 +31,41 @@ final class KeyInputController: GlobalInputMonitorHandler {
     
     @discardableResult
     func handleKeyDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
+        let keystroke = Keystroke(event: event)
         optionKeyIsDownExclusively = false
         
-        let keyCode = event.getIntegerValueField(.keyboardEventKeycode)
-        
-        if keyCode == kVK_ANSI_Z && event.flags.contains([.maskControl, .maskAlternate]) {
+        if keystroke.keyCode == kVK_ANSI_Z && event.flags.contains([.maskControl, .maskAlternate]) {
             Log.debug("ctrl+opt+Z")//⌃⌥Z
             changeSelectedTextCase()
             return nil
         }
+        
+        modifyKeyBuffer(with: keystroke)
+        
         return event
     }
     
     @discardableResult
     func handleKeyUp(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
-        modifyKeyBuffer(with: event)
         return event
     }
     
-    private func modifyKeyBuffer(with event: CGEvent) {
-        let keyCode = event.getIntegerValueField(.keyboardEventKeycode)
-        
-        if keyCode == kVK_Delete || keyCode == kVK_ForwardDelete {
+    private func modifyKeyBuffer(with keystroke: Keystroke) {
+        if keystroke.keyCode == kVK_Delete || keystroke.keyCode == kVK_ForwardDelete {
             if !keysBuffer.isEmpty {
                 keysBuffer.removeLast()
             }
             return
         }
         
-        if !isItCharacterProducingKey(keyCode) || isItPossibleShortCut(event) {
+        if !isItCharacterProducingKey(keystroke.keyCode) || isItPossibleShortCut(keystroke) {
             keysBuffer = []
             return
         }
         
-        keysBuffer.append(keyCode)
+        if !keystroke.isAutorepeat {
+            keysBuffer.append(keystroke.keyCode)
+        }
     }
     
     @discardableResult
@@ -91,15 +92,15 @@ final class KeyInputController: GlobalInputMonitorHandler {
     
     // MARK: Helpers
     
-    private func isItCharacterProducingKey(_ keyCode: Int64) -> Bool {
+    private func isItCharacterProducingKey(_ keyCode: Int) -> Bool {
         kVK_ANSI_A <= keyCode && keyCode <= kVK_ANSI_Grave
     }
     
-    private func isItPossibleShortCut(_ event: CGEvent) -> Bool {
-        return event.flags.contains(.maskAlternate)
-        || event.flags.contains(.maskCommand)
-        || event.flags.contains(.maskControl)
-        || event.flags.contains(.maskSecondaryFn)
+    private func isItPossibleShortCut(_ keystroke: Keystroke) -> Bool {
+        return keystroke.flags.contains(.maskAlternate)
+        || keystroke.flags.contains(.maskCommand)
+        || keystroke.flags.contains(.maskControl)
+        || keystroke.flags.contains(.maskSecondaryFn)
     }
     
     private func isItOptionKeyDownExclusively(_ event: CGEvent) -> Bool {
@@ -133,9 +134,11 @@ final class KeyInputController: GlobalInputMonitorHandler {
                     
             self.keyboard.switchInputSource()
             
-            for key in self.keysBuffer {
-                self.keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: Int(key))), proxy)
-                self.keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: Int(key))), proxy)
+            self.mainQueue.asyncAfter(timeInterval: .milliseconds(100)) {
+                for key in self.keysBuffer {
+                    self.keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: Int(key))), proxy)
+                    self.keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: Int(key))), proxy)
+                }
             }
         }
         

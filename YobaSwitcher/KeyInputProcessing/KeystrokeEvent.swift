@@ -17,15 +17,18 @@ enum KeystrokeEvent: Equatable {
 struct Keystroke: Equatable {
     let keyCode: Int
     let flags: CGEventFlags
+    let isAutorepeat: Bool
     
-    init(keyCode: Int, flags: CGEventFlags = .maskNonCoalesced) {
+    init(keyCode: Int, flags: CGEventFlags = .maskNonCoalesced, isAutorepeat: Bool = false) {
         self.keyCode = keyCode
         self.flags = flags
+        self.isAutorepeat = isAutorepeat
     }
     
     init(event: CGEvent) {
         self.keyCode = Int(event.getIntegerValueField(.keyboardEventKeycode))
         self.flags = event.flags
+        self.isAutorepeat = event.getIntegerValueField(.keyboardEventAutorepeat) != 0
     }
 }
 
@@ -79,6 +82,13 @@ extension KeystrokeEvent: CustomStringConvertible {
 
 extension Keystroke: CustomStringConvertible {
     var description: String {
-        "Keystroke(keyCode: \(keyCode), flags: \(flags))"
+        var arguments: [String] = ["keyCode: \(keyCode)"]
+        if flags != .maskNonCoalesced {
+            arguments.append("flags: \(flags)")
+        }
+        if isAutorepeat != false {
+            arguments.append("isAutorepeat: \(isAutorepeat)")
+        }
+        return "Keystroke(\(arguments.joined(separator: ", ")))"
     }
 }
