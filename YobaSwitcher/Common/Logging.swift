@@ -7,16 +7,31 @@
 
 import Foundation
 
-let fileWhitelist = ["GlobalInputMonitor"]
+extension Log.Hashtag {
+    static let recording = Log.Hashtag(rawValue: 1)
+}
 
 enum Log {
+    struct Config {
+        var fileWhitelist: [String] = []
+        var hashtagsWhitelist: Set<Log.Hashtag> = []
+        var hashtagsBlacklist: Set<Log.Hashtag> = [.recording]
+    }
+    
+    static var config = Config()
+    
+    struct Hashtag: Hashable, RawRepresentable {
+        let rawValue: Int
+    }
+    
     static func info(
         _ items: Any...,
         separator: String = " ",
         terminator: String = "\n",
+        hashtags: Set<Hashtag> = [],
         file: String = #file
     ) {
-        filterLog(sourceFile: file) {
+        filterLog(hashtags: hashtags, sourceFile: file) {
             print(items, separator: separator, terminator: terminator)
         }
     }
@@ -25,20 +40,32 @@ enum Log {
         _ items: Any...,
         separator: String = " ",
         terminator: String = "\n",
+        hashtags: Set<Hashtag> = [],
         file: String = #file
     ) {
-        filterLog(sourceFile: file) {
+        filterLog(hashtags: hashtags, sourceFile: file) {
             debugPrint(items, separator: separator, terminator: terminator)
         }
     }
     
     private static func filterLog(
+        hashtags: Set<Hashtag>,
         sourceFile: String,
         log: () -> ()
     ) {
         let fileName = URL(fileURLWithPath: sourceFile).deletingPathExtension().lastPathComponent
-        if fileWhitelist.contains(fileName) {
-            log()
-        }
+        guard config.fileWhitelist.isEmpty || config.fileWhitelist.contains(fileName) else { return }
+        
+        guard !config.hashtagsBlacklist.contains(anyOf: hashtags) else { return }
+        
+        guard config.hashtagsWhitelist.isEmpty || config.hashtagsWhitelist.contains(anyOf: hashtags) else { return }
+        
+        log()
+    }
+}
+
+extension Set {
+    func contains(anyOf other: Set<Element>) -> Bool {
+        !intersection(other).isEmpty
     }
 }

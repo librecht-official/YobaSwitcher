@@ -18,7 +18,7 @@ struct SystemWide: SystemWideAccessibility {
         var focusedUIElementRef: CFTypeRef?
         let result = AXUIElementCopyAttributeValue(systemWide, kAXFocusedUIElementAttribute as CFString, &focusedUIElementRef)
         guard let focusedUIElement = focusedUIElementRef, CFGetTypeID(focusedUIElement) == AXUIElementGetTypeID(), result == .success else {
-            Log.debug("No focused element: \(result)")
+            Log.info("No focused element: \(result)")
             return nil
         }
         return FocusedUIElementAccessor(focusedUIElement as! AXUIElement)
@@ -41,7 +41,7 @@ struct FocusedUIElementAccessor: FocusedUIElement {
             var selectedTextRef: CFTypeRef?
             let result = AXUIElementCopyAttributeValue(element, kAXSelectedTextAttribute as CFString, &selectedTextRef)
             guard let selectedText = selectedTextRef as? String, result == .success else {
-                Log.debug("No selected text: \(result)")
+                Log.info("No selected text: \(result)")
                 return ""
             }
             return selectedText
@@ -49,11 +49,11 @@ struct FocusedUIElementAccessor: FocusedUIElement {
         nonmutating set {
             var isSettable = DarwinBoolean(false)
             AXUIElementIsAttributeSettable(element, kAXSelectedTextAttribute as CFString, &isSettable)
-            Log.debug("isSettable: \(isSettable)")
+            Log.info("IsSettable: \(isSettable)")
 
             if isSettable.boolValue {
                 let result = AXUIElementSetAttributeValue(element, kAXSelectedTextAttribute as CFString, newValue as CFString)
-                Log.debug("result: \(result)")
+                Log.info("Result: \(result)")
             }
         }
     }

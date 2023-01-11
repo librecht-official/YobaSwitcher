@@ -14,11 +14,11 @@ final class KeyInputController: GlobalInputMonitorHandler {
     let mainQueue: DispatchQueueProtocol
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps Option key
     private(set) var keysBuffer: [Keystroke] = [] {
-        didSet { Log.debug("keysBuffer: \(keysBuffer)") }
+        didSet { Log.info("keysBuffer: \(keysBuffer)") }
     }
     // A flag to track if Option key was pressed (down) with no other keys
     private(set) var optionKeyIsDownExclusively: Bool = false {
-        didSet { Log.debug("optionKeyIsDownExclusively: \(optionKeyIsDownExclusively)") }
+        didSet { Log.info("optionKeyIsDownExclusively: \(optionKeyIsDownExclusively)") }
     }
     
     init(keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility, mainQueue: DispatchQueueProtocol = DispatchQueue.main) {
@@ -35,7 +35,7 @@ final class KeyInputController: GlobalInputMonitorHandler {
         optionKeyIsDownExclusively = false
         
         if keystroke.keyCode == kVK_ANSI_Z && event.flags.contains([.maskControl, .maskAlternate]) {
-            Log.debug("ctrl+opt+Z")
+            Log.info("ctrl+opt+Z")
             changeSelectedTextCase()
             return nil
         }
@@ -74,7 +74,7 @@ final class KeyInputController: GlobalInputMonitorHandler {
             optionKeyIsDownExclusively = true
         }
         if isItOptionKeyUp(event) && optionKeyIsDownExclusively {
-            Log.debug("Option key is up")
+            Log.info("Option key is up")
             optionKeyIsDownExclusively = false
             return retypeKeyBuffer(event, proxy)
         }
@@ -123,7 +123,7 @@ final class KeyInputController: GlobalInputMonitorHandler {
     private func retypeKeyBuffer(_ event: CGEvent, _ proxy: CGEventTapProxy) -> CGEvent? {
         if keysBuffer.isEmpty { return event }
         
-        Log.debug("Retype keys buffer: \(keysBuffer)")
+        Log.info("Retype keys buffer: \(keysBuffer)")
         
         for _ in keysBuffer {
             keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: kVK_Delete)), proxy)
@@ -164,7 +164,7 @@ final class KeyInputController: GlobalInputMonitorHandler {
         let selectedText = focusedElement.selectedText
         
         if selectedText.isEmpty {
-            Log.debug("selected text is empty")
+            Log.info("Selected text is empty")
             return
         }
         let uppercasedText = selectedText.uppercased()

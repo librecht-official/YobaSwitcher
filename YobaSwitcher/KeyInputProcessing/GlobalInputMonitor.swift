@@ -63,29 +63,25 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
     }
     
     private func handleEventTapCallback(_ proxy: CGEventTapProxy, _ eventType: CGEventType, _ event: CGEvent) -> CGEvent? {
-        if eventType != event.type {
-            Log.info("hmmmm...")
-        }
-        
         switch eventType {
         case .keyDown:
-            Log.info(KeystrokeEvent.keyDown(.init(event: event)), terminator: ",\n")
+            Log.info(KeystrokeEvent.keyDown(.init(event: event)), terminator: ",\n", hashtags: [.recording])
             return handler?.handleKeyDown(event: event, proxy: proxy)
         
         case .keyUp:
-            Log.info(KeystrokeEvent.keyUp(.init(event: event)), terminator: ",\n")
+            Log.info(KeystrokeEvent.keyUp(.init(event: event)), terminator: ",\n", hashtags: [.recording])
             return handler?.handleKeyUp(event: event, proxy: proxy)
             
         case .flagsChanged:
-            Log.info(KeystrokeEvent.flagsChanged(.init(event: event)), terminator: ",\n")
+            Log.info(KeystrokeEvent.flagsChanged(.init(event: event)), terminator: ",\n", hashtags: [.recording])
             return handler?.handleFlagsChange(event: event, proxy: proxy)
             
         case .leftMouseDown, .rightMouseDown, .otherMouseDown:
-//            Log.info(KeystrokeEvent.mouseDown, terminator: ",\n")
+            Log.info(KeystrokeEvent.mouseDown, terminator: ",\n", hashtags: [.recording])
             return handler?.handleMouseDown(event: event, proxy: proxy)
             
         case .tapDisabledByTimeout:
-//            Log.info("tapDisabledByTimeout")
+            Log.info("tapDisabledByTimeout")
             CGEvent.tapEnable(tap: eventTap!, enable: true)
             
         default:
