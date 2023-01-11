@@ -5,12 +5,13 @@
 //  Created by Vladislav Librecht on 11.01.2023.
 //
 
+import Carbon
 import CoreGraphics
 
 enum KeystrokeEvent: Equatable {
     case keyDown(Keystroke)
     case keyUp(Keystroke)
-    case flagsChanged(Keystroke)
+    case flagsChanged(Keystroke, keyDown: Bool = false)
     case mouseDown
 }
 
@@ -41,8 +42,8 @@ extension CGEvent {
         case let .keyUp(ks):
             return CGEvent.fromKeystrokeUp(ks)
             
-        case let .flagsChanged(ks):
-            let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(ks.keyCode), keyDown: false)
+        case let .flagsChanged(ks, keyDown):
+            let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(ks.keyCode), keyDown: keyDown)
             cgEvent?.flags = ks.flags
             return cgEvent
             
@@ -53,13 +54,13 @@ extension CGEvent {
     }
     
     static func fromKeystrokeDown(_ keystroke: Keystroke) -> CGEvent? {
-        let cgEvent = CGEvent.keyDown(CGKeyCode(keystroke.keyCode))
+        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(keystroke.keyCode), keyDown: true)
         cgEvent?.flags = keystroke.flags
         return cgEvent
     }
     
     static func fromKeystrokeUp(_ keystroke: Keystroke) -> CGEvent? {
-        let cgEvent = CGEvent.keyUp(CGKeyCode(keystroke.keyCode))
+        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(keystroke.keyCode), keyDown: false)
         cgEvent?.flags = keystroke.flags
         return cgEvent
     }
@@ -72,13 +73,53 @@ extension KeystrokeEvent: CustomStringConvertible {
             return ".keyDown(\(keystroke))"
         case .keyUp(let keystroke):
             return ".keyUp(\(keystroke))"
-        case .flagsChanged(let keystroke):
-            return ".flagsChanged(\(keystroke))"
+        case let .flagsChanged(keystroke, keyDown):
+            return ".flagsChanged(\(keystroke), keyDown: \(keyDown))"
         case .mouseDown:
             return ".mouseDown"
         }
     }
 }
+
+extension KeystrokeEvent: CustomDebugStringConvertible {
+    var debugDescription: String {
+        switch self {
+        case let .keyDown(keystroke):
+            var mods: [String] = ["↓", keystroke.flags.debugDescription]
+            if keystroke.isAutorepeat {
+                mods.append("R")
+            }
+            return "\(char(keystroke.keyCode))[\(mods.joined(separator: ","))]"
+        
+        case .keyUp(let keystroke):
+            return "\(char(keystroke.keyCode))[↑]"
+            
+        case let .flagsChanged(keystroke, keyDown):
+            return "\(char(keystroke.keyCode))[\(keyDown ? "↓" : "↑")]"
+            
+        case .mouseDown:
+            return "🐁[↓]"
+        }
+    }
+}
+
+private func char(_ keyCode: Int) -> String {
+    keyCodesToChar[keyCode] ?? String(keyCode)
+}
+
+private let keyCodesToChar: [Int: String] = [
+    // Supplement as necessary
+    kVK_ANSI_H: "H",
+    kVK_ANSI_E: "E",
+    kVK_ANSI_L: "L",
+    kVK_ANSI_O: "O",
+    kVK_ANSI_W: "W",
+    kVK_ANSI_R: "R",
+    kVK_ANSI_D: "D",
+    kVK_Delete: "⌫",
+    kVK_ForwardDelete: "F⌫",
+    kVK_Space: "␣",
+]
 
 extension Keystroke: CustomStringConvertible {
     var description: String {

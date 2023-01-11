@@ -32,5 +32,7 @@ final class VirtualKeyboard: VirtualKeyboardProtocol {
         }
         
         TISSelectInputSource(nonSelectedSource.asTISInputSource)
+        
+        // TODO: Check kTISNotifySelectedKeyboardInputSourceChanged
     }
 }

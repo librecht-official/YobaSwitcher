@@ -7,16 +7,6 @@
 
 import CoreGraphics
 
-extension CGEvent {
-    static func keyUp(_ keyCode: CGKeyCode) -> CGEvent? {
-        CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: false)
-    }
-    
-    static func keyDown(_ keyCode: CGKeyCode) -> CGEvent? {
-        CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: true)
-    }
-}
-
 extension CGEventFlags: CustomStringConvertible {
     public var description: String {
         var result: [String] = []
@@ -48,6 +38,44 @@ extension CGEventFlags: CustomStringConvertible {
             result.append("maskNonCoalesced")
         }
         let joined = result.map { ".\($0)" }.joined(separator: ", ")
+        if result.count == 1 {
+            return joined
+        }
+        return "[\(joined)]"
+    }
+}
+
+extension CGEventFlags: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        var result: [String] = []
+        if contains(.maskAlphaShift) {
+            result.append("⇪")
+        }
+        if contains(.maskShift) {
+            result.append("⇧")
+        }
+        if contains(.maskControl) {
+            result.append("Ctrl")
+        }
+        if contains(.maskAlternate) {
+            result.append("Alt")
+        }
+        if contains(.maskCommand) {
+            result.append("⌘")
+        }
+        if contains(.maskHelp) {
+            result.append("Help")
+        }
+        if contains(.maskSecondaryFn) {
+            result.append("Fn")
+        }
+        if contains(.maskNumericPad) {
+            result.append("NumPad")
+        }
+        if contains(.maskNonCoalesced) {
+            result.append("nc")
+        }
+        let joined = result.joined(separator: ",")
         if result.count == 1 {
             return joined
         }

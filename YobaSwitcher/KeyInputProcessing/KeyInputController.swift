@@ -12,11 +12,11 @@ final class KeyInputController: GlobalInputMonitorHandler {
     let keyboard: VirtualKeyboardProtocol
     let systemWide: SystemWideAccessibility
     let mainQueue: DispatchQueueProtocol
-    // Contains "currently" pressed keys that will be retyped with another input source when the user taps "option" key
-    private(set) var keysBuffer: [Int] = [] {
+    // Contains "currently" pressed keys that will be retyped with another input source when the user taps Option key
+    private(set) var keysBuffer: [Keystroke] = [] {
         didSet { Log.debug("keysBuffer: \(keysBuffer)") }
     }
-    // A flag to track if "Option" key is tapped (down) with no other keys
+    // A flag to track if Option key was pressed (down) with no other keys
     private(set) var optionKeyIsDownExclusively: Bool = false {
         didSet { Log.debug("optionKeyIsDownExclusively: \(optionKeyIsDownExclusively)") }
     }
@@ -35,18 +35,13 @@ final class KeyInputController: GlobalInputMonitorHandler {
         optionKeyIsDownExclusively = false
         
         if keystroke.keyCode == kVK_ANSI_Z && event.flags.contains([.maskControl, .maskAlternate]) {
-            Log.debug("ctrl+opt+Z")//⌃⌥Z
+            Log.debug("ctrl+opt+Z")
             changeSelectedTextCase()
             return nil
         }
         
         modifyKeyBuffer(with: keystroke)
         
-        return event
-    }
-    
-    @discardableResult
-    func handleKeyUp(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
         return event
     }
     
@@ -64,8 +59,13 @@ final class KeyInputController: GlobalInputMonitorHandler {
         }
         
         if !keystroke.isAutorepeat {
-            keysBuffer.append(keystroke.keyCode)
+            keysBuffer.append(keystroke)
         }
+    }
+    
+    @discardableResult
+    func handleKeyUp(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
+        return event
     }
     
     @discardableResult
@@ -134,9 +134,25 @@ final class KeyInputController: GlobalInputMonitorHandler {
         
         // Sometime input source does not change immediately, so wait
         mainQueue.asyncAfter(timeInterval: .milliseconds(100)) {
-            for key in self.keysBuffer {
-                self.keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: Int(key))), proxy)
-                self.keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: Int(key))), proxy)
+            for keystroke in self.keysBuffer {
+                if keystroke.flags.contains(.maskShift) {
+                    let shift = KeystrokeEvent.flagsChanged(
+                        Keystroke(keyCode: kVK_Shift, flags: [.maskShift, .maskNonCoalesced]),
+                        keyDown: true
+                    )
+                    self.keyboard.postKeystrokeEvent(shift, proxy)
+                }
+                
+                self.keyboard.postKeystrokeEvent(.keyDown(keystroke), proxy)
+                self.keyboard.postKeystrokeEvent(.keyUp(keystroke), proxy)
+                
+                if keystroke.flags.contains(.maskShift) {
+                    let shift = KeystrokeEvent.flagsChanged(
+                        Keystroke(keyCode: kVK_Shift, flags: [.maskNonCoalesced]),
+                        keyDown: false
+                    )
+                    self.keyboard.postKeystrokeEvent(shift, proxy)
+                }
             }
         }
         

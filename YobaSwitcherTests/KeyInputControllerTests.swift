@@ -52,7 +52,14 @@ final class KeyInputControllerTests: XCTestCase {
     /// Type "hello world", then delete 2 characters and types "d", so the result is "hello word", then press Option. It should delete 10 characters, switch input source and retype "hello word"
     func testTypeEraseAndPressOption() {
         // given
-        let input = Keystrokes.hello_world + Keystrokes.option
+        let input = Keystrokes.hello_world + [
+            .keyDown(Keystroke(keyCode: kVK_Delete)),
+            .keyUp(Keystroke(keyCode: kVK_Delete)),
+            .keyDown(Keystroke(keyCode: kVK_ForwardDelete)),
+            .keyUp(Keystroke(keyCode: kVK_ForwardDelete)),
+            .keyDown(Keystroke(keyCode: kVK_ANSI_D)),
+            .keyUp(Keystroke(keyCode: kVK_ANSI_D)),
+        ] + Keystrokes.option
         
         // when
         for event in input {
@@ -161,6 +168,39 @@ final class KeyInputControllerTests: XCTestCase {
         Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
+    
+    /// Type "Hello World!" and press Option. It should delete all characters, switch input source and retype them preserving uppercased characters with Shift key
+    func testTypeWithShift() {
+        // given
+        let input = Keystrokes.Hello_World1 + Keystrokes.option
+        
+        // when
+        for event in input {
+            performKeystrokeEvent(event)
+        }
+        
+        // then
+        let backspaces = Keystrokes.backspaces(count: 12)
+        XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, backspaces)
+        Assert.method(keyboardMock._switchInputSource, wasCalled: .once)
+        XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.Hello_World2)
+    }
+    
+    /// Type "hello", press Option, type " world" and press Option again
+    func testType_PressOption_Type_PressOption() {
+        // given
+        let input = Keystrokes.hello + Keystrokes.option + Keystrokes.space + Keystrokes.world + Keystrokes.option
+        
+        // when
+        for event in input {
+            performKeystrokeEvent(event)
+        }
+        
+        // then
+        XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, Keystrokes.backspaces(count: 5) + Keystrokes.hello_world)
+        Assert.method(keyboardMock._switchInputSource, wasCalled: 2)
+        XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.hello + Keystrokes.backspaces(count: 11))
+    }
 }
 
 // MARK: Helpers
@@ -199,7 +239,7 @@ final class KeystrokesRecorder {
                 self.keystrokesBeforeSwitching.append(args.0)
             }
         }
-        keyboardMock._switchInputSource.body = { _ in self.switchedInputSource = true }
+        keyboardMock._switchInputSource.body = { _ in self.switchedInputSource.toggle() }
     }
 }
 
@@ -254,7 +294,7 @@ enum Keystrokes {
         ] * count
     }
     
-    static let hello_world: [KeystrokeEvent] = [
+    static let hello: [KeystrokeEvent] = [
         .keyDown(Keystroke(keyCode: kVK_ANSI_H)),
         .keyUp(Keystroke(keyCode: kVK_ANSI_H)),
         .keyDown(Keystroke(keyCode: kVK_ANSI_E)),
@@ -265,8 +305,14 @@ enum Keystrokes {
         .keyUp(Keystroke(keyCode: kVK_ANSI_L)),
         .keyDown(Keystroke(keyCode: kVK_ANSI_O)),
         .keyUp(Keystroke(keyCode: kVK_ANSI_O)),
+    ]
+    
+    static let space: [KeystrokeEvent] = [
         .keyDown(Keystroke(keyCode: kVK_Space)),
         .keyUp(Keystroke(keyCode: kVK_Space)),
+    ]
+    
+    static let world: [KeystrokeEvent] = [
         .keyDown(Keystroke(keyCode: kVK_ANSI_W)),
         .keyUp(Keystroke(keyCode: kVK_ANSI_W)),
         .keyDown(Keystroke(keyCode: kVK_ANSI_O)),
@@ -275,29 +321,13 @@ enum Keystrokes {
         .keyUp(Keystroke(keyCode: kVK_ANSI_R)),
         .keyDown(Keystroke(keyCode: kVK_ANSI_L)),
         .keyUp(Keystroke(keyCode: kVK_ANSI_L)),
-        .keyDown(Keystroke(keyCode: kVK_ANSI_D)),
-        .keyUp(Keystroke(keyCode: kVK_ANSI_D)),
-        .keyDown(Keystroke(keyCode: kVK_Delete)),
-        .keyUp(Keystroke(keyCode: kVK_Delete)),
-        .keyDown(Keystroke(keyCode: kVK_ForwardDelete)),
-        .keyUp(Keystroke(keyCode: kVK_ForwardDelete)),
         .keyDown(Keystroke(keyCode: kVK_ANSI_D)),
         .keyUp(Keystroke(keyCode: kVK_ANSI_D)),
     ]
     
-    static let hello_word: [KeystrokeEvent] = [
-        .keyDown(Keystroke(keyCode: kVK_ANSI_H)),
-        .keyUp(Keystroke(keyCode: kVK_ANSI_H)),
-        .keyDown(Keystroke(keyCode: kVK_ANSI_E)),
-        .keyUp(Keystroke(keyCode: kVK_ANSI_E)),
-        .keyDown(Keystroke(keyCode: kVK_ANSI_L)),
-        .keyUp(Keystroke(keyCode: kVK_ANSI_L)),
-        .keyDown(Keystroke(keyCode: kVK_ANSI_L)),
-        .keyUp(Keystroke(keyCode: kVK_ANSI_L)),
-        .keyDown(Keystroke(keyCode: kVK_ANSI_O)),
-        .keyUp(Keystroke(keyCode: kVK_ANSI_O)),
-        .keyDown(Keystroke(keyCode: kVK_Space)),
-        .keyUp(Keystroke(keyCode: kVK_Space)),
+    static let hello_world = hello + space + world
+    
+    static let hello_word: [KeystrokeEvent] = hello + space + [
         .keyDown(Keystroke(keyCode: kVK_ANSI_W)),
         .keyUp(Keystroke(keyCode: kVK_ANSI_W)),
         .keyDown(Keystroke(keyCode: kVK_ANSI_O)),
@@ -306,6 +336,72 @@ enum Keystrokes {
         .keyUp(Keystroke(keyCode: kVK_ANSI_R)),
         .keyDown(Keystroke(keyCode: kVK_ANSI_D)),
         .keyUp(Keystroke(keyCode: kVK_ANSI_D)),
+    ]
+    
+    static let Hello_World1: [KeystrokeEvent] = [
+        .flagsChanged(Keystroke(keyCode: 56, flags: [.maskShift, .maskNonCoalesced]), keyDown: true),
+        .keyDown(Keystroke(keyCode: 4, flags: [.maskShift, .maskNonCoalesced])),
+        .keyUp(Keystroke(keyCode: 4, flags: [.maskShift, .maskNonCoalesced])),
+        .flagsChanged(Keystroke(keyCode: 56)),
+        .keyDown(Keystroke(keyCode: 14)),
+        .keyUp(Keystroke(keyCode: 14)),
+        .keyDown(Keystroke(keyCode: 37)),
+        .keyUp(Keystroke(keyCode: 37)),
+        .keyDown(Keystroke(keyCode: 37)),
+        .keyUp(Keystroke(keyCode: 37)),
+        .keyDown(Keystroke(keyCode: 31)),
+        .keyUp(Keystroke(keyCode: 31)),
+        .keyDown(Keystroke(keyCode: 49)),
+        .keyUp(Keystroke(keyCode: 49)),
+        .flagsChanged(Keystroke(keyCode: 56, flags: [.maskShift, .maskNonCoalesced])),
+        .keyDown(Keystroke(keyCode: 13, flags: [.maskShift, .maskNonCoalesced])),
+        .flagsChanged(Keystroke(keyCode: 56)),
+        .keyUp(Keystroke(keyCode: 13)),
+        .keyDown(Keystroke(keyCode: 31)),
+        .keyUp(Keystroke(keyCode: 31)),
+        .keyDown(Keystroke(keyCode: 15)),
+        .keyUp(Keystroke(keyCode: 15)),
+        .keyDown(Keystroke(keyCode: 37)),
+        .keyUp(Keystroke(keyCode: 37)),
+        .keyDown(Keystroke(keyCode: 2)),
+        .keyUp(Keystroke(keyCode: 2)),
+        .flagsChanged(Keystroke(keyCode: 56, flags: [.maskShift, .maskNonCoalesced])),
+        .keyDown(Keystroke(keyCode: 18, flags: [.maskShift, .maskNonCoalesced])),
+        .keyUp(Keystroke(keyCode: 18, flags: [.maskShift, .maskNonCoalesced])),
+        .flagsChanged(Keystroke(keyCode: 56)),
+    ]
+    
+    static let Hello_World2: [KeystrokeEvent] = [
+        .flagsChanged(Keystroke(keyCode: 56, flags: [.maskShift, .maskNonCoalesced]), keyDown: true),
+        .keyDown(Keystroke(keyCode: 4, flags: [.maskShift, .maskNonCoalesced])),
+        .keyUp(Keystroke(keyCode: 4, flags: [.maskShift, .maskNonCoalesced])),
+        .flagsChanged(Keystroke(keyCode: 56), keyDown: false),
+        .keyDown(Keystroke(keyCode: 14)),
+        .keyUp(Keystroke(keyCode: 14)),
+        .keyDown(Keystroke(keyCode: 37)),
+        .keyUp(Keystroke(keyCode: 37)),
+        .keyDown(Keystroke(keyCode: 37)),
+        .keyUp(Keystroke(keyCode: 37)),
+        .keyDown(Keystroke(keyCode: 31)),
+        .keyUp(Keystroke(keyCode: 31)),
+        .keyDown(Keystroke(keyCode: 49)),
+        .keyUp(Keystroke(keyCode: 49)),
+        .flagsChanged(Keystroke(keyCode: 56, flags: [.maskShift, .maskNonCoalesced]), keyDown: true),
+        .keyDown(Keystroke(keyCode: 13, flags: [.maskShift, .maskNonCoalesced])),
+        .keyUp(Keystroke(keyCode: 13, flags: [.maskShift, .maskNonCoalesced])),
+        .flagsChanged(Keystroke(keyCode: 56), keyDown: false),
+        .keyDown(Keystroke(keyCode: 31)),
+        .keyUp(Keystroke(keyCode: 31)),
+        .keyDown(Keystroke(keyCode: 15)),
+        .keyUp(Keystroke(keyCode: 15)),
+        .keyDown(Keystroke(keyCode: 37)),
+        .keyUp(Keystroke(keyCode: 37)),
+        .keyDown(Keystroke(keyCode: 2)),
+        .keyUp(Keystroke(keyCode: 2)),
+        .flagsChanged(Keystroke(keyCode: 56, flags: [.maskShift, .maskNonCoalesced]), keyDown: true),
+        .keyDown(Keystroke(keyCode: 18, flags: [.maskShift, .maskNonCoalesced])),
+        .keyUp(Keystroke(keyCode: 18, flags: [.maskShift, .maskNonCoalesced])),
+        .flagsChanged(Keystroke(keyCode: 56), keyDown: false)
     ]
     
     static let allCharacterProducing: [KeystrokeEvent] = [
