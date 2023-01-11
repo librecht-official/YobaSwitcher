@@ -125,24 +125,22 @@ final class KeyInputController: GlobalInputMonitorHandler {
         
         Log.debug("Retype keys buffer: \(keysBuffer)")
         
-        // Delay here because "option" key is still down until we return from the callback. If no delay - each "Delete" event will remove 1 word instead of 1 character.
+        for _ in keysBuffer {
+            keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: kVK_Delete)), proxy)
+            keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: kVK_Delete)), proxy)
+        }
+                
+        keyboard.switchInputSource()
+        
+        // Sometime input source does not change immediately, so wait
         mainQueue.asyncAfter(timeInterval: .milliseconds(100)) {
-            for _ in self.keysBuffer {
-                self.keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: kVK_Delete)), proxy)
-                self.keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: kVK_Delete)), proxy)
-            }
-                    
-            self.keyboard.switchInputSource()
-            
-            self.mainQueue.asyncAfter(timeInterval: .milliseconds(100)) {
-                for key in self.keysBuffer {
-                    self.keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: Int(key))), proxy)
-                    self.keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: Int(key))), proxy)
-                }
+            for key in self.keysBuffer {
+                self.keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: Int(key))), proxy)
+                self.keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: Int(key))), proxy)
             }
         }
         
-        return event
+        return nil
     }
     
     private func changeSelectedTextCase() {

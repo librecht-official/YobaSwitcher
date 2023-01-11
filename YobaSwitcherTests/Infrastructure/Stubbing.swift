@@ -7,16 +7,6 @@
 
 import XCTest
 
-//protocol PropertyStub {
-//    associatedtype T
-//
-//    var name: StaticString { get }
-//    var var testCase: XCTestCase? { get }
-//    var value: T? { get }
-//    var getCallCount: Int { get }
-//    var setCallCount: Int { get }
-//}
-
 public struct PropertyStub<T> {
     public let name: StaticString
     public private(set) weak var testCase: XCTestCase?
@@ -57,31 +47,6 @@ public struct PropertyStub<T> {
         }
     }
 }
-
-//public struct OptionalPropertyStub<T>: PropertyStub {
-//    public let name: StaticString
-//    public private(set) weak var testCase: XCTestCase?
-//
-//    public init(name: StaticString, _ testCase: XCTestCase?) {
-//        self.name = name
-//        self.testCase = testCase
-//    }
-//
-//    public private(set) var value: T?
-//    public private(set) var getCallCount: Int = 0
-//    public private(set) var setCallCount: Int = 0
-//
-//    var _value: T? {
-//        mutating get {
-//            getCallCount += 1
-//            return value
-//        }
-//        set {
-//            setCallCount += 1
-//            value = newValue
-//        }
-//    }
-//}
 
 public struct MethodStub<Arguments, ReturnValue> {
     public let name: StaticString
