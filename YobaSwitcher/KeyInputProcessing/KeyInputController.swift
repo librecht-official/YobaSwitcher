@@ -14,11 +14,11 @@ final class KeyInputController: GlobalInputMonitorHandler {
     let mainQueue: DispatchQueueProtocol
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps "option" key
     private(set) var keysBuffer: [Int64] = [] {
-        didSet { print("keysBuffer: \(keysBuffer)") }
+        didSet { Log.debug("keysBuffer: \(keysBuffer)") }
     }
     // A flag to track if "Option" key is tapped (down) with no other keys
     private(set) var optionKeyIsDownExclusively: Bool = false {
-        didSet { print("optionKeyIsDownExclusively: \(optionKeyIsDownExclusively)") }
+        didSet { Log.debug("optionKeyIsDownExclusively: \(optionKeyIsDownExclusively)") }
     }
     
     init(keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility, mainQueue: DispatchQueueProtocol = DispatchQueue.main) {
@@ -36,7 +36,7 @@ final class KeyInputController: GlobalInputMonitorHandler {
         let keyCode = event.getIntegerValueField(.keyboardEventKeycode)
         
         if keyCode == kVK_ANSI_Z && event.flags.contains([.maskControl, .maskAlternate]) {
-            print("ctrl+opt+Z")//⌃⌥Z
+            Log.debug("ctrl+opt+Z")//⌃⌥Z
             changeSelectedTextCase()
             return nil
         }
@@ -73,7 +73,7 @@ final class KeyInputController: GlobalInputMonitorHandler {
             optionKeyIsDownExclusively = true
         }
         if isItOptionKeyUp(event) && optionKeyIsDownExclusively {
-            print("Option key is up")
+            Log.debug("Option key is up")
             optionKeyIsDownExclusively = false
             return retypeKeyBuffer(event, proxy)
         }
@@ -122,20 +122,20 @@ final class KeyInputController: GlobalInputMonitorHandler {
     private func retypeKeyBuffer(_ event: CGEvent, _ proxy: CGEventTapProxy) -> CGEvent? {
         if keysBuffer.isEmpty { return event }
         
-        print("retype keys buffer: \(keysBuffer)")
+        Log.debug("Retype keys buffer: \(keysBuffer)")
         
         // Delay here because "option" key is still down until we return from the callback. If no delay - each "Delete" event will remove 1 word instead of 1 character.
         mainQueue.asyncAfter(timeInterval: .milliseconds(100)) {
             for _ in self.keysBuffer {
-                self.keyboard.postKeyDown(kVK_Delete, proxy)
-                self.keyboard.postKeyUp(kVK_Delete, proxy)
+                self.keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: kVK_Delete)), proxy)
+                self.keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: kVK_Delete)), proxy)
             }
                     
             self.keyboard.switchInputSource()
             
             for key in self.keysBuffer {
-                self.keyboard.postKeyDown(Int(key), proxy)
-                self.keyboard.postKeyUp(Int(key), proxy)
+                self.keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: Int(key))), proxy)
+                self.keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: Int(key))), proxy)
             }
         }
         
@@ -147,7 +147,7 @@ final class KeyInputController: GlobalInputMonitorHandler {
         let selectedText = focusedElement.selectedText
         
         if selectedText.isEmpty {
-            print("selected text is empty")
+            Log.debug("selected text is empty")
             return
         }
         let uppercasedText = selectedText.uppercased()

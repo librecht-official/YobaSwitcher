@@ -16,7 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let options: NSDictionary = [kAXTrustedCheckOptionPrompt.takeRetainedValue() as NSString: true]
         if !AXIsProcessTrustedWithOptions(options) {
-            print("Accessibility is not allowed for this app")
+            Log.debug("Accessibility is not allowed for this app")
 //            timer = Timer.scheduledTimer(
 //                withTimeInterval: 3.0,
 //                repeats: true

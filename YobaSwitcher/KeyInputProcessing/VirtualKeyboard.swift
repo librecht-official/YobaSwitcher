@@ -9,19 +9,15 @@ import Carbon
 import CoreGraphics
 
 protocol VirtualKeyboardProtocol {
-    func postKeyDown(_ keyCode: Int, _ proxy: CGEventTapProxy)
-    func postKeyUp(_ keyCode: Int, _ proxy: CGEventTapProxy)
+    func postKeystrokeEvent(_ keystrokeEvent: KeystrokeEvent, _ proxy: CGEventTapProxy)
     
     func switchInputSource()
 }
 
 final class VirtualKeyboard: VirtualKeyboardProtocol {
-    func postKeyDown(_ keyCode: Int, _ proxy: CGEventTapProxy) {
-        CGEvent.keyDown(CGKeyCode(keyCode))?.tapPostEvent(proxy)
-    }
-    
-    func postKeyUp(_ keyCode: Int, _ proxy: CGEventTapProxy) {
-        CGEvent.keyUp(CGKeyCode(keyCode))?.tapPostEvent(proxy)
+    func postKeystrokeEvent(_ keystrokeEvent: KeystrokeEvent, _ proxy: CGEventTapProxy) {
+        let event = CGEvent.fromKeystrokeEvent(keystrokeEvent)
+        event?.tapPostEvent(proxy)
     }
     
     func switchInputSource() {

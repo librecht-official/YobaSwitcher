@@ -17,8 +17,8 @@ extension CGEvent {
     }
 }
 
-extension CGEventFlags: CustomDebugStringConvertible {
-    public var debugDescription: String {
+extension CGEventFlags: CustomStringConvertible {
+    public var description: String {
         var result: [String] = []
         if contains(.maskAlphaShift) {
             result.append("maskAlphaShift")
@@ -47,7 +47,11 @@ extension CGEventFlags: CustomDebugStringConvertible {
         if contains(.maskNonCoalesced) {
             result.append("maskNonCoalesced")
         }
-        return result.joined(separator: ", ")
+        let joined = result.map { ".\($0)" }.joined(separator: ", ")
+        if result.count == 1 {
+            return joined
+        }
+        return "[\(joined)]"
     }
 }
 

@@ -51,7 +51,7 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
             },
             userInfo: context
         ) else {
-            print("Event tap is not created")
+            Log.debug("Event tap is not created")
             return
         }
         self.eventTap = eventTap
@@ -63,29 +63,29 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
     }
     
     private func handleEventTapCallback(_ proxy: CGEventTapProxy, _ eventType: CGEventType, _ event: CGEvent) -> CGEvent? {
-        let keyCode = event.getIntegerValueField(.keyboardEventKeycode)
         if eventType != event.type {
-            print("hmmmm...")
+            Log.info("hmmmm...")
         }
         
         switch eventType {
         case .keyDown:
-            print("keyDown: \(keyCode)")
+            Log.info(KeystrokeEvent.keyDown(.init(event: event)), terminator: ",\n")
             return handler?.handleKeyDown(event: event, proxy: proxy)
         
         case .keyUp:
-            print("keyUp: \(keyCode), flags: \(event.flags)")
+            Log.info(KeystrokeEvent.keyUp(.init(event: event)), terminator: ",\n")
             return handler?.handleKeyUp(event: event, proxy: proxy)
             
         case .flagsChanged:
-            print("flagsChanged: \(keyCode), flags: \(event.flags)")
+            Log.info(KeystrokeEvent.flagsChanged(.init(event: event)), terminator: ",\n")
             return handler?.handleFlagsChange(event: event, proxy: proxy)
             
         case .leftMouseDown, .rightMouseDown, .otherMouseDown:
+//            Log.info(KeystrokeEvent.mouseDown, terminator: ",\n")
             return handler?.handleMouseDown(event: event, proxy: proxy)
             
         case .tapDisabledByTimeout:
-            print("tapDisabledByTimeout")
+//            Log.info("tapDisabledByTimeout")
             CGEvent.tapEnable(tap: eventTap!, enable: true)
             
         default:

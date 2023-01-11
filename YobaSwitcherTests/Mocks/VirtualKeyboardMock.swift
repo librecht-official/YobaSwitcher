@@ -9,26 +9,17 @@ import XCTest
 @testable import YobaSwitcher
 
 final class VirtualKeyboardMock: VirtualKeyboardProtocol {
+    
     private(set) weak var testCase: XCTestCase?
     
     init(_ testCase: XCTestCase) {
         self.testCase = testCase
     }
     
-    // MARK: postKeyDown(_ keyCode: Int, _ proxy: CGEventTapProxy)
+    lazy var _postKeystrokeEvent = MethodStub<(KeystrokeEvent, CGEventTapProxy), Void>(name: "postKeystrokeEvent(_ keystrokeEvent: KeystrokeEvent, _ proxy: CGEventTapProxy)", testCase)
     
-    lazy var _postKeyDown = MethodStub<(Int, CGEventTapProxy), Void>(name: "postKeyDown(_ keyCode: Int, _ proxy: CGEventTapProxy)", testCase)
-    
-    func postKeyDown(_ keyCode: Int, _ proxy: CGEventTapProxy) {
-        _postKeyDown.call(with: (keyCode, proxy))
-    }
-    
-    // MARK: postKeyUp(_ keyCode: Int, _ proxy: CGEventTapProxy)
-    
-    lazy var _postKeyUp = MethodStub<(Int, CGEventTapProxy), Void>(name: "postKeyUp(_ keyCode: Int, _ proxy: CGEventTapProxy)", testCase)
-    
-    func postKeyUp(_ keyCode: Int, _ proxy: CGEventTapProxy) {
-        _postKeyUp.call(with: (keyCode, proxy))
+    func postKeystrokeEvent(_ keystrokeEvent: KeystrokeEvent, _ proxy: CGEventTapProxy) {
+        _postKeystrokeEvent.call(with: (keystrokeEvent, proxy))
     }
     
     // MARK: switchInputSource()
