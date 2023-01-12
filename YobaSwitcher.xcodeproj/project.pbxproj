@@ -10,6 +10,7 @@
 		F51E2FF229707AFB00F42AD8 /* FocusedUIElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF129707AFB00F42AD8 /* FocusedUIElement.swift */; };
 		F51E2FF429707D4300F42AD8 /* MethodStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF329707D4300F42AD8 /* MethodStub.swift */; };
 		F51E2FF629707DAE00F42AD8 /* CallCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF529707DAE00F42AD8 /* CallCount.swift */; };
+		F51E2FF82970969E00F42AD8 /* DistributedNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */; };
 		F52777D7296EF55500B55BC3 /* KeystrokeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */; };
 		F52777D9296EF6FF00B55BC3 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D8296EF6FF00B55BC3 /* Logging.swift */; };
 		F52777DC296FC67B00B55BC3 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */; };
@@ -50,6 +51,7 @@
 		F51E2FF129707AFB00F42AD8 /* FocusedUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedUIElement.swift; sourceTree = "<group>"; };
 		F51E2FF329707D4300F42AD8 /* MethodStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodStub.swift; sourceTree = "<group>"; };
 		F51E2FF529707DAE00F42AD8 /* CallCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallCount.swift; sourceTree = "<group>"; };
+		F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedNotificationCenter.swift; sourceTree = "<group>"; };
 		F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystrokeEvent.swift; sourceTree = "<group>"; };
 		F52777D8296EF6FF00B55BC3 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				F592B27E296E09B200CAF8AD /* DispatchExt.swift */,
+				F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */,
 				F52777D8296EF6FF00B55BC3 /* Logging.swift */,
 			);
 			path = Common;
@@ -290,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F592B27D296E071D00CAF8AD /* SystemWideAccessibility.swift in Sources */,
+				F51E2FF82970969E00F42AD8 /* DistributedNotificationCenter.swift in Sources */,
 				F52777D7296EF55500B55BC3 /* KeystrokeEvent.swift in Sources */,
 				F592B27B296E002700CAF8AD /* VirtualKeyboard.swift in Sources */,
 				F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */,

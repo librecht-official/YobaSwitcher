@@ -28,12 +28,4 @@ struct InputSource {
     var isSelected: Bool {
         value(key: kTISPropertyInputSourceIsSelected) ?? false
     }
-    
-    static func fetchList(filter: CFDictionary) -> [InputSource] {
-        guard let sources = TISCreateInputSourceList(filter, false).takeRetainedValue() as? [TISInputSource] else {
-            Log.error("Failed to fetch input source list")
-            return []
-        }
-        return sources.map(InputSource.init)
-    }
 }

@@ -16,7 +16,6 @@ final class KeyInputControllerTests: XCTestCase {
     var keyboardMock: VirtualKeyboardMock!
     var systemWideMock: SystemWideAccessibilityMock!
     var focusedUIElementMock: FocusedUIElementMock!
-    var mainQueueMock: DispatchQueueMock!
     var eventProxyMock: CGEventTapProxy!
     var eventProxyStub: EventTapProxyStub!
     var ksRecorder: KeystrokesRecorder!
@@ -27,11 +26,10 @@ final class KeyInputControllerTests: XCTestCase {
         ksRecorder.setup(keyboardMock)
         systemWideMock = SystemWideAccessibilityMock(self)
         focusedUIElementMock = FocusedUIElementMock(self)
-        mainQueueMock = DispatchQueueMock()
         eventProxyStub = EventTapProxyStub()
         eventProxyMock = CGEventTapProxy(Unmanaged.passUnretained(eventProxyStub).toOpaque())
         selectedTextManagerMock = SelectedTextManagerMock(self)
-        controller = KeyInputController(selectedTextManager: selectedTextManagerMock, keyboard: keyboardMock, systemWide: systemWideMock, mainQueue: mainQueueMock)
+        controller = KeyInputController(selectedTextManager: selectedTextManagerMock, keyboard: keyboardMock, systemWide: systemWideMock)
         
         systemWideMock._focusedElement.returnValue = focusedUIElementMock
         selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLanguage.returnValue = false
@@ -50,7 +48,7 @@ final class KeyInputControllerTests: XCTestCase {
         // then
         let backspaces = Keystrokes.backspaces(count: (Keystrokes.allCharacterProducing.count / 2))
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, backspaces)
-        keyboardMock._switchInputSource.wasCalled(1)
+        keyboardMock._switchInputSourceCompletion.wasCalled(1)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.allCharacterProducing)
     }
     
@@ -72,7 +70,7 @@ final class KeyInputControllerTests: XCTestCase {
         // then
         let backspaces = Keystrokes.backspaces(count: 10)
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, backspaces)
-        keyboardMock._switchInputSource.wasCalled(1)
+        keyboardMock._switchInputSourceCompletion.wasCalled(1)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.hello_word)
     }
     
@@ -86,7 +84,7 @@ final class KeyInputControllerTests: XCTestCase {
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        keyboardMock._switchInputSource.wasCalled(0)
+        keyboardMock._switchInputSourceCompletion.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -100,7 +98,7 @@ final class KeyInputControllerTests: XCTestCase {
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        keyboardMock._switchInputSource.wasCalled(0)
+        keyboardMock._switchInputSourceCompletion.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -114,7 +112,7 @@ final class KeyInputControllerTests: XCTestCase {
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        keyboardMock._switchInputSource.wasCalled(0)
+        keyboardMock._switchInputSourceCompletion.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -128,7 +126,7 @@ final class KeyInputControllerTests: XCTestCase {
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        keyboardMock._switchInputSource.wasCalled(0)
+        keyboardMock._switchInputSourceCompletion.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -142,7 +140,7 @@ final class KeyInputControllerTests: XCTestCase {
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        keyboardMock._switchInputSource.wasCalled(0)
+        keyboardMock._switchInputSourceCompletion.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -156,7 +154,7 @@ final class KeyInputControllerTests: XCTestCase {
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        keyboardMock._switchInputSource.wasCalled(0)
+        keyboardMock._switchInputSourceCompletion.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -171,7 +169,7 @@ final class KeyInputControllerTests: XCTestCase {
         // then
         let backspaces = Keystrokes.backspaces(count: 12)
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, backspaces)
-        keyboardMock._switchInputSource.wasCalled(1)
+        keyboardMock._switchInputSourceCompletion.wasCalled(1)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.Hello_World2)
     }
     
@@ -185,7 +183,7 @@ final class KeyInputControllerTests: XCTestCase {
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, Keystrokes.backspaces(count: 5) + Keystrokes.hello_world)
-        keyboardMock._switchInputSource.wasCalled(2)
+        keyboardMock._switchInputSourceCompletion.wasCalled(2)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.hello + Keystrokes.backspaces(count: 11))
     }
     
@@ -202,7 +200,7 @@ final class KeyInputControllerTests: XCTestCase {
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        keyboardMock._switchInputSource.wasCalled(0)
+        keyboardMock._switchInputSourceCompletion.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
 }
@@ -243,7 +241,10 @@ final class KeystrokesRecorder {
                 self.keystrokesBeforeSwitching.append(args.0)
             }
         }
-        keyboardMock._switchInputSource.body = { _ in self.switchedInputSource.toggle() }
+        keyboardMock._switchInputSourceCompletion.body = { completion in
+            self.switchedInputSource.toggle()
+            completion()
+        }
     }
 }
 

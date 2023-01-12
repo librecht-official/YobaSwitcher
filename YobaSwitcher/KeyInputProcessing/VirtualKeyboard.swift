@@ -18,8 +18,10 @@ protocol VirtualKeyboardProtocol {
     
     func selectedInputSource() -> InputSource
     func inputSource(forLanguage id: LanguageIdentifier) -> InputSource
+    
     /// Selects first non-selected keyboard input source
     func switchInputSource()
+    func switchInputSource(completion: @escaping () -> ())
 }
 
 final class VirtualKeyboard: VirtualKeyboardProtocol {
@@ -48,30 +50,33 @@ final class VirtualKeyboard: VirtualKeyboardProtocol {
     }
     
     func switchInputSource() {
-        let inputSourceCriteria = [
-            kTISPropertyInputSourceCategory: kTISCategoryKeyboardInputSource as Any,
-            kTISPropertyInputSourceIsSelectCapable: true
-        ]  as CFDictionary
-        let sourceList = InputSource.fetchList(filter: inputSourceCriteria)
+        switchInputSource(completion: {})
+    }
+    
+    func switchInputSource(completion: @escaping () -> ()) {
+        let sourceList = selectCapableKeyboardInputSourceList()
+        guard let nonSelectedSource = sourceList.first(where: { !$0.isSelected }) else { return }
         
-        guard let nonSelectedSource = sourceList.first(where: { !$0.isSelected }) else {
-            return
+        // FIXME: Quickly press Option twice -> Input source changes 2 times, text is typed in wrong kb layout
+        let center = DistributedNotificationCenter.default
+        _ = center.addObserver(forName: .selectedKeyboardInputSourceChanged, suspensionBehavior: .deliverImmediately) { token, _ in
+            center.removeObserver(token, name: .selectedKeyboardInputSourceChanged)
+            completion()
         }
         
         TISSelectInputSource(nonSelectedSource.asTISInputSource)
+    }
+    
+    func selectCapableKeyboardInputSourceList() -> [InputSource] {
+        let criteria = [
+            kTISPropertyInputSourceCategory: kTISCategoryKeyboardInputSource as Any,
+            kTISPropertyInputSourceIsSelectCapable: true
+        ] as CFDictionary
+        guard let sources = TISCreateInputSourceList(criteria, false).takeRetainedValue() as? [TISInputSource] else {
+            Log.error("Failed to fetch input source list")
+            return []
+        }
         
-        // TODO: Check kTISNotifySelectedKeyboardInputSourceChanged
+        return sources.map(InputSource.init)
     }
 }
-
-//CFNotificationCenterAddObserver(
-//    CFNotificationCenterGetDistributedCenter(),
-//    UnsafeRawPointer(Unmanaged.passUnretained(self).toOpaque()),
-//    { center, observer, _, _, _ in
-//        Log.info("InputSourceChanged")
-//        CFNotificationCenterRemoveObserver(center, observer, CFNotificationName(kTISNotifySelectedKeyboardInputSourceChanged), nil)
-//    },
-//    kTISNotifySelectedKeyboardInputSourceChanged,
-//    nil,
-//    .deliverImmediately
-//)

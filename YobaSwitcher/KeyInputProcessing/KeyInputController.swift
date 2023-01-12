@@ -12,7 +12,6 @@ final class KeyInputController: GlobalInputMonitorHandler {
     let selectedTextManager: SelectedTextManager
     let keyboard: VirtualKeyboardProtocol
     let systemWide: SystemWideAccessibility
-    let mainQueue: DispatchQueueProtocol
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps Option key
     private(set) var keysBuffer: [Keystroke] = [] {
         didSet { Log.info("keysBuffer:", keysBuffer) }
@@ -22,11 +21,10 @@ final class KeyInputController: GlobalInputMonitorHandler {
         didSet { Log.info("optionKeyIsDownExclusively: \(optionKeyIsDownExclusively)") }
     }
     
-    init(selectedTextManager: SelectedTextManager, keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility, mainQueue: DispatchQueueProtocol = DispatchQueue.main) {
+    init(selectedTextManager: SelectedTextManager, keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility) {
         self.selectedTextManager = selectedTextManager
         self.keyboard = keyboard
         self.systemWide = systemWide
-        self.mainQueue = mainQueue
     }
 
     // MARK: GlobalInputMonitorHandler
@@ -134,34 +132,35 @@ final class KeyInputController: GlobalInputMonitorHandler {
             keyboard.postKeystrokeEvent(.keyDown(Keystroke(keyCode: kVK_Delete)), proxy)
             keyboard.postKeystrokeEvent(.keyUp(Keystroke(keyCode: kVK_Delete)), proxy)
         }
-                
-        keyboard.switchInputSource()
         
-        // Sometime input source does not change immediately, so wait
-        mainQueue.asyncAfter(timeInterval: .milliseconds(100)) {
-            for keystroke in self.keysBuffer {
-                if keystroke.flags.contains(.maskShift) {
-                    let shift = KeystrokeEvent.flagsChanged(
-                        Keystroke(keyCode: kVK_Shift, flags: [.maskShift, .maskNonCoalesced]),
-                        keyDown: true
-                    )
-                    self.keyboard.postKeystrokeEvent(shift, proxy)
-                }
-                
-                self.keyboard.postKeystrokeEvent(.keyDown(keystroke), proxy)
-                self.keyboard.postKeystrokeEvent(.keyUp(keystroke), proxy)
-                
-                if keystroke.flags.contains(.maskShift) {
-                    let shift = KeystrokeEvent.flagsChanged(
-                        Keystroke(keyCode: kVK_Shift, flags: [.maskNonCoalesced]),
-                        keyDown: false
-                    )
-                    self.keyboard.postKeystrokeEvent(shift, proxy)
-                }
-            }
+        keyboard.switchInputSource { [weak self] in
+            self?.typeKeyBuffer(proxy)
         }
         
         return nil
+    }
+    
+    private func typeKeyBuffer(_ proxy: CGEventTapProxy) {
+        for keystroke in keysBuffer {
+            if keystroke.flags.contains(.maskShift) {
+                let shift = KeystrokeEvent.flagsChanged(
+                    Keystroke(keyCode: kVK_Shift, flags: [.maskShift, .maskNonCoalesced]),
+                    keyDown: true
+                )
+                keyboard.postKeystrokeEvent(shift, proxy)
+            }
+            
+            keyboard.postKeystrokeEvent(.keyDown(keystroke), proxy)
+            keyboard.postKeystrokeEvent(.keyUp(keystroke), proxy)
+            
+            if keystroke.flags.contains(.maskShift) {
+                let shift = KeystrokeEvent.flagsChanged(
+                    Keystroke(keyCode: kVK_Shift, flags: [.maskNonCoalesced]),
+                    keyDown: false
+                )
+                keyboard.postKeystrokeEvent(shift, proxy)
+            }
+        }
     }
     
     private func changeSelectedTextCase() {
