@@ -7,8 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F51E2FF229707AFB00F42AD8 /* FocusedUIElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF129707AFB00F42AD8 /* FocusedUIElement.swift */; };
+		F51E2FF429707D4300F42AD8 /* MethodStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF329707D4300F42AD8 /* MethodStub.swift */; };
+		F51E2FF629707DAE00F42AD8 /* CallCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF529707DAE00F42AD8 /* CallCount.swift */; };
 		F52777D7296EF55500B55BC3 /* KeystrokeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */; };
 		F52777D9296EF6FF00B55BC3 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D8296EF6FF00B55BC3 /* Logging.swift */; };
+		F52777DC296FC67B00B55BC3 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */; };
+		F533F0CB29705D4500549477 /* SelectedTextManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F533F0CA29705D4500549477 /* SelectedTextManagerMock.swift */; };
+		F533F0CD2970600600549477 /* SystemWideSelectedTextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */; };
+		F533F0CF297062EE00549477 /* SystemWideSelectedTextManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */; };
 		F54E94DE2961C2980066D33F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94DD2961C2980066D33F /* AppDelegate.swift */; };
 		F54E94E02961C2980066D33F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94DF2961C2980066D33F /* ViewController.swift */; };
 		F54E94E22961C29A0066D33F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F54E94E12961C29A0066D33F /* Assets.xcassets */; };
@@ -19,8 +26,7 @@
 		F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B252296DBE1600CAF8AD /* CGEventExt.swift */; };
 		F592B25B296DC13200CAF8AD /* KeyInputControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B25A296DC13200CAF8AD /* KeyInputControllerTests.swift */; };
 		F592B263296DC29100CAF8AD /* GlobalInputListenerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B262296DC29100CAF8AD /* GlobalInputListenerMock.swift */; };
-		F592B266296DC43000CAF8AD /* Stubbing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B265296DC43000CAF8AD /* Stubbing.swift */; };
-		F592B268296DC80100CAF8AD /* Assertion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B267296DC80100CAF8AD /* Assertion.swift */; };
+		F592B266296DC43000CAF8AD /* PropertyStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B265296DC43000CAF8AD /* PropertyStub.swift */; };
 		F592B279296DEC6B00CAF8AD /* KeyInputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B278296DEC6B00CAF8AD /* KeyInputManager.swift */; };
 		F592B27B296E002700CAF8AD /* VirtualKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */; };
 		F592B27D296E071D00CAF8AD /* SystemWideAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */; };
@@ -41,8 +47,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F51E2FF129707AFB00F42AD8 /* FocusedUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedUIElement.swift; sourceTree = "<group>"; };
+		F51E2FF329707D4300F42AD8 /* MethodStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodStub.swift; sourceTree = "<group>"; };
+		F51E2FF529707DAE00F42AD8 /* CallCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallCount.swift; sourceTree = "<group>"; };
 		F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystrokeEvent.swift; sourceTree = "<group>"; };
 		F52777D8296EF6FF00B55BC3 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
+		F533F0CA29705D4500549477 /* SelectedTextManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedTextManagerMock.swift; sourceTree = "<group>"; };
+		F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideSelectedTextManager.swift; sourceTree = "<group>"; };
+		F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideSelectedTextManagerTests.swift; sourceTree = "<group>"; };
 		F54E94DA2961C2980066D33F /* YobaSwitcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YobaSwitcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F54E94DD2961C2980066D33F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F54E94DF2961C2980066D33F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,8 +69,7 @@
 		F592B258296DC13100CAF8AD /* YobaSwitcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YobaSwitcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F592B25A296DC13200CAF8AD /* KeyInputControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyInputControllerTests.swift; sourceTree = "<group>"; };
 		F592B262296DC29100CAF8AD /* GlobalInputListenerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputListenerMock.swift; sourceTree = "<group>"; };
-		F592B265296DC43000CAF8AD /* Stubbing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stubbing.swift; sourceTree = "<group>"; };
-		F592B267296DC80100CAF8AD /* Assertion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assertion.swift; sourceTree = "<group>"; };
+		F592B265296DC43000CAF8AD /* PropertyStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyStub.swift; sourceTree = "<group>"; };
 		F592B278296DEC6B00CAF8AD /* KeyInputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyInputManager.swift; sourceTree = "<group>"; };
 		F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualKeyboard.swift; sourceTree = "<group>"; };
 		F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideAccessibility.swift; sourceTree = "<group>"; };
@@ -130,13 +142,16 @@
 			isa = PBXGroup;
 			children = (
 				F592B252296DBE1600CAF8AD /* CGEventExt.swift */,
+				F51E2FF129707AFB00F42AD8 /* FocusedUIElement.swift */,
 				F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */,
 				F592B24E296DBC5900CAF8AD /* InputSource.swift */,
-				F592B278296DEC6B00CAF8AD /* KeyInputManager.swift */,
+				F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */,
 				F54E94EE2961DF5E0066D33F /* KeyInputController.swift */,
-				F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */,
-				F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */,
+				F592B278296DEC6B00CAF8AD /* KeyInputManager.swift */,
 				F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */,
+				F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */,
+				F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */,
+				F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */,
 			);
 			path = KeyInputProcessing;
 			sourceTree = "<group>";
@@ -145,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				F592B25A296DC13200CAF8AD /* KeyInputControllerTests.swift */,
+				F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */,
 				F592B264296DC41B00CAF8AD /* Infrastructure */,
 				F592B261296DC28400CAF8AD /* Mocks */,
 			);
@@ -158,6 +174,7 @@
 				F592B280296E0C3500CAF8AD /* VirtualKeyboardMock.swift */,
 				F592B282296E0DA400CAF8AD /* SystemWideAccessibilityMock.swift */,
 				F592B284296E0E5400CAF8AD /* DispatchQueueMock.swift */,
+				F533F0CA29705D4500549477 /* SelectedTextManagerMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -165,8 +182,9 @@
 		F592B264296DC41B00CAF8AD /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				F592B265296DC43000CAF8AD /* Stubbing.swift */,
-				F592B267296DC80100CAF8AD /* Assertion.swift */,
+				F592B265296DC43000CAF8AD /* PropertyStub.swift */,
+				F51E2FF329707D4300F42AD8 /* MethodStub.swift */,
+				F51E2FF529707DAE00F42AD8 /* CallCount.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -277,8 +295,11 @@
 				F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */,
 				F54E94EF2961DF5E0066D33F /* KeyInputController.swift in Sources */,
 				F592B279296DEC6B00CAF8AD /* KeyInputManager.swift in Sources */,
+				F51E2FF229707AFB00F42AD8 /* FocusedUIElement.swift in Sources */,
 				F592B24F296DBC5900CAF8AD /* InputSource.swift in Sources */,
 				F52777D9296EF6FF00B55BC3 /* Logging.swift in Sources */,
+				F52777DC296FC67B00B55BC3 /* KeyboardLayout.swift in Sources */,
+				F533F0CD2970600600549477 /* SystemWideSelectedTextManager.swift in Sources */,
 				F592B251296DBD4B00CAF8AD /* GlobalInputMonitor.swift in Sources */,
 				F592B27F296E09B200CAF8AD /* DispatchExt.swift in Sources */,
 				F54E94E02961C2980066D33F /* ViewController.swift in Sources */,
@@ -291,11 +312,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F592B285296E0E5400CAF8AD /* DispatchQueueMock.swift in Sources */,
-				F592B266296DC43000CAF8AD /* Stubbing.swift in Sources */,
+				F51E2FF629707DAE00F42AD8 /* CallCount.swift in Sources */,
+				F592B266296DC43000CAF8AD /* PropertyStub.swift in Sources */,
 				F592B281296E0C3500CAF8AD /* VirtualKeyboardMock.swift in Sources */,
+				F533F0CB29705D4500549477 /* SelectedTextManagerMock.swift in Sources */,
 				F592B25B296DC13200CAF8AD /* KeyInputControllerTests.swift in Sources */,
+				F533F0CF297062EE00549477 /* SystemWideSelectedTextManagerTests.swift in Sources */,
 				F592B283296E0DA400CAF8AD /* SystemWideAccessibilityMock.swift in Sources */,
-				F592B268296DC80100CAF8AD /* Assertion.swift in Sources */,
+				F51E2FF429707D4300F42AD8 /* MethodStub.swift in Sources */,
 				F592B263296DC29100CAF8AD /* GlobalInputListenerMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -15,7 +15,24 @@ final class SystemWideAccessibilityMock: SystemWideAccessibility {
         self.testCase = testCase
     }
     
-    func focusedElement() -> YobaSwitcher.FocusedUIElement? {
-         nil
+    private(set) lazy var _focusedElement = MethodStub<Void, FocusedUIElement?>(name: "focusedElement() -> FocusedUIElement?", testCase)
+    
+    func focusedElement() -> FocusedUIElement? {
+        return _focusedElement.callWithOptionalReturnValue(arguments: ())
+    }
+}
+
+final class FocusedUIElementMock: FocusedUIElement {
+    private(set) weak var testCase: XCTestCase?
+    
+    init(_ testCase: XCTestCase) {
+        self.testCase = testCase
+    }
+    
+    private(set) lazy var _selectedText = PropertyStub<String>(name: "selectedText", testCase)
+    
+    var selectedText: String {
+        get { _selectedText._value }
+        set { _selectedText._value = newValue }
     }
 }

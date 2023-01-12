@@ -9,19 +9,21 @@ import Carbon
 import CoreGraphics
 
 final class KeyInputController: GlobalInputMonitorHandler {
+    let selectedTextManager: SelectedTextManager
     let keyboard: VirtualKeyboardProtocol
     let systemWide: SystemWideAccessibility
     let mainQueue: DispatchQueueProtocol
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps Option key
     private(set) var keysBuffer: [Keystroke] = [] {
-        didSet { Log.info("keysBuffer: \(keysBuffer)") }
+        didSet { Log.info("keysBuffer:", keysBuffer) }
     }
     // A flag to track if Option key was pressed (down) with no other keys
     private(set) var optionKeyIsDownExclusively: Bool = false {
         didSet { Log.info("optionKeyIsDownExclusively: \(optionKeyIsDownExclusively)") }
     }
     
-    init(keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility, mainQueue: DispatchQueueProtocol = DispatchQueue.main) {
+    init(selectedTextManager: SelectedTextManager, keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility, mainQueue: DispatchQueueProtocol = DispatchQueue.main) {
+        self.selectedTextManager = selectedTextManager
         self.keyboard = keyboard
         self.systemWide = systemWide
         self.mainQueue = mainQueue
@@ -35,7 +37,6 @@ final class KeyInputController: GlobalInputMonitorHandler {
         optionKeyIsDownExclusively = false
         
         if keystroke.keyCode == kVK_ANSI_Z && event.flags.contains([.maskControl, .maskAlternate]) {
-            Log.info("ctrl+opt+Z")
             changeSelectedTextCase()
             return nil
         }
@@ -76,6 +77,10 @@ final class KeyInputController: GlobalInputMonitorHandler {
         if isItOptionKeyUp(event) && optionKeyIsDownExclusively {
             Log.info("Option key is up")
             optionKeyIsDownExclusively = false
+            
+            if selectedTextManager.replaceSelectedTextWithAlternativeKeyboardLanguage() {
+                return nil
+            }
             return retypeKeyBuffer(event, proxy)
         }
         
@@ -171,7 +176,7 @@ final class KeyInputController: GlobalInputMonitorHandler {
         if selectedText == uppercasedText {
             focusedElement.selectedText = selectedText.lowercased()
         } else {
-            focusedElement.selectedText = selectedText.uppercased()
+            focusedElement.selectedText = uppercasedText
         }
     }
 }

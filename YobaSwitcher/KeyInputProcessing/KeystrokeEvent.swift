@@ -89,13 +89,13 @@ extension KeystrokeEvent: CustomDebugStringConvertible {
             if keystroke.isAutorepeat {
                 mods.append("R")
             }
-            return "\(char(keystroke.keyCode))[\(mods.joined(separator: ","))]"
+            return "\(KeyCode.string(keystroke.keyCode))[\(mods.joined(separator: ","))]"
         
         case .keyUp(let keystroke):
-            return "\(char(keystroke.keyCode))[↑]"
+            return "\(KeyCode.string(keystroke.keyCode))[↑]"
             
         case let .flagsChanged(keystroke, keyDown):
-            return "\(char(keystroke.keyCode))[\(keyDown ? "↓" : "↑")]"
+            return "\(KeyCode.string(keystroke.keyCode))[\(keyDown ? "↓" : "↑")]"
             
         case .mouseDown:
             return "🐁[↓]"
@@ -103,11 +103,13 @@ extension KeystrokeEvent: CustomDebugStringConvertible {
     }
 }
 
-private func char(_ keyCode: Int) -> String {
-    keyCodesToChar[keyCode] ?? String(keyCode)
+enum KeyCode {
+    static func string(_ keyCode: Int) -> String {
+        keyCodesToString[keyCode] ?? String(keyCode)
+    }
 }
 
-private let keyCodesToChar: [Int: String] = [
+private let keyCodesToString: [Int: String] = [
     // Supplement as necessary
     kVK_ANSI_H: "H",
     kVK_ANSI_E: "E",

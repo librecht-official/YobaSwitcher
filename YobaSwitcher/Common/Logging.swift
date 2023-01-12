@@ -48,6 +48,19 @@ enum Log {
         }
     }
     
+    static func error(
+        _ items: Any...,
+        separator: String = " ",
+        terminator: String = "\n",
+        hashtags: Set<Hashtag> = [],
+        file: String = #file
+    ) {
+        filterLog(hashtags: hashtags, sourceFile: file) {
+            print("[Error]", terminator: "")
+            print(items, separator: separator, terminator: terminator)
+        }
+    }
+    
     private static func filterLog(
         hashtags: Set<Hashtag>,
         sourceFile: String,

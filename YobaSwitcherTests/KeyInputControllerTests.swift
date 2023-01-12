@@ -12,8 +12,10 @@ import XCTest
 
 final class KeyInputControllerTests: XCTestCase {
     var controller: KeyInputController!
+    var selectedTextManagerMock: SelectedTextManagerMock!
     var keyboardMock: VirtualKeyboardMock!
     var systemWideMock: SystemWideAccessibilityMock!
+    var focusedUIElementMock: FocusedUIElementMock!
     var mainQueueMock: DispatchQueueMock!
     var eventProxyMock: CGEventTapProxy!
     var eventProxyStub: EventTapProxyStub!
@@ -24,10 +26,15 @@ final class KeyInputControllerTests: XCTestCase {
         ksRecorder = KeystrokesRecorder()
         ksRecorder.setup(keyboardMock)
         systemWideMock = SystemWideAccessibilityMock(self)
+        focusedUIElementMock = FocusedUIElementMock(self)
         mainQueueMock = DispatchQueueMock()
         eventProxyStub = EventTapProxyStub()
         eventProxyMock = CGEventTapProxy(Unmanaged.passUnretained(eventProxyStub).toOpaque())
-        controller = KeyInputController(keyboard: keyboardMock, systemWide: systemWideMock, mainQueue: mainQueueMock)
+        selectedTextManagerMock = SelectedTextManagerMock(self)
+        controller = KeyInputController(selectedTextManager: selectedTextManagerMock, keyboard: keyboardMock, systemWide: systemWideMock, mainQueue: mainQueueMock)
+        
+        systemWideMock._focusedElement.returnValue = focusedUIElementMock
+        selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLanguage.returnValue = false
     }
     
     // MARK: - Type and press Option
@@ -38,14 +45,12 @@ final class KeyInputControllerTests: XCTestCase {
         let input = Keystrokes.allCharacterProducing + Keystrokes.rightOption
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         let backspaces = Keystrokes.backspaces(count: (Keystrokes.allCharacterProducing.count / 2))
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, backspaces)
-        Assert.method(keyboardMock._switchInputSource, wasCalled: .once)
+        keyboardMock._switchInputSource.wasCalled(1)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.allCharacterProducing)
     }
     
@@ -62,14 +67,12 @@ final class KeyInputControllerTests: XCTestCase {
         ] + Keystrokes.option
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         let backspaces = Keystrokes.backspaces(count: 10)
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, backspaces)
-        Assert.method(keyboardMock._switchInputSource, wasCalled: .once)
+        keyboardMock._switchInputSource.wasCalled(1)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.hello_word)
     }
     
@@ -79,13 +82,11 @@ final class KeyInputControllerTests: XCTestCase {
         let input = Keystrokes.hello_world + Keystrokes.leftArrow + Keystrokes.option
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
+        keyboardMock._switchInputSource.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -95,13 +96,11 @@ final class KeyInputControllerTests: XCTestCase {
         let input = Keystrokes.hello_world + Keystrokes.cmd_c_1 + Keystrokes.option
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
+        keyboardMock._switchInputSource.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -111,13 +110,11 @@ final class KeyInputControllerTests: XCTestCase {
         let input = Keystrokes.hello_world + Keystrokes.cmd_c_2 + Keystrokes.option
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
+        keyboardMock._switchInputSource.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -127,13 +124,11 @@ final class KeyInputControllerTests: XCTestCase {
         let input = Keystrokes.hello_world + Keystrokes.altQ_1 + Keystrokes.option
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
+        keyboardMock._switchInputSource.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -143,13 +138,11 @@ final class KeyInputControllerTests: XCTestCase {
         let input = Keystrokes.hello_world + Keystrokes.altQ_2 + Keystrokes.option
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
+        keyboardMock._switchInputSource.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -159,13 +152,11 @@ final class KeyInputControllerTests: XCTestCase {
         let input = Keystrokes.hello_world + [.mouseDown] + Keystrokes.option
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
-        Assert.method(keyboardMock._switchInputSource, wasCalled: 0)
+        keyboardMock._switchInputSource.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
     
@@ -175,14 +166,12 @@ final class KeyInputControllerTests: XCTestCase {
         let input = Keystrokes.Hello_World1 + Keystrokes.option
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         let backspaces = Keystrokes.backspaces(count: 12)
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, backspaces)
-        Assert.method(keyboardMock._switchInputSource, wasCalled: .once)
+        keyboardMock._switchInputSource.wasCalled(1)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.Hello_World2)
     }
     
@@ -192,18 +181,33 @@ final class KeyInputControllerTests: XCTestCase {
         let input = Keystrokes.hello + Keystrokes.option + Keystrokes.space + Keystrokes.world + Keystrokes.option
         
         // when
-        for event in input {
-            performKeystrokeEvent(event)
-        }
+        input.forEach(performKeystrokeEvent)
         
         // then
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, Keystrokes.backspaces(count: 5) + Keystrokes.hello_world)
-        Assert.method(keyboardMock._switchInputSource, wasCalled: 2)
+        keyboardMock._switchInputSource.wasCalled(2)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, Keystrokes.hello + Keystrokes.backspaces(count: 11))
+    }
+    
+    // MARK: Switching selected text language
+    
+    /// When there is selected text somewhere replaceSelectedTextWithAlternativeKeyboardLanguage() returns true. In this case when Option is pressed controller should replace selected text and not produce keystrokes
+    func testSwitchingSelectedTextLanguage() {
+        // given
+        selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLanguage.returnValue = true
+        let keystrokes = Keystrokes.hello + Keystrokes.option
+        
+        // when
+        keystrokes.forEach(performKeystrokeEvent)
+        
+        // then
+        XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
+        keyboardMock._switchInputSource.wasCalled(0)
+        XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
     }
 }
 
-// MARK: Helpers
+// MARK: - Helpers
 
 final class EventTapProxyStub {}
 

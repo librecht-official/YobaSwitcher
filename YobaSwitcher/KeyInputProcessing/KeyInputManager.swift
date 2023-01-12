@@ -12,7 +12,13 @@ final class KeyInputManager {
     let inputMonitor: GlobalInputMonitorProtocol
     
     init(inputMonitor: GlobalInputMonitorProtocol = GlobalInputMonitor()) {
-        self.keyInputController = KeyInputController(keyboard: VirtualKeyboard(), systemWide: SystemWide())
+        let keyboard = VirtualKeyboard()
+        let systemWide = SystemWide()
+        self.keyInputController = KeyInputController(
+            selectedTextManager: SystemWideSelectedTextManager(keyboard: keyboard, systemWide: systemWide),
+            keyboard: keyboard,
+            systemWide: systemWide
+        )
         self.inputMonitor = inputMonitor
     }
     
