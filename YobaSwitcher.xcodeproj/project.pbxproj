@@ -11,6 +11,9 @@
 		F51E2FF429707D4300F42AD8 /* MethodStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF329707D4300F42AD8 /* MethodStub.swift */; };
 		F51E2FF629707DAE00F42AD8 /* CallCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF529707DAE00F42AD8 /* CallCount.swift */; };
 		F51E2FF82970969E00F42AD8 /* DistributedNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */; };
+		F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */; };
+		F51E2FFE2970B60B00F42AD8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFD2970B60B00F42AD8 /* main.swift */; };
+		F51E30002970BDD800F42AD8 /* KeyInputProcessingLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFF2970BDD800F42AD8 /* KeyInputProcessingLauncher.swift */; };
 		F52777D7296EF55500B55BC3 /* KeystrokeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */; };
 		F52777D9296EF6FF00B55BC3 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D8296EF6FF00B55BC3 /* Logging.swift */; };
 		F52777DC296FC67B00B55BC3 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */; };
@@ -18,9 +21,7 @@
 		F533F0CD2970600600549477 /* SystemWideSelectedTextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */; };
 		F533F0CF297062EE00549477 /* SystemWideSelectedTextManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */; };
 		F54E94DE2961C2980066D33F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94DD2961C2980066D33F /* AppDelegate.swift */; };
-		F54E94E02961C2980066D33F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94DF2961C2980066D33F /* ViewController.swift */; };
 		F54E94E22961C29A0066D33F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F54E94E12961C29A0066D33F /* Assets.xcassets */; };
-		F54E94E52961C29A0066D33F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F54E94E32961C29A0066D33F /* Main.storyboard */; };
 		F54E94EF2961DF5E0066D33F /* KeyInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94EE2961DF5E0066D33F /* KeyInputController.swift */; };
 		F592B24F296DBC5900CAF8AD /* InputSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B24E296DBC5900CAF8AD /* InputSource.swift */; };
 		F592B251296DBD4B00CAF8AD /* GlobalInputMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */; };
@@ -52,6 +53,9 @@
 		F51E2FF329707D4300F42AD8 /* MethodStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodStub.swift; sourceTree = "<group>"; };
 		F51E2FF529707DAE00F42AD8 /* CallCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallCount.swift; sourceTree = "<group>"; };
 		F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedNotificationCenter.swift; sourceTree = "<group>"; };
+		F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
+		F51E2FFD2970B60B00F42AD8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		F51E2FFF2970BDD800F42AD8 /* KeyInputProcessingLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyInputProcessingLauncher.swift; sourceTree = "<group>"; };
 		F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystrokeEvent.swift; sourceTree = "<group>"; };
 		F52777D8296EF6FF00B55BC3 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
@@ -60,9 +64,7 @@
 		F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideSelectedTextManagerTests.swift; sourceTree = "<group>"; };
 		F54E94DA2961C2980066D33F /* YobaSwitcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YobaSwitcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F54E94DD2961C2980066D33F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F54E94DF2961C2980066D33F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F54E94E12961C29A0066D33F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F54E94E42961C29A0066D33F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F54E94E62961C29A0066D33F /* YobaSwitcher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YobaSwitcher.entitlements; sourceTree = "<group>"; };
 		F54E94EE2961DF5E0066D33F /* KeyInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyInputController.swift; sourceTree = "<group>"; };
 		F592B24E296DBC5900CAF8AD /* InputSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSource.swift; sourceTree = "<group>"; };
@@ -99,6 +101,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F51E2FF92970AD3600F42AD8 /* MainMenu */ = {
+			isa = PBXGroup;
+			children = (
+				F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */,
+			);
+			path = MainMenu;
+			sourceTree = "<group>";
+		};
 		F52777DA296F36BB00B55BC3 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,11 +142,11 @@
 			children = (
 				F54E94E62961C29A0066D33F /* YobaSwitcher.entitlements */,
 				F54E94DD2961C2980066D33F /* AppDelegate.swift */,
-				F54E94DF2961C2980066D33F /* ViewController.swift */,
+				F51E2FFD2970B60B00F42AD8 /* main.swift */,
 				F54E94E12961C29A0066D33F /* Assets.xcassets */,
 				F52777DA296F36BB00B55BC3 /* Common */,
 				F592B24D296DBC4B00CAF8AD /* KeyInputProcessing */,
-				F54E94E32961C29A0066D33F /* Main.storyboard */,
+				F51E2FF92970AD3600F42AD8 /* MainMenu */,
 			);
 			path = YobaSwitcher;
 			sourceTree = "<group>";
@@ -151,6 +161,7 @@
 				F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */,
 				F54E94EE2961DF5E0066D33F /* KeyInputController.swift */,
 				F592B278296DEC6B00CAF8AD /* KeyInputManager.swift */,
+				F51E2FFF2970BDD800F42AD8 /* KeyInputProcessingLauncher.swift */,
 				F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */,
 				F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */,
 				F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */,
@@ -274,7 +285,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F54E94E22961C29A0066D33F /* Assets.xcassets in Resources */,
-				F54E94E52961C29A0066D33F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,10 +302,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F51E30002970BDD800F42AD8 /* KeyInputProcessingLauncher.swift in Sources */,
 				F592B27D296E071D00CAF8AD /* SystemWideAccessibility.swift in Sources */,
 				F51E2FF82970969E00F42AD8 /* DistributedNotificationCenter.swift in Sources */,
+				F51E2FFE2970B60B00F42AD8 /* main.swift in Sources */,
 				F52777D7296EF55500B55BC3 /* KeystrokeEvent.swift in Sources */,
 				F592B27B296E002700CAF8AD /* VirtualKeyboard.swift in Sources */,
+				F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */,
 				F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */,
 				F54E94EF2961DF5E0066D33F /* KeyInputController.swift in Sources */,
 				F592B279296DEC6B00CAF8AD /* KeyInputManager.swift in Sources */,
@@ -306,7 +319,6 @@
 				F533F0CD2970600600549477 /* SystemWideSelectedTextManager.swift in Sources */,
 				F592B251296DBD4B00CAF8AD /* GlobalInputMonitor.swift in Sources */,
 				F592B27F296E09B200CAF8AD /* DispatchExt.swift in Sources */,
-				F54E94E02961C2980066D33F /* ViewController.swift in Sources */,
 				F54E94DE2961C2980066D33F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,17 +349,6 @@
 			targetProxy = F592B25C296DC13200CAF8AD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		F54E94E32961C29A0066D33F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F54E94E42961C29A0066D33F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		F54E94E72961C29A0066D33F /* Debug */ = {
@@ -475,8 +476,8 @@
 				DEVELOPMENT_TEAM = BFCZTEYG58;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -502,8 +503,8 @@
 				DEVELOPMENT_TEAM = BFCZTEYG58;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
