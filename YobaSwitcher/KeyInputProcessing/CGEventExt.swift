@@ -92,5 +92,4 @@ struct CGEventMaskSet: OptionSet {
     static let keyUp = CGEventMaskSet(rawValue: UInt64(1 << CGEventType.keyUp.rawValue))
     static let flagsChanged = CGEventMaskSet(rawValue: UInt64(1 << CGEventType.flagsChanged.rawValue))
     static let otherMouseDown = CGEventMaskSet(rawValue: UInt64(1 << CGEventType.otherMouseDown.rawValue))
-    static let tapDisabledByTimeout = CGEventMaskSet(rawValue: UInt64(1 << CGEventType.tapDisabledByTimeout.rawValue))
 }

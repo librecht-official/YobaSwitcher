@@ -29,21 +29,14 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
     private var eventTap: CFMachPort?
     
     func start() {
-        // TODO: Use CGEventMaskSet
-        var rawMask = (1 << CGEventType.keyDown.rawValue)
-        rawMask |= (1 << CGEventType.keyUp.rawValue)
-        rawMask |= (1 << CGEventType.flagsChanged.rawValue)
-        rawMask |= (1 << CGEventType.leftMouseDown.rawValue)
-        rawMask |= (1 << CGEventType.rightMouseDown.rawValue)
-        rawMask |= (1 << CGEventType.otherMouseDown.rawValue)
-        let mask = CGEventMask(rawMask)
-        
+        let mask: CGEventMaskSet = [.keyDown, .keyUp, .flagsChanged, .leftMouseDown, .rightMouseDown, .otherMouseDown]
         let context = Unmanaged.passUnretained(self).toOpaque()
+        
         guard let eventTap = CGEvent.tapCreate(
             tap: .cghidEventTap,
             place: .tailAppendEventTap,
             options: .defaultTap, // listenOnly defaultTap
-            eventsOfInterest: mask,
+            eventsOfInterest: mask.rawValue,
             callback: { proxy, eventType, event, ctx in
                 guard let context = ctx else { return Unmanaged.passUnretained(event) }
                 let weakSelf = Unmanaged<GlobalInputMonitor>.fromOpaque(context).takeUnretainedValue()
@@ -51,7 +44,7 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
             },
             userInfo: context
         ) else {
-            Log.debug("Event tap is not created")
+            Log.critical("Event tap is not created")
             return
         }
         self.eventTap = eventTap
