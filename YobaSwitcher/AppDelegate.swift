@@ -10,10 +10,10 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     private let mainMenuController = MainMenuController()
-    private let keyInputProcessing = KeyInputProcessingLauncher()
+    private let globalInputProcessing = GlobalInputProcessingManager()
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         mainMenuController.start()
-        keyInputProcessing.launch()
+        globalInputProcessing.start()
     }
 }

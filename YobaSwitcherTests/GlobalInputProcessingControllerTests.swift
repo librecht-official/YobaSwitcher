@@ -1,5 +1,5 @@
 //
-//  YobaSwitcherTests.swift
+//  GlobalInputProcessingControllerTests.swift
 //  YobaSwitcherTests
 //
 //  Created by Vladislav Librecht on 10.01.2023.
@@ -10,8 +10,8 @@ import CoreGraphics
 import XCTest
 @testable import YobaSwitcher
 
-final class KeyInputControllerTests: XCTestCase {
-    var controller: KeyInputController!
+final class GlobalInputProcessingControllerTests: XCTestCase {
+    var controller: GlobalInputProcessingController!
     var selectedTextManagerMock: SelectedTextManagerMock!
     var keyboardMock: VirtualKeyboardMock!
     var systemWideMock: SystemWideAccessibilityMock!
@@ -29,7 +29,7 @@ final class KeyInputControllerTests: XCTestCase {
         eventProxyStub = EventTapProxyStub()
         eventProxyMock = CGEventTapProxy(Unmanaged.passUnretained(eventProxyStub).toOpaque())
         selectedTextManagerMock = SelectedTextManagerMock(self)
-        controller = KeyInputController(selectedTextManager: selectedTextManagerMock, keyboard: keyboardMock, systemWide: systemWideMock)
+        controller = GlobalInputProcessingController(selectedTextManager: selectedTextManagerMock, keyboard: keyboardMock, systemWide: systemWideMock)
         
         systemWideMock._focusedElement.returnValue = focusedUIElementMock
         selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLanguage.returnValue = false
@@ -209,7 +209,7 @@ final class KeyInputControllerTests: XCTestCase {
 
 final class EventTapProxyStub {}
 
-extension KeyInputControllerTests {
+extension GlobalInputProcessingControllerTests {
     func performKeystrokeEvent(_ event: KeystrokeEvent) {
         let cgEvent = CGEvent.fromKeystrokeEvent(event)!
         switch event {

@@ -4,7 +4,6 @@
 //
 //  Created by Vladislav Librecht on 10.01.2023.
 //
-// "Unmanaged" : https://nshipster.com/unmanaged/
 
 import Carbon
 

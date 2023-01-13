@@ -5,8 +5,6 @@
 //  Created by Vladislav Librecht on 12.01.2023.
 //
 
-import Foundation
-
 struct LanguageIdentifier: Hashable, RawRepresentable {
     let rawValue: String
     

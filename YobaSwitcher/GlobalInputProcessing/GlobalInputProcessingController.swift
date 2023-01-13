@@ -1,5 +1,5 @@
 //
-//  KeyInputController.swift
+//  GlobalInputProcessingController.swift
 //  YobaSwitcher
 //
 //  Created by Vladislav Librecht on 01.01.2023.
@@ -8,7 +8,7 @@
 import Carbon
 import CoreGraphics
 
-final class KeyInputController: GlobalInputMonitorHandler {
+final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     let selectedTextManager: SelectedTextManager
     let keyboard: VirtualKeyboardProtocol
     let systemWide: SystemWideAccessibility

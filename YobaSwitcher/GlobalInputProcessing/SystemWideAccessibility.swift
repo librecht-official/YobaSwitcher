@@ -11,7 +11,7 @@ protocol SystemWideAccessibility {
     func focusedElement() -> FocusedUIElement?
 }
 
-struct SystemWide: SystemWideAccessibility {
+final class SystemWide: SystemWideAccessibility {
     private let systemWide = AXUIElementCreateSystemWide()
     
     func focusedElement() -> FocusedUIElement? {

@@ -11,7 +11,7 @@ protocol FocusedUIElement {
     var selectedText: String { get nonmutating set }
 }
 
-struct FocusedUIElementAccessor: FocusedUIElement {
+final class FocusedUIElementAccessor: FocusedUIElement {
     private let element: AXUIElement
     
     init(_ element: AXUIElement) {
@@ -28,7 +28,7 @@ struct FocusedUIElementAccessor: FocusedUIElement {
             }
             return selectedText
         }
-        nonmutating set {
+        set {
             var isSettable = DarwinBoolean(false)
             AXUIElementIsAttributeSettable(element, kAXSelectedTextAttribute as CFString, &isSettable)
             Log.info("IsSettable: \(isSettable)")
