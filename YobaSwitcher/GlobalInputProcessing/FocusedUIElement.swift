@@ -7,6 +7,7 @@
 
 import ApplicationServices
 
+// sourcery: AutoMockable
 protocol FocusedUIElement {
     var selectedText: String { get nonmutating set }
 }

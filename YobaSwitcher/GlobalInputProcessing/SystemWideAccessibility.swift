@@ -7,6 +7,7 @@
 
 import ApplicationServices
 
+// sourcery: AutoMockable
 protocol SystemWideAccessibility {
     func focusedElement() -> FocusedUIElement?
 }

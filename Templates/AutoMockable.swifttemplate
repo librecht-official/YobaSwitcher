@@ -1,0 +1,104 @@
+// swiftlint:disable line_length
+// swiftlint:disable variable_name
+
+import XCTest
+<% for module in argument["autoMockableTestableImports"] as! NSArray { -%>
+@testable import <%= module -%>
+<% } -%>
+
+<% for type in types.protocols where type.annotations["AutoMockable"] != nil { -%>
+
+  <%_ %>open class <%= type.name.replacingOccurrences(of: "Protocol", with: "") %>Mock: <%= type.name %> {
+    public private(set) weak var testCase: XCTestCase?
+
+    public init(_ testCase: XCTestCase) {
+        self.testCase = testCase
+    }
+  <%_ %><%# ///// GENERATE PROPERTIES STUBS \\\\\ -%>
+  <%_ for property in type.variables { -%>
+  
+    // MARK: <%= property.name %>
+
+    public private(set) <%= property.isStatic ? "static" : "lazy" %> var _<%= property.name %> = PropertyStub<<%= property.unwrappedTypeName %>>(name: "<%= property.name %>", testCase)
+
+    public <%= property.isStatic ? "static " : "" %>var <%= property.name %>: <%= property.typeName %> {
+      <%_ if property.isMutable { -%>
+        get { _<%= property.name %>.<%= property.typeName.isOptional ? "_optionalValue" : "_value" %> }
+        set { _<%= property.name %>.<%= property.typeName.isOptional ? "_optionalValue" : "_value" %> = newValue }
+      <%_ } else { -%>
+        _<%= property.name %>.<%= property.typeName.isOptional ? "_optionalValue" : "_value" %>
+      <%_ }-%>
+    }
+  <%_ } -%>
+  <%_ %><%# ///// GENERATE METHODS STUBS \\\\\ -%>
+  <%_ for method in type.methods { -%>
+
+    public private(set) lazy var _<%= method.unambiguousName() %> = MethodStub<<%= tuple(from: method.parameters.map { $0.typeName.name }) %>, <%= method.returnTypeName %>>(name: "<%= method.selectorName %>", testCase)
+
+    <%_ for (_, attributes) in method.attributes { -%>
+      <%_ for attribute in attributes { -%>
+    <%= attribute %>
+      <%_ } -%>
+    <%_ } -%>
+    public func <%= method.name %> -> <%= method.returnTypeName %> {
+      <%_ if method.returnTypeName.isVoid { -%>
+        _<%= method.unambiguousName() %>.call(with: <%= tuple(from: method.parameters.map { $0.name }) %>)
+      <%_ } else if method.isOptionalReturnType { -%>
+        _<%= method.unambiguousName() %>.callWithOptionalReturnValue(arguments: <%= tuple(from: method.parameters.map { $0.name }) %>)
+      <%_ } else { -%>
+        _<%= method.unambiguousName() %>.callWithReturnValue(arguments: <%= tuple(from: method.parameters.map { $0.name }) %>)
+      <%_ }-%>
+    }
+  <%_ } _%>
+}
+
+// MARK: -
+<% } -%>
+<%
+func tuple<T>(from array: [T]) -> String {
+    if array.isEmpty {
+        return "()"
+    }
+    if array.count == 1 {
+        return String(describing: array[0])
+    }
+    let content = array.map { String(describing: $0) }.joined(separator: ", ")
+    return "(\(content))"
+}
+
+extension SourceryMethod {
+  func unambiguousName() -> String {
+    if let stubName = annotations["stubName"] as? String {
+      return stubName
+    }
+    if annotations["stubNameMode"] == nil {
+      return callName
+    }
+    return callName + parameters.compactMap { $0.unambiguousName() }.joined()
+  }
+}
+
+extension MethodParameter {
+  func unambiguousName() -> String {
+    let label = argumentLabel?.withUppercaseFirstCharacter ?? ""
+    if annotations["stubNameMode"] as? String == "medium" {
+      if argumentLabel == name {
+        return label
+      }
+      return label + name.withUppercaseFirstCharacter
+    }
+    // annotations["stubNameMode"] == "full"
+    if typeName.isClosure {
+      return label
+    }
+    return label + typeName.unwrappedTypeName
+  }
+}
+
+extension String {
+  var withUppercaseFirstCharacter: String {
+    let firstCharacter = first?.uppercased() ?? ""
+    return firstCharacter + dropFirst(1)
+  }
+}
+-%>

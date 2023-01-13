@@ -5,6 +5,7 @@
 //  Created by Vladislav Librecht on 12.01.2023.
 //
 
+// sourcery: AutoMockable
 protocol SelectedTextManager {
     @discardableResult
     func replaceSelectedTextWithAlternativeKeyboardLanguage() -> Bool

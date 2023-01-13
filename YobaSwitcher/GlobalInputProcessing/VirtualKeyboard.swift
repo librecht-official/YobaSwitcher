@@ -9,19 +9,25 @@
 import Carbon
 import CoreGraphics
 
+// sourcery: AutoMockable
 protocol VirtualKeyboardProtocol {
     func postKeystrokeEvent(_ keystrokeEvent: KeystrokeEvent, _ proxy: CGEventTapProxy)
     
+    // sourcery: stubNameMode = "medium"
     /// Returns keyboard layout mapping object for given text
     ///
     /// If language of the first character in text is English return En-Ru mapping, otherwise Ru-En
     func layoutMapping(for text: String) -> KeyboardLayoutMapping
     
     func selectedInputSource() -> InputSource
+    
+    // sourcery: stubNameMode = "medium"
     func inputSource(forLanguage id: LanguageIdentifier) -> InputSource
     
     /// Selects first non-selected keyboard input source
     func switchInputSource()
+    
+    // sourcery: stubNameMode = "medium"
     func switchInputSource(completion: @escaping () -> ())
 }
 

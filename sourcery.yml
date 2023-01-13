@@ -1,0 +1,8 @@
+sources:
+  - YobaSwitcher/
+templates:
+  - Templates/
+output:
+  YobaSwitcherTests/Mocks/Mocks.swift
+args:
+  autoMockableTestableImports: [YobaSwitcher]
