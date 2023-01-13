@@ -107,10 +107,10 @@ open class VirtualKeyboardMock: VirtualKeyboardProtocol {
         _layoutMappingForText.callWithReturnValue(arguments: text)
     }
 
-    public private(set) lazy var _selectedInputSource = MethodStub<(), InputSource>(name: "selectedInputSource", testCase)
+    public private(set) lazy var _currentKeyboardLayoutInputSource = MethodStub<(), InputSource>(name: "currentKeyboardLayoutInputSource", testCase)
 
-    public func selectedInputSource() -> InputSource {
-        _selectedInputSource.callWithReturnValue(arguments: ())
+    public func currentKeyboardLayoutInputSource() -> InputSource {
+        _currentKeyboardLayoutInputSource.callWithReturnValue(arguments: ())
     }
 
     public private(set) lazy var _inputSourceForLanguageId = MethodStub<LanguageIdentifier, InputSource>(name: "inputSource(forLanguage:)", testCase)

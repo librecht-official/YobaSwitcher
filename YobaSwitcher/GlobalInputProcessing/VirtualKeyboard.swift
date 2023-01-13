@@ -19,7 +19,7 @@ protocol VirtualKeyboardProtocol {
     /// If language of the first character in text is English return En-Ru mapping, otherwise Ru-En
     func layoutMapping(for text: String) -> KeyboardLayoutMapping
     
-    func selectedInputSource() -> InputSource
+    func currentKeyboardLayoutInputSource() -> InputSource
     
     // sourcery: stubNameMode = "medium"
     func inputSource(forLanguage id: LanguageIdentifier) -> InputSource
@@ -48,7 +48,7 @@ final class VirtualKeyboard: VirtualKeyboardProtocol {
         return KeyboardLayoutMapping.ruToEn
     }
     
-    func selectedInputSource() -> InputSource {
+    func currentKeyboardLayoutInputSource() -> InputSource {
         InputSource(TISCopyCurrentKeyboardLayoutInputSource().takeRetainedValue())
     }
     

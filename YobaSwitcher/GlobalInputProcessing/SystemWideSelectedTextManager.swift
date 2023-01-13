@@ -35,7 +35,7 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
         focusedElement.selectedText = translatedText
         
         let targetInputSource = keyboard.inputSource(forLanguage: layoutMapping.targetLanguage)
-        if keyboard.selectedInputSource().id != targetInputSource.id {
+        if keyboard.currentKeyboardLayoutInputSource().id != targetInputSource.id {
             keyboard.switchInputSource()
         }
         

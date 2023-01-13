@@ -29,7 +29,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         focusedUIElementMock._selectedText.stubValue = TestData.engText
         keyboardMock._layoutMappingForText.returnValue = KeyboardLayoutMapping.enToRu
         keyboardMock._inputSourceForLanguageId.returnValue = TestData.enInputSource
-        keyboardMock._selectedInputSource.returnValue = TestData.enInputSource
+        keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.enInputSource
 
         // when
         let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
@@ -45,7 +45,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
             .wasCalled(1, withArguments: TestData.engText)
         keyboardMock._inputSourceForLanguageId
             .wasCalled(1, withArguments: KeyboardLayoutMapping.enToRu.targetLanguage)
-        keyboardMock._selectedInputSource.wasCalled(1)
+        keyboardMock._currentKeyboardLayoutInputSource.wasCalled(1)
         keyboardMock._switchInputSource.wasCalled(0)
     }
     
@@ -54,7 +54,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         focusedUIElementMock._selectedText.stubValue = TestData.engText
         keyboardMock._layoutMappingForText.returnValue = KeyboardLayoutMapping.enToRu
         keyboardMock._inputSourceForLanguageId.returnValue = TestData.enInputSource
-        keyboardMock._selectedInputSource.returnValue = TestData.ruInputSource
+        keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.ruInputSource
 
         // when
         let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
@@ -70,7 +70,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
             .wasCalled(1, withArguments: TestData.engText)
         keyboardMock._inputSourceForLanguageId
             .wasCalled(1, withArguments: KeyboardLayoutMapping.enToRu.targetLanguage)
-        keyboardMock._selectedInputSource.wasCalled(1)
+        keyboardMock._currentKeyboardLayoutInputSource.wasCalled(1)
         keyboardMock._switchInputSource.wasCalled(1)
     }
     
@@ -79,7 +79,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         focusedUIElementMock._selectedText.stubValue = TestData.rusText
         keyboardMock._layoutMappingForText.returnValue = KeyboardLayoutMapping.ruToEn
         keyboardMock._inputSourceForLanguageId.returnValue = TestData.ruInputSource
-        keyboardMock._selectedInputSource.returnValue = TestData.ruInputSource
+        keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.ruInputSource
 
         // when
         let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
@@ -95,7 +95,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
             .wasCalled(1, withArguments: TestData.rusText)
         keyboardMock._inputSourceForLanguageId
             .wasCalled(1, withArguments: KeyboardLayoutMapping.ruToEn.targetLanguage)
-        keyboardMock._selectedInputSource.wasCalled(1)
+        keyboardMock._currentKeyboardLayoutInputSource.wasCalled(1)
         keyboardMock._switchInputSource.wasCalled(0)
     }
     
@@ -104,7 +104,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         focusedUIElementMock._selectedText.stubValue = TestData.rusText
         keyboardMock._layoutMappingForText.returnValue = KeyboardLayoutMapping.ruToEn
         keyboardMock._inputSourceForLanguageId.returnValue = TestData.ruInputSource
-        keyboardMock._selectedInputSource.returnValue = TestData.enInputSource
+        keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.enInputSource
 
         // when
         let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
@@ -120,7 +120,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
             .wasCalled(1, withArguments: TestData.rusText)
         keyboardMock._inputSourceForLanguageId
             .wasCalled(1, withArguments: KeyboardLayoutMapping.ruToEn.targetLanguage)
-        keyboardMock._selectedInputSource.wasCalled(1)
+        keyboardMock._currentKeyboardLayoutInputSource.wasCalled(1)
         keyboardMock._switchInputSource.wasCalled(1)
     }
     
@@ -139,7 +139,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
             .wasSet(0)
         keyboardMock._layoutMappingForText.wasCalled(0)
         keyboardMock._inputSourceForLanguageId.wasCalled(0)
-        keyboardMock._selectedInputSource.wasCalled(0)
+        keyboardMock._currentKeyboardLayoutInputSource.wasCalled(0)
         keyboardMock._switchInputSource.wasCalled(0)
     }
     
@@ -158,7 +158,7 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
             .wasSet(0)
         keyboardMock._layoutMappingForText.wasCalled(0)
         keyboardMock._inputSourceForLanguageId.wasCalled(0)
-        keyboardMock._selectedInputSource.wasCalled(0)
+        keyboardMock._currentKeyboardLayoutInputSource.wasCalled(0)
         keyboardMock._switchInputSource.wasCalled(0)
     }
 }
