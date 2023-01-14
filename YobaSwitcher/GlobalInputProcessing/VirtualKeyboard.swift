@@ -11,7 +11,7 @@ import CoreGraphics
 
 // sourcery: AutoMockable
 protocol VirtualKeyboardProtocol {
-    func postKeystrokeEvent(_ keystrokeEvent: KeystrokeEvent, _ proxy: CGEventTapProxy)
+    func postInputEvent(_ inputEvent: InputEvent, _ proxy: CGEventTapProxy)
     
     // sourcery: stubNameMode = "medium"
     /// Returns keyboard layout mapping object for given text
@@ -32,8 +32,8 @@ protocol VirtualKeyboardProtocol {
 }
 
 final class VirtualKeyboard: VirtualKeyboardProtocol {
-    func postKeystrokeEvent(_ keystrokeEvent: KeystrokeEvent, _ proxy: CGEventTapProxy) {
-        let event = CGEvent.fromKeystrokeEvent(keystrokeEvent)
+    func postInputEvent(_ inputEvent: InputEvent, _ proxy: CGEventTapProxy) {
+        let event = CGEvent.fromInputEvent(inputEvent)
         event?.tapPostEvent(proxy)
     }
     

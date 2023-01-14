@@ -1,5 +1,5 @@
 //
-//  KeystrokeEvent.swift
+//  InputEvent.swift
 //  YobaSwitcher
 //
 //  Created by Vladislav Librecht on 11.01.2023.
@@ -8,7 +8,8 @@
 import Carbon
 import CoreGraphics
 
-enum KeystrokeEvent: Equatable { // TODO: InputEvent
+/// A value type that represents input event
+enum InputEvent: Equatable {
     case keyDown(Keystroke)
     case keyUp(Keystroke)
     /// Key changed event for a modifier or status key.
@@ -18,8 +19,8 @@ enum KeystrokeEvent: Equatable { // TODO: InputEvent
     case mouseDown
 }
 
-extension KeystrokeEvent: Matchable {
-    func matches(_ rhs: KeystrokeEvent) -> Bool {
+extension InputEvent: Matchable {
+    func matches(_ rhs: InputEvent) -> Bool {
         switch (self, rhs) {
         case let (.keyDown(ks1), .keyDown(ks2)):
             return ks1.matches(ks2)
@@ -39,7 +40,7 @@ extension KeystrokeEvent: Matchable {
     }
 }
 
-extension KeystrokeEvent: CustomStringConvertible {
+extension InputEvent: CustomStringConvertible {
     var description: String {
         switch self {
         case let .keyDown(keystroke):
@@ -54,7 +55,7 @@ extension KeystrokeEvent: CustomStringConvertible {
     }
 }
 
-extension KeystrokeEvent: CustomDebugStringConvertible {
+extension InputEvent: CustomDebugStringConvertible {
     var debugDescription: String {
         switch self {
         case let .keyDown(keystroke):
@@ -104,9 +105,11 @@ private let keyCodesToString: [Int: String] = [
     kVK_Space: "␣",
 ]
 
+// MARK: - InputEvent to CGEvent
+
 extension CGEvent {
-    static func fromKeystrokeEvent(_ keystrokeEvent: KeystrokeEvent) -> CGEvent? {
-        switch keystrokeEvent {
+    static func fromInputEvent(_ inputEvent: InputEvent) -> CGEvent? {
+        switch inputEvent {
         case let .keyDown(ks):
             return CGEvent.fromKeystrokeDown(ks)
             

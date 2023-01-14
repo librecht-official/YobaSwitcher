@@ -95,10 +95,10 @@ open class VirtualKeyboardMock: VirtualKeyboardProtocol {
         self.testCase = testCase
     }
 
-    public private(set) lazy var _postKeystrokeEvent = MethodStub<(KeystrokeEvent, CGEventTapProxy), Void>(name: "postKeystrokeEvent(_:_:)", testCase)
+    public private(set) lazy var _postInputEvent = MethodStub<(InputEvent, CGEventTapProxy), Void>(name: "postInputEvent(_:_:)", testCase)
 
-    public func postKeystrokeEvent(_ keystrokeEvent: KeystrokeEvent, _ proxy: CGEventTapProxy) -> Void {
-        _postKeystrokeEvent.call(with: (keystrokeEvent, proxy))
+    public func postInputEvent(_ inputEvent: InputEvent, _ proxy: CGEventTapProxy) -> Void {
+        _postInputEvent.call(with: (inputEvent, proxy))
     }
 
     public private(set) lazy var _layoutMappingForText = MethodStub<String, KeyboardLayoutMapping>(name: "layoutMapping(for:)", testCase)

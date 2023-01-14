@@ -12,7 +12,7 @@
 		F51E2FF82970969E00F42AD8 /* DistributedNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */; };
 		F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */; };
 		F51E2FFE2970B60B00F42AD8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFD2970B60B00F42AD8 /* main.swift */; };
-		F52777D7296EF55500B55BC3 /* KeystrokeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */; };
+		F52777D7296EF55500B55BC3 /* InputEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D6296EF55500B55BC3 /* InputEvent.swift */; };
 		F52777D9296EF6FF00B55BC3 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D8296EF6FF00B55BC3 /* Logging.swift */; };
 		F52777DC296FC67B00B55BC3 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */; };
 		F533F0CD2970600600549477 /* SystemWideSelectedTextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */; };
@@ -52,7 +52,7 @@
 		F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedNotificationCenter.swift; sourceTree = "<group>"; };
 		F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
 		F51E2FFD2970B60B00F42AD8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeystrokeEvent.swift; sourceTree = "<group>"; };
+		F52777D6296EF55500B55BC3 /* InputEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEvent.swift; sourceTree = "<group>"; };
 		F52777D8296EF6FF00B55BC3 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
 		F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideSelectedTextManager.swift; sourceTree = "<group>"; };
@@ -157,10 +157,10 @@
 				F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */,
 				F54E94EE2961DF5E0066D33F /* GlobalInputProcessingController.swift */,
 				F592B278296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift */,
+				F52777D6296EF55500B55BC3 /* InputEvent.swift */,
 				F592B24E296DBC5900CAF8AD /* InputSource.swift */,
 				F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */,
 				F5B4CEAA29721B5E0029549C /* Keystroke.swift */,
-				F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */,
 				F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */,
 				F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */,
 				F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */,
@@ -299,7 +299,7 @@
 				F592B27D296E071D00CAF8AD /* SystemWideAccessibility.swift in Sources */,
 				F51E2FF82970969E00F42AD8 /* DistributedNotificationCenter.swift in Sources */,
 				F51E2FFE2970B60B00F42AD8 /* main.swift in Sources */,
-				F52777D7296EF55500B55BC3 /* KeystrokeEvent.swift in Sources */,
+				F52777D7296EF55500B55BC3 /* InputEvent.swift in Sources */,
 				F592B27B296E002700CAF8AD /* VirtualKeyboard.swift in Sources */,
 				F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */,
 				F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */,
