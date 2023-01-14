@@ -10,6 +10,6 @@ import XCTest
 
 class EntryPoint: NSObject {
     override init() {
-        Log.config.logLevel = .critical
+        Log.config.logLevel = .info
     }
 }

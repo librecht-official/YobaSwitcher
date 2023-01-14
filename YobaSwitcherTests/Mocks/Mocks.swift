@@ -67,6 +67,13 @@ open class SelectedTextManagerMock: SelectedTextManager {
         _replaceSelectedTextWithAlternativeKeyboardLanguage.callWithReturnValue(arguments: ())
     }
 
+    public private(set) lazy var _changeSelectedTextCase = MethodStub<(), Bool>(name: "changeSelectedTextCase", testCase)
+
+    @discardableResult
+    public func changeSelectedTextCase() -> Bool {
+        _changeSelectedTextCase.callWithReturnValue(arguments: ())
+    }
+
 }
 
 // MARK: -

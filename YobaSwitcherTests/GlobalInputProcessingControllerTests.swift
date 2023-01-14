@@ -199,6 +199,24 @@ final class GlobalInputProcessingControllerTests: XCTestCase {
         keystrokes.forEach(performInputEvent)
         
         // then
+        selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLanguage.wasCalled(1)
+        XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
+        keyboardMock._switchInputSourceCompletion.wasCalled(0)
+        XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
+    }
+    
+    // MARK: Switching selected text case
+    
+    func testSwitchingSelectedTextCase() {
+        selectedTextManagerMock._changeSelectedTextCase.returnValue = true
+        
+        let keystrokes = Keystrokes.ctrlOptZ
+        
+        // when
+        keystrokes.forEach(performInputEvent)
+        
+        // then
+        selectedTextManagerMock._changeSelectedTextCase.wasCalled(1)
         XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
         keyboardMock._switchInputSourceCompletion.wasCalled(0)
         XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
@@ -276,6 +294,15 @@ enum Keystrokes {
         .keyDown(Keystroke(keyCode: kVK_ANSI_C, flags: [.maskCommand, .maskNonCoalesced])),
         .flagsChanged(Keystroke(keyCode: kVK_Command)),
         .keyUp(Keystroke(keyCode: kVK_ANSI_C)),
+    ]
+    
+    static let ctrlOptZ: [InputEvent] = [
+        .flagsChanged(Keystroke(keyCode: 59, flags: [.maskControl, .maskNonCoalesced]), keyDown: false),
+        .flagsChanged(Keystroke(keyCode: 58, flags: [.maskControl, .maskAlternate, .maskNonCoalesced]), keyDown: false),
+        .keyDown(Keystroke(keyCode: 6, flags: [.maskControl, .maskAlternate, .maskNonCoalesced])),
+        .keyUp(Keystroke(keyCode: 6, flags: [.maskControl, .maskAlternate, .maskNonCoalesced])),
+        .flagsChanged(Keystroke(keyCode: 59, flags: [.maskAlternate, .maskNonCoalesced]), keyDown: false),
+        .flagsChanged(Keystroke(keyCode: 58), keyDown: false)
     ]
     
     static let altQ_1: [InputEvent] = [

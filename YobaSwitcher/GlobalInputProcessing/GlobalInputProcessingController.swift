@@ -36,7 +36,7 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         
         if latestInputEvents.last.matches(Patterns.ctrlOptZ) {
             Log.info("Hit Ctrl+Opt+Z")
-            changeSelectedTextCase()
+            selectedTextManager.changeSelectedTextCase()
             return nil
         }
         
@@ -153,22 +153,6 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
                 )
                 keyboard.postInputEvent(shift, proxy)
             }
-        }
-    }
-    
-    private func changeSelectedTextCase() {
-        guard let focusedElement = systemWide.focusedElement() else { return }
-        let selectedText = focusedElement.selectedText
-        
-        if selectedText.isEmpty {
-            Log.info("Selected text is empty")
-            return
-        }
-        let uppercasedText = selectedText.uppercased()
-        if selectedText == uppercasedText {
-            focusedElement.selectedText = selectedText.lowercased()
-        } else {
-            focusedElement.selectedText = uppercasedText
         }
     }
 }

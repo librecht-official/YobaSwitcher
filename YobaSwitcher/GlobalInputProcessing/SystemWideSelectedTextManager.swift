@@ -9,6 +9,9 @@
 protocol SelectedTextManager {
     @discardableResult
     func replaceSelectedTextWithAlternativeKeyboardLanguage() -> Bool
+    
+    @discardableResult
+    func changeSelectedTextCase() -> Bool
 }
 
 final class SystemWideSelectedTextManager: SelectedTextManager {
@@ -37,6 +40,25 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
         let targetInputSource = keyboard.inputSource(forLanguage: layoutMapping.targetLanguage)
         if keyboard.currentKeyboardLayoutInputSource().id != targetInputSource.id {
             keyboard.switchInputSource()
+        }
+        
+        return true
+    }
+    
+    @discardableResult
+    func changeSelectedTextCase() -> Bool {
+        guard let focusedElement = systemWide.focusedElement() else { return false }
+        let selectedText = focusedElement.selectedText
+        
+        if selectedText.isEmpty {
+            Log.info("Selected text is empty")
+            return false
+        }
+        let uppercasedText = selectedText.uppercased()
+        if selectedText == uppercasedText {
+            focusedElement.selectedText = selectedText.lowercased()
+        } else {
+            focusedElement.selectedText = uppercasedText
         }
         
         return true

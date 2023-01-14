@@ -5,7 +5,7 @@
 //  Created by Vladislav Librecht on 14.01.2023.
 //
 
-/// A type that can be compared with some patten for matching.
+/// A type that can be compared with some pattern for matching.
 protocol Matchable {
     associatedtype Pattern
     
