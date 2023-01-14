@@ -33,6 +33,12 @@ public final class PropertyStub<Value> {
     public private(set) var getCallCount: Int = 0
     public private(set) var setCallCount: Int = 0
     
+    public func reset() {
+        stubValuesHistory = []
+        getCallCount = 0
+        setCallCount = 0
+    }
+    
     // MARK: Accessors
     
     /// Value accessor
@@ -42,7 +48,7 @@ public final class PropertyStub<Value> {
         get {
             guard let val = stubValue else {
                 testCase?.continueAfterFailure = false
-                XCTFail("Uninitialized property getter (\(name)) was called. Test case: \(String(describing: testCase?.name))")
+                XCTFail("Uninitialized property getter (\(name)) was called.")
                 fatalError()
             }
             getCallCount += 1

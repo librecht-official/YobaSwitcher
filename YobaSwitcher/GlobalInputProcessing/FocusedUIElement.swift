@@ -12,31 +12,25 @@ protocol FocusedUIElement {
     var selectedText: String { get nonmutating set }
 }
 
-final class FocusedUIElementAccessor: FocusedUIElement {
-    private let element: AXUIElement
+final class FocusedUIElementAccessor<UIElement: AccessibilityUIElement>: FocusedUIElement {
+    private let element: UIElement
     
-    init(_ element: AXUIElement) {
+    init(_ element: UIElement) {
         self.element = element
     }
     
     var selectedText: String {
         get {
             var selectedTextRef: CFTypeRef?
-            let result = AXUIElementCopyAttributeValue(element, kAXSelectedTextAttribute as CFString, &selectedTextRef)
-            guard let selectedText = selectedTextRef as? String, result == .success else {
-                Log.info("No selected text: \(result)")
-                return ""
-            }
-            return selectedText
+            element.copyAttributeValue(kAXSelectedTextAttribute, &selectedTextRef)
+            return (selectedTextRef as? String) ?? ""
         }
         set {
             var isSettable = DarwinBoolean(false)
-            AXUIElementIsAttributeSettable(element, kAXSelectedTextAttribute as CFString, &isSettable)
-            Log.info("IsSettable: \(isSettable)")
+            element.isAttributeSettable(kAXSelectedTextAttribute, &isSettable)
 
             if isSettable.boolValue {
-                let result = AXUIElementSetAttributeValue(element, kAXSelectedTextAttribute as CFString, newValue as CFString)
-                Log.info("Result: \(result)")
+                element.setAttributeValue(kAXSelectedTextAttribute, newValue as CFString)
             }
         }
     }

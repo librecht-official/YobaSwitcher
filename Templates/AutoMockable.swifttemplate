@@ -9,6 +9,7 @@ import XCTest
 <% for type in types.protocols where type.annotations["AutoMockable"] != nil { -%>
 
   <%_ %>open class <%= type.name.replacingOccurrences(of: "Protocol", with: "") %>Mock: <%= type.name %> {
+    public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase) {
@@ -50,20 +51,25 @@ import XCTest
       <%_ }-%>
     }
   <%_ } _%>
+    static func resetState() {
+    <%_ for property in type.staticVariables { -%>
+        _<%= property.name %>.reset()
+    <%_ } -%>
+    }
 }
 
 // MARK: -
 <% } -%>
 <%
 func tuple<T>(from array: [T]) -> String {
-    if array.isEmpty {
-        return "()"
-    }
-    if array.count == 1 {
-        return String(describing: array[0])
-    }
-    let content = array.map { String(describing: $0) }.joined(separator: ", ")
-    return "(\(content))"
+  if array.isEmpty {
+    return "()"
+  }
+  if array.count == 1 {
+    return String(describing: array[0])
+  }
+  let content = array.map { String(describing: $0) }.joined(separator: ", ")
+  return "(\(content))"
 }
 
 extension SourceryMethod {

@@ -22,6 +22,6 @@ final class SystemWide: SystemWideAccessibility {
             Log.info("No focused element: \(result)")
             return nil
         }
-        return FocusedUIElementAccessor(focusedUIElement as! AXUIElement)
+        return FocusedUIElementAccessor<AXUIElement>(focusedUIElement as! AXUIElement)
     }
 }

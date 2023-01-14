@@ -7,7 +7,43 @@
 import XCTest
 @testable import YobaSwitcher
 
+open class AccessibilityUIElementMock: AccessibilityUIElement {
+    public static weak var testCase: XCTestCase?
+    public private(set) weak var testCase: XCTestCase?
+
+    public init(_ testCase: XCTestCase) {
+        self.testCase = testCase
+    }
+
+    public private(set) lazy var _copyAttributeValue = MethodStub<(String, UnsafeMutablePointer<CFTypeRef?>), AXError>(name: "copyAttributeValue(_:_:)", testCase)
+
+    @discardableResult
+    public func copyAttributeValue(_ attribute: String, _ value: UnsafeMutablePointer<CFTypeRef?>) -> AXError {
+        _copyAttributeValue.callWithReturnValue(arguments: (attribute, value))
+    }
+
+    public private(set) lazy var _isAttributeSettable = MethodStub<(String, UnsafeMutablePointer<DarwinBoolean>), AXError>(name: "isAttributeSettable(_:_:)", testCase)
+
+    @discardableResult
+    public func isAttributeSettable(_ attribute: String, _ settable: UnsafeMutablePointer<DarwinBoolean>) -> AXError {
+        _isAttributeSettable.callWithReturnValue(arguments: (attribute, settable))
+    }
+
+    public private(set) lazy var _setAttributeValue = MethodStub<(String, CFTypeRef), AXError>(name: "setAttributeValue(_:_:)", testCase)
+
+    @discardableResult
+    public func setAttributeValue(_ attribute: String, _ value: CFTypeRef) -> AXError {
+        _setAttributeValue.callWithReturnValue(arguments: (attribute, value))
+    }
+
+    static func resetState() {
+    }
+}
+
+// MARK: -
+
 open class FocusedUIElementMock: FocusedUIElement {
+    public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase) {
@@ -23,11 +59,14 @@ open class FocusedUIElementMock: FocusedUIElement {
         set { _selectedText._value = newValue }
     }
 
+    static func resetState() {
+    }
 }
 
 // MARK: -
 
 open class GlobalInputMonitorMock: GlobalInputMonitorProtocol {
+    public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase) {
@@ -49,11 +88,14 @@ open class GlobalInputMonitorMock: GlobalInputMonitorProtocol {
         _start.call(with: ())
     }
 
+    static func resetState() {
+    }
 }
 
 // MARK: -
 
 open class SelectedTextManagerMock: SelectedTextManager {
+    public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase) {
@@ -74,11 +116,14 @@ open class SelectedTextManagerMock: SelectedTextManager {
         _changeSelectedTextCase.callWithReturnValue(arguments: ())
     }
 
+    static func resetState() {
+    }
 }
 
 // MARK: -
 
 open class SystemWideAccessibilityMock: SystemWideAccessibility {
+    public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase) {
@@ -91,11 +136,14 @@ open class SystemWideAccessibilityMock: SystemWideAccessibility {
         _focusedElement.callWithOptionalReturnValue(arguments: ())
     }
 
+    static func resetState() {
+    }
 }
 
 // MARK: -
 
 open class VirtualKeyboardMock: VirtualKeyboardProtocol {
+    public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase) {
@@ -138,6 +186,8 @@ open class VirtualKeyboardMock: VirtualKeyboardProtocol {
         _switchInputSourceCompletion.call(with: completion)
     }
 
+    static func resetState() {
+    }
 }
 
 // MARK: -
