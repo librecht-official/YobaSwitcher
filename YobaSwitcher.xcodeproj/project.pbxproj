@@ -30,6 +30,9 @@
 		F592B27D296E071D00CAF8AD /* SystemWideAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */; };
 		F592B27F296E09B200CAF8AD /* DispatchExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27E296E09B200CAF8AD /* DispatchExt.swift */; };
 		F592B285296E0E5400CAF8AD /* DispatchQueueMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B284296E0E5400CAF8AD /* DispatchQueueMock.swift */; };
+		F5B4CEAB29721B5E0029549C /* Keystroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEAA29721B5E0029549C /* Keystroke.swift */; };
+		F5B4CEAF29723CBF0029549C /* Matchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEAE29723CBF0029549C /* Matchable.swift */; };
+		F5B4CEB1297244EB0029549C /* DisplacingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */; };
 		F5C7FB632971BD740050CAE0 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7FB622971BD740050CAE0 /* Mocks.swift */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +73,9 @@
 		F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideAccessibility.swift; sourceTree = "<group>"; };
 		F592B27E296E09B200CAF8AD /* DispatchExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchExt.swift; sourceTree = "<group>"; };
 		F592B284296E0E5400CAF8AD /* DispatchQueueMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueueMock.swift; sourceTree = "<group>"; };
+		F5B4CEAA29721B5E0029549C /* Keystroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keystroke.swift; sourceTree = "<group>"; };
+		F5B4CEAE29723CBF0029549C /* Matchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matchable.swift; sourceTree = "<group>"; };
+		F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplacingBuffer.swift; sourceTree = "<group>"; };
 		F5C7FB622971BD740050CAE0 /* Mocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +111,8 @@
 				F592B27E296E09B200CAF8AD /* DispatchExt.swift */,
 				F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */,
 				F52777D8296EF6FF00B55BC3 /* Logging.swift */,
+				F5B4CEAE29723CBF0029549C /* Matchable.swift */,
+				F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -151,6 +159,7 @@
 				F592B278296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift */,
 				F592B24E296DBC5900CAF8AD /* InputSource.swift */,
 				F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */,
+				F5B4CEAA29721B5E0029549C /* Keystroke.swift */,
 				F52777D6296EF55500B55BC3 /* KeystrokeEvent.swift */,
 				F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */,
 				F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */,
@@ -295,13 +304,16 @@
 				F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */,
 				F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */,
 				F54E94EF2961DF5E0066D33F /* GlobalInputProcessingController.swift in Sources */,
+				F5B4CEAF29723CBF0029549C /* Matchable.swift in Sources */,
 				F592B279296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift in Sources */,
 				F51E2FF229707AFB00F42AD8 /* FocusedUIElement.swift in Sources */,
 				F592B24F296DBC5900CAF8AD /* InputSource.swift in Sources */,
 				F52777D9296EF6FF00B55BC3 /* Logging.swift in Sources */,
+				F5B4CEB1297244EB0029549C /* DisplacingBuffer.swift in Sources */,
 				F52777DC296FC67B00B55BC3 /* KeyboardLayout.swift in Sources */,
 				F533F0CD2970600600549477 /* SystemWideSelectedTextManager.swift in Sources */,
 				F592B251296DBD4B00CAF8AD /* GlobalInputMonitor.swift in Sources */,
+				F5B4CEAB29721B5E0029549C /* Keystroke.swift in Sources */,
 				F592B27F296E09B200CAF8AD /* DispatchExt.swift in Sources */,
 				F54E94DE2961C2980066D33F /* AppDelegate.swift in Sources */,
 			);

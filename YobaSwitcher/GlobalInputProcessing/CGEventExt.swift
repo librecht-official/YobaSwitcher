@@ -7,6 +7,22 @@
 
 import CoreGraphics
 
+extension CGEventFlags: Matchable {
+    func matches(_ rhs: CGEventFlags) -> Bool {
+        guard contains(.maskAlphaShift) == rhs.contains(.maskAlphaShift),
+              contains(.maskShift) == rhs.contains(.maskShift),
+              contains(.maskControl) == rhs.contains(.maskControl),
+              contains(.maskAlternate) == rhs.contains(.maskAlternate),
+              contains(.maskCommand) == rhs.contains(.maskCommand),
+              contains(.maskHelp) == rhs.contains(.maskHelp),
+              contains(.maskSecondaryFn) == rhs.contains(.maskSecondaryFn),
+              contains(.maskNumericPad) == rhs.contains(.maskNumericPad)
+        else { return false }
+        // maskNonCoalesced is ignored intentionally
+        return true
+    }
+}
+
 extension CGEventFlags: CustomStringConvertible {
     public var description: String {
         var result: [String] = []
