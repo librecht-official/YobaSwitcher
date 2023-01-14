@@ -13,6 +13,7 @@ extension Log.Hashtag {
 
 enum Log {
     struct Config {
+        var logLevel: Level = .info
         var fileWhitelist: [String] = []
         var hashtagsWhitelist: Set<Log.Hashtag> = []
         var hashtagsBlacklist: Set<Log.Hashtag> = [.recording]
@@ -20,71 +21,98 @@ enum Log {
     
     static var config = Config()
     
+    enum Level: Int {
+        case trace = 0
+        case debug
+        case info
+        case error
+        case critical
+    }
+    
     struct Hashtag: Hashable, RawRepresentable {
         let rawValue: Int
     }
     
-    static func info(
-        _ items: Any...,
+    static func trace(
+        _ item: @autoclosure () -> Any,
         separator: String = " ",
         terminator: String = "\n",
         hashtags: Set<Hashtag> = [],
-        file: String = #file
+        file: String = #file,
+        function: StaticString = #function
     ) {
-        filterLog(hashtags: hashtags, sourceFile: file) {
-            print(items, separator: separator, terminator: terminator)
+        filterLog(level: .trace, hashtags: hashtags, sourceFile: file) {
+            print(function, terminator: ": ")
+            print(item(), separator: separator, terminator: terminator)
         }
     }
     
     static func debug(
-        _ items: Any...,
+        _ item: @autoclosure () -> Any,
+        separator: String = " ",
+        terminator: String = "\n",
+        hashtags: Set<Hashtag> = [],
+        file: String = #file,
+        function: StaticString = #function
+    ) {
+        filterLog(level: .debug, hashtags: hashtags, sourceFile: file) {
+            print(function, terminator: ": ")
+            print(item(), separator: separator, terminator: terminator)
+        }
+    }
+    
+    static func info(
+        _ item: @autoclosure () -> Any,
         separator: String = " ",
         terminator: String = "\n",
         hashtags: Set<Hashtag> = [],
         file: String = #file
     ) {
-        filterLog(hashtags: hashtags, sourceFile: file) {
-            debugPrint(items, separator: separator, terminator: terminator)
+        filterLog(level: .info, hashtags: hashtags, sourceFile: file) {
+            print("[info]", terminator: " ")
+            print(item(), separator: separator, terminator: terminator)
         }
     }
     
     static func error(
-        _ items: Any...,
+        _ item: @autoclosure () -> Any,
         separator: String = " ",
         terminator: String = "\n",
         hashtags: Set<Hashtag> = [],
         file: String = #file
     ) {
-        filterLog(hashtags: hashtags, sourceFile: file) {
-            print("error:", terminator: "")
-            print(items, separator: separator, terminator: terminator)
+        filterLog(level: .error, hashtags: hashtags, sourceFile: file) {
+            print("[error]", terminator: " ")
+            print(item(), separator: separator, terminator: terminator)
         }
     }
     
     static func critical(
-        _ items: Any...,
+        _ item: @autoclosure () -> Any,
         separator: String = " ",
         terminator: String = "\n",
         hashtags: Set<Hashtag> = [],
         file: String = #file
     ) {
-        filterLog(hashtags: hashtags, sourceFile: file) {
-            print("critical:", terminator: "")
-            print(items, separator: separator, terminator: terminator)
+        filterLog(level: .critical, hashtags: hashtags, sourceFile: file) {
+            print("[critical]", terminator: " ")
+            print(item(), separator: separator, terminator: terminator)
         }
     }
     
     private static func filterLog(
+        level: Level,
         hashtags: Set<Hashtag>,
         sourceFile: String,
         log: () -> ()
     ) {
         let fileName = URL(fileURLWithPath: sourceFile).deletingPathExtension().lastPathComponent
-        guard config.fileWhitelist.isEmpty || config.fileWhitelist.contains(fileName) else { return }
         
-        guard !config.hashtagsBlacklist.contains(anyOf: hashtags) else { return }
-        
-        guard config.hashtagsWhitelist.isEmpty || config.hashtagsWhitelist.contains(anyOf: hashtags) else { return }
+        guard level >= config.logLevel,
+              !config.hashtagsBlacklist.contains(anyOf: hashtags),
+              config.hashtagsWhitelist.isEmpty || config.hashtagsWhitelist.contains(anyOf: hashtags),
+              config.fileWhitelist.isEmpty || config.fileWhitelist.contains(fileName)
+        else { return }
         
         log()
     }
@@ -93,5 +121,11 @@ enum Log {
 extension Set {
     func contains(anyOf other: Set<Element>) -> Bool {
         !intersection(other).isEmpty
+    }
+}
+
+extension Log.Level: Comparable {
+    static func < (lhs: Log.Level, rhs: Log.Level) -> Bool {
+        lhs.rawValue < rhs.rawValue
     }
 }

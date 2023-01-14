@@ -33,6 +33,7 @@
 		F5B4CEAB29721B5E0029549C /* Keystroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEAA29721B5E0029549C /* Keystroke.swift */; };
 		F5B4CEAF29723CBF0029549C /* Matchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEAE29723CBF0029549C /* Matchable.swift */; };
 		F5B4CEB1297244EB0029549C /* DisplacingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */; };
+		F5B4CEB5297314060029549C /* EntryPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEB4297314060029549C /* EntryPoint.swift */; };
 		F5C7FB632971BD740050CAE0 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7FB622971BD740050CAE0 /* Mocks.swift */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +77,7 @@
 		F5B4CEAA29721B5E0029549C /* Keystroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keystroke.swift; sourceTree = "<group>"; };
 		F5B4CEAE29723CBF0029549C /* Matchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matchable.swift; sourceTree = "<group>"; };
 		F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplacingBuffer.swift; sourceTree = "<group>"; };
+		F5B4CEB4297314060029549C /* EntryPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPoint.swift; sourceTree = "<group>"; };
 		F5C7FB622971BD740050CAE0 /* Mocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -191,8 +193,9 @@
 		F592B264296DC41B00CAF8AD /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				F592B265296DC43000CAF8AD /* PropertyStub.swift */,
+				F5B4CEB4297314060029549C /* EntryPoint.swift */,
 				F51E2FF329707D4300F42AD8 /* MethodStub.swift */,
+				F592B265296DC43000CAF8AD /* PropertyStub.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5C7FB632971BD740050CAE0 /* Mocks.swift in Sources */,
+				F5B4CEB5297314060029549C /* EntryPoint.swift in Sources */,
 				F592B285296E0E5400CAF8AD /* DispatchQueueMock.swift in Sources */,
 				F592B266296DC43000CAF8AD /* PropertyStub.swift in Sources */,
 				F592B25B296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift in Sources */,
@@ -518,6 +522,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BFCZTEYG58;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_NAME).EntryPoint";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -535,6 +540,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BFCZTEYG58;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_NAME).EntryPoint";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

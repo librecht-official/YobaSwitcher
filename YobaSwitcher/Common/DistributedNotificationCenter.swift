@@ -20,7 +20,7 @@ final class DistributedNotificationCenter {
         }
         
         deinit {
-            Log.debug(self, "deinit")
+            Log.trace(self)
         }
     }
     
@@ -38,7 +38,7 @@ final class DistributedNotificationCenter {
                     let token = Unmanaged<Token>.fromOpaque(observer).takeUnretainedValue()
                     token.callback?(token, userInfo)
                 } else {
-                    Log.error("CFNotificationCallback was called with nil observer")
+                    Log.critical("CFNotificationCallback was called with nil observer")
                 }
             },
             name.rawValue,

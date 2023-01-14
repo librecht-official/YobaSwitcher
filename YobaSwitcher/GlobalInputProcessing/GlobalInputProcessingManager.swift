@@ -31,7 +31,7 @@ final class GlobalInputProcessingManager {
             inputMonitor.handler = inputProcessingController
             inputMonitor.start()
         } else {
-            Log.info("Accessibility is not allowed for this app")
+            Log.error("Accessibility is not allowed for this app")
             timer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
                 self?.relaunchIfProcessTrusted()
             }
