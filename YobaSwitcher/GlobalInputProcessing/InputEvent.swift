@@ -19,6 +19,8 @@ enum InputEvent: Equatable {
     case mouseDown
 }
 
+// MARK: - Matchable
+
 extension InputEvent: Matchable {
     func matches(_ rhs: InputEvent) -> Bool {
         switch (self, rhs) {
@@ -40,85 +42,68 @@ extension InputEvent: Matchable {
     }
 }
 
+// MARK: - CustomStringConvertible
+
 extension InputEvent: CustomStringConvertible {
     var description: String {
         switch self {
         case let .keyDown(keystroke):
             return ".keyDown(\(keystroke))"
+            
         case .keyUp(let keystroke):
             return ".keyUp(\(keystroke))"
+            
         case let .flagsChanged(keystroke, keyDown):
             return ".flagsChanged(\(keystroke), keyDown: \(keyDown))"
+            
         case .mouseDown:
             return ".mouseDown"
         }
     }
 }
 
+// MARK: - CustomDebugStringConvertible
+
 extension InputEvent: CustomDebugStringConvertible {
     var debugDescription: String {
         switch self {
         case let .keyDown(keystroke):
-            var mods: [String] = ["↓", keystroke.flags.debugDescription]
-            if keystroke.isAutorepeat {
-                mods.append("R")
-            }
-            return "\(KeyCode.string(keystroke.keyCode))[\(mods.joined(separator: ","))]"
+            return debugString(from: keystroke, direction: "↓")
         
         case .keyUp(let keystroke):
-            var mods: [String] = ["↑", keystroke.flags.debugDescription]
-            if keystroke.isAutorepeat {
-                mods.append("R")
-            }
-            return "\(KeyCode.string(keystroke.keyCode))[\(mods.joined(separator: ","))]"
+            return debugString(from: keystroke, direction: "↑")
             
         case let .flagsChanged(keystroke, keyDown):
-            var mods: [String] = [keyDown ? "↓" : "↑", keystroke.flags.debugDescription]
-            if keystroke.isAutorepeat {
-                mods.append("R")
-            }
-            return "\(KeyCode.string(keystroke.keyCode))[\(mods.joined(separator: ","))]"
+            return debugString(from: keystroke, direction: keyDown ? "↓" : "↑")
             
         case .mouseDown:
             return "🐁[↓]"
         }
     }
-}
-
-enum KeyCode {
-    static func string(_ keyCode: Int) -> String {
-        keyCodesToString[keyCode] ?? String(keyCode)
+    
+    private func debugString(from keystroke: Keystroke, direction: String) -> String {
+        var mods: [String] = [direction, keystroke.flags.debugDescription]
+        if keystroke.isAutorepeat {
+            mods.append("AR")
+        }
+        return "\(keystroke.keyCode.debugDescription)(\(mods.joined(separator: ",")))"
     }
 }
-
-private let keyCodesToString: [Int: String] = [
-    // Supplement as necessary
-    kVK_ANSI_H: "H",
-    kVK_ANSI_E: "E",
-    kVK_ANSI_L: "L",
-    kVK_ANSI_O: "O",
-    kVK_ANSI_W: "W",
-    kVK_ANSI_R: "R",
-    kVK_ANSI_D: "D",
-    kVK_Delete: "⌫",
-    kVK_ForwardDelete: "F⌫",
-    kVK_Space: "␣",
-]
 
 // MARK: - InputEvent to CGEvent
 
 extension CGEvent {
     static func fromInputEvent(_ inputEvent: InputEvent) -> CGEvent? {
         switch inputEvent {
-        case let .keyDown(ks):
-            return CGEvent.fromKeystrokeDown(ks)
+        case let .keyDown(keystroke):
+            return CGEvent.fromKeystrokeDown(keystroke)
             
-        case let .keyUp(ks):
-            return CGEvent.fromKeystrokeUp(ks)
+        case let .keyUp(keystroke):
+            return CGEvent.fromKeystrokeUp(keystroke)
             
-        case let .flagsChanged(ks, keyDown):
-            let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(ks.keyCode), keyDown: keyDown)
-            cgEvent?.flags = ks.flags
+        case let .flagsChanged(keystroke, keyDown):
+            let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: keyDown)
+            cgEvent?.flags = keystroke.flags
             return cgEvent
             
         case .mouseDown:
@@ -128,13 +113,13 @@ extension CGEvent {
     }
     
     static func fromKeystrokeDown(_ keystroke: Keystroke) -> CGEvent? {
-        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(keystroke.keyCode), keyDown: true)
+        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: true)
         cgEvent?.flags = keystroke.flags
         return cgEvent
     }
     
     static func fromKeystrokeUp(_ keystroke: Keystroke) -> CGEvent? {
-        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: CGKeyCode(keystroke.keyCode), keyDown: false)
+        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: false)
         cgEvent?.flags = keystroke.flags
         return cgEvent
     }

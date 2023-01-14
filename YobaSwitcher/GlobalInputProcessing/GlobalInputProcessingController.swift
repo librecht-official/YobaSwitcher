@@ -38,7 +38,7 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     }
     
     private func modifyKeyBuffer(with keystroke: Keystroke) {
-        if keystroke.keyCode == kVK_Delete || keystroke.keyCode == kVK_ForwardDelete {
+        if keystroke.keyCode.isDelete {
             if !characterKeystrokes.isEmpty {
                 characterKeystrokes.removeLast()
             }
@@ -83,25 +83,25 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     
     private enum Patterns {
         static let optionDownAndUp: [InputEvent] = [
-            .flagsChanged(Keystroke(keyCode: kVK_Option, flags: .maskAlternate)),
-            .flagsChanged(Keystroke(keyCode: kVK_Option))
+            .flagsChanged(Keystroke(.option, flags: .maskAlternate)),
+            .flagsChanged(Keystroke(.option))
         ]
         static let ctrlOptZ: InputEvent =
-            .keyDown(Keystroke(keyCode: kVK_ANSI_Z, flags: [.maskControl, .maskAlternate]))
+            .keyDown(Keystroke(.Z, flags: [.maskControl, .maskAlternate]))
     }
     
     private func handleLatestInputEvents(_ event: CGEvent, _ proxy: CGEventTapProxy) -> CGEvent? {
         let last2 = latestInputEvents.takeLast(2)
         
         if last2.matches(Patterns.optionDownAndUp) {
-            Log.info("Option key is hit")
+            Log.info("Hit Option")
             if selectedTextManager.replaceSelectedTextWithAlternativeKeyboardLanguage() {
                 return nil
             }
             return retypeKeyBuffer(event, proxy)
         }
         if latestInputEvents.last.matches(Patterns.ctrlOptZ) {
-            Log.info("Ctrl+Opt+Z")
+            Log.info("Hit Ctrl+Opt+Z")
             changeSelectedTextCase()
             return nil
         }
@@ -109,8 +109,8 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         return event
     }
     
-    private func isItCharacterProducingKey(_ keyCode: Int) -> Bool {
-        kVK_ANSI_A <= keyCode && keyCode <= kVK_ANSI_Grave
+    private func isItCharacterProducingKey(_ keyCode: KeyCode) -> Bool {
+        kVK_ANSI_A <= keyCode.rawValue && keyCode.rawValue <= kVK_ANSI_Grave
     }
     
     private func isItPossibleShortCut(_ keystroke: Keystroke) -> Bool {
@@ -126,8 +126,8 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         Log.info("Retype keys buffer: \(characterKeystrokes)")
         
         for _ in characterKeystrokes {
-            keyboard.postInputEvent(.keyDown(Keystroke(keyCode: kVK_Delete)), proxy)
-            keyboard.postInputEvent(.keyUp(Keystroke(keyCode: kVK_Delete)), proxy)
+            keyboard.postInputEvent(.keyDown(Keystroke(.delete)), proxy)
+            keyboard.postInputEvent(.keyUp(Keystroke(.delete)), proxy)
         }
         
         keyboard.switchInputSource { [weak self] in
@@ -141,7 +141,7 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         for keystroke in characterKeystrokes {
             if keystroke.flags.contains(.maskShift) {
                 let shift = InputEvent.flagsChanged(
-                    Keystroke(keyCode: kVK_Shift, flags: [.maskShift, .maskNonCoalesced]),
+                    Keystroke(.shift, flags: [.maskShift, .maskNonCoalesced]),
                     keyDown: true
                 )
                 keyboard.postInputEvent(shift, proxy)
@@ -152,7 +152,7 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
             
             if keystroke.flags.contains(.maskShift) {
                 let shift = InputEvent.flagsChanged(
-                    Keystroke(keyCode: kVK_Shift, flags: [.maskNonCoalesced]),
+                    Keystroke(.shift, flags: [.maskNonCoalesced]),
                     keyDown: false
                 )
                 keyboard.postInputEvent(shift, proxy)

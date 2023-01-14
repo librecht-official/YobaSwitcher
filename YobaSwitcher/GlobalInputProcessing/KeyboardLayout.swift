@@ -12,6 +12,8 @@ struct LanguageIdentifier: Hashable, RawRepresentable {
     static let ru = LanguageIdentifier(rawValue: "ru")
 }
 
+// MARK: - 
+
 struct KeyboardLayoutMapping {
     let sourceLanguage: LanguageIdentifier
     let targetLanguage: LanguageIdentifier
