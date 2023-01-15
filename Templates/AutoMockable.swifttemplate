@@ -9,15 +9,17 @@ import XCTest
 <% for type in types.protocols where type.annotations["AutoMockable"] != nil { -%>
 
   <%_ %>open class <%= type.name.replacingOccurrences(of: "Protocol", with: "") %>Mock: <%= type.name %> {
+    public let id: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
-    public init(_ testCase: XCTestCase) {
+    public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
+        self.id = id
     }
   <%_ %><%# ///// GENERATE PROPERTIES STUBS \\\\\ -%>
-  <%_ for property in type.variables { -%>
-  
+  <%_ %><%_ for property in type.variables { -%>
+
     // MARK: <%= property.name %>
 
     public private(set) <%= property.isStatic ? "static" : "lazy" %> var _<%= property.name %> = PropertyStub<<%= property.unwrappedTypeName %>>(name: "<%= property.name %>", testCase)

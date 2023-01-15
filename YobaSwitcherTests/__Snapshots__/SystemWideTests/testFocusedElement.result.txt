@@ -1,0 +1,10 @@
+▿ Optional<FocusedUIElement>
+  ▿ some: FocusedUIElementAccessor<AccessibilityUIElementMock>
+    ▿ element: AccessibilityUIElementMock
+      - $__lazy_storage_$__copyAttributeValue: Optional<MethodStub<(String, UnsafeMutablePointer<Optional<AnyObject>>), AXError>>.none
+      - $__lazy_storage_$__isAttributeSettable: Optional<MethodStub<(String, UnsafeMutablePointer<DarwinBoolean>), AXError>>.none
+      - $__lazy_storage_$__setAttributeValue: Optional<MethodStub<(String, AnyObject), AXError>>.none
+      ▿ id: Optional<String>
+        - some: "focusedElementMock"
+      ▿ testCase: Optional<XCTestCase>
+        - some: -[SystemWideTests testFocusedElement]

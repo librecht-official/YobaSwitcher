@@ -8,11 +8,21 @@ import XCTest
 @testable import YobaSwitcher
 
 open class AccessibilityUIElementMock: AccessibilityUIElement {
+    public let id: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
-    public init(_ testCase: XCTestCase) {
+    public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
+        self.id = id
+    }
+
+    // MARK: systemWide
+
+    public private(set) static var _systemWide = PropertyStub<AccessibilityUIElement>(name: "systemWide", testCase)
+
+    public static var systemWide: AccessibilityUIElement {
+        _systemWide._value
     }
 
     public private(set) lazy var _copyAttributeValue = MethodStub<(String, UnsafeMutablePointer<CFTypeRef?>), AXError>(name: "copyAttributeValue(_:_:)", testCase)
@@ -37,19 +47,22 @@ open class AccessibilityUIElementMock: AccessibilityUIElement {
     }
 
     static func resetState() {
+        _systemWide.reset()
     }
 }
 
 // MARK: -
 
 open class FocusedUIElementMock: FocusedUIElement {
+    public let id: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
-    public init(_ testCase: XCTestCase) {
+    public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
+        self.id = id
     }
-  
+
     // MARK: selectedText
 
     public private(set) lazy var _selectedText = PropertyStub<String>(name: "selectedText", testCase)
@@ -66,13 +79,15 @@ open class FocusedUIElementMock: FocusedUIElement {
 // MARK: -
 
 open class GlobalInputMonitorMock: GlobalInputMonitorProtocol {
+    public let id: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
-    public init(_ testCase: XCTestCase) {
+    public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
+        self.id = id
     }
-  
+
     // MARK: handler
 
     public private(set) lazy var _handler = PropertyStub<GlobalInputMonitorHandler>(name: "handler", testCase)
@@ -95,11 +110,13 @@ open class GlobalInputMonitorMock: GlobalInputMonitorProtocol {
 // MARK: -
 
 open class SelectedTextManagerMock: SelectedTextManager {
+    public let id: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
-    public init(_ testCase: XCTestCase) {
+    public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
+        self.id = id
     }
 
     public private(set) lazy var _replaceSelectedTextWithAlternativeKeyboardLanguage = MethodStub<(), Bool>(name: "replaceSelectedTextWithAlternativeKeyboardLanguage", testCase)
@@ -123,11 +140,13 @@ open class SelectedTextManagerMock: SelectedTextManager {
 // MARK: -
 
 open class SystemWideAccessibilityMock: SystemWideAccessibility {
+    public let id: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
-    public init(_ testCase: XCTestCase) {
+    public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
+        self.id = id
     }
 
     public private(set) lazy var _focusedElement = MethodStub<(), FocusedUIElement?>(name: "focusedElement", testCase)
@@ -143,11 +162,13 @@ open class SystemWideAccessibilityMock: SystemWideAccessibility {
 // MARK: -
 
 open class VirtualKeyboardMock: VirtualKeyboardProtocol {
+    public let id: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
-    public init(_ testCase: XCTestCase) {
+    public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
+        self.id = id
     }
 
     public private(set) lazy var _postInputEvent = MethodStub<(InputEvent, CGEventTapProxy), Void>(name: "postInputEvent(_:_:)", testCase)

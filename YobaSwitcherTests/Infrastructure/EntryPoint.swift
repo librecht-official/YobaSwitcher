@@ -6,10 +6,12 @@
 //
 
 import XCTest
+import SnapshotTesting
 @testable import YobaSwitcher
 
 class EntryPoint: NSObject {
     override init() {
         Log.config.logLevel = .info
+        SnapshotTesting.diffTool = "ksdiff"
     }
 }

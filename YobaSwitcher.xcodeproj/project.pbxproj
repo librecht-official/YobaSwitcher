@@ -37,6 +37,8 @@
 		F5B4CEB1297244EB0029549C /* DisplacingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */; };
 		F5B4CEB5297314060029549C /* EntryPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEB4297314060029549C /* EntryPoint.swift */; };
 		F5C7FB632971BD740050CAE0 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7FB622971BD740050CAE0 /* Mocks.swift */; };
+		F5EC0B6A297448A600A8D55D /* SystemWideTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EC0B69297448A600A8D55D /* SystemWideTests.swift */; };
+		F5EC0B7129759B3800A8D55D /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = F5EC0B7029759B3800A8D55D /* SnapshotTesting */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +85,7 @@
 		F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplacingBuffer.swift; sourceTree = "<group>"; };
 		F5B4CEB4297314060029549C /* EntryPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPoint.swift; sourceTree = "<group>"; };
 		F5C7FB622971BD740050CAE0 /* Mocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
+		F5EC0B69297448A600A8D55D /* SystemWideTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5EC0B7129759B3800A8D55D /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,9 +162,8 @@
 		F592B24D296DBC4B00CAF8AD /* GlobalInputProcessing */ = {
 			isa = PBXGroup;
 			children = (
-				F5750AD42973539300DA8E34 /* AccessibilityUIElement.swift */,
+				F5EC0B68297445C700A8D55D /* Accessibility */,
 				F592B252296DBE1600CAF8AD /* CGEventExt.swift */,
-				F51E2FF129707AFB00F42AD8 /* FocusedUIElement.swift */,
 				F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */,
 				F54E94EE2961DF5E0066D33F /* GlobalInputProcessingController.swift */,
 				F592B278296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift */,
@@ -168,7 +171,6 @@
 				F592B24E296DBC5900CAF8AD /* InputSource.swift */,
 				F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */,
 				F5B4CEAA29721B5E0029549C /* Keystroke.swift */,
-				F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */,
 				F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */,
 				F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */,
 			);
@@ -181,6 +183,7 @@
 				F5750AD22973400300DA8E34 /* FocusedUIElementAccessorTests.swift */,
 				F592B25A296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift */,
 				F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */,
+				F5EC0B69297448A600A8D55D /* SystemWideTests.swift */,
 				F592B264296DC41B00CAF8AD /* Infrastructure */,
 				F592B261296DC28400CAF8AD /* Mocks */,
 			);
@@ -204,6 +207,16 @@
 				F592B265296DC43000CAF8AD /* PropertyStub.swift */,
 			);
 			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		F5EC0B68297445C700A8D55D /* Accessibility */ = {
+			isa = PBXGroup;
+			children = (
+				F5750AD42973539300DA8E34 /* AccessibilityUIElement.swift */,
+				F51E2FF129707AFB00F42AD8 /* FocusedUIElement.swift */,
+				F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */,
+			);
+			path = Accessibility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,6 +253,9 @@
 				F592B25D296DC13200CAF8AD /* PBXTargetDependency */,
 			);
 			name = YobaSwitcherTests;
+			packageProductDependencies = (
+				F5EC0B7029759B3800A8D55D /* SnapshotTesting */,
+			);
 			productName = YobaSwitcherTests;
 			productReference = F592B258296DC13100CAF8AD /* YobaSwitcherTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -272,6 +288,9 @@
 				Base,
 			);
 			mainGroup = F54E94D12961C2980066D33F;
+			packageReferences = (
+				F5EC0B6F29759B3800A8D55D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = F54E94DB2961C2980066D33F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -336,6 +355,7 @@
 				F5750AD32973400300DA8E34 /* FocusedUIElementAccessorTests.swift in Sources */,
 				F5C7FB632971BD740050CAE0 /* Mocks.swift in Sources */,
 				F5B4CEB5297314060029549C /* EntryPoint.swift in Sources */,
+				F5EC0B6A297448A600A8D55D /* SystemWideTests.swift in Sources */,
 				F592B285296E0E5400CAF8AD /* DispatchQueueMock.swift in Sources */,
 				F592B266296DC43000CAF8AD /* PropertyStub.swift in Sources */,
 				F592B25B296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift in Sources */,
@@ -589,6 +609,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F5EC0B6F29759B3800A8D55D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F5EC0B7029759B3800A8D55D /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F5EC0B6F29759B3800A8D55D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F54E94D22961C2980066D33F /* Project object */;
 }

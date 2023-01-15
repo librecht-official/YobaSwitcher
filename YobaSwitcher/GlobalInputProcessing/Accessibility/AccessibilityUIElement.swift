@@ -9,6 +9,8 @@ import ApplicationServices
 
 // sourcery: AutoMockable
 protocol AccessibilityUIElement {
+    static var systemWide: AccessibilityUIElement { get }
+    
     @discardableResult
     func copyAttributeValue(_ attribute: String, _ value: UnsafeMutablePointer<CFTypeRef?>) -> AXError
     
@@ -20,6 +22,10 @@ protocol AccessibilityUIElement {
 }
 
 extension AXUIElement: AccessibilityUIElement {
+    static var systemWide: AccessibilityUIElement {
+        AXUIElementCreateSystemWide()
+    }
+    
     @discardableResult
     func copyAttributeValue(_ attribute: String, _ value: UnsafeMutablePointer<CFTypeRef?>) -> AXError {
         AXUIElementCopyAttributeValue(self, attribute as CFString, value)
