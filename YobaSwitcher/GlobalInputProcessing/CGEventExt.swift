@@ -7,6 +7,48 @@
 
 import CoreGraphics
 
+// sourcery: AutoMockable
+protocol CoreGraphicsEvent {
+    static func fromInputEvent(_ inputEvent: InputEvent) -> Self?
+    
+    func tapPostEvent(_ proxy: CGEventTapProxy?)
+}
+
+extension CGEvent: CoreGraphicsEvent {
+    static func fromInputEvent(_ inputEvent: InputEvent) -> Self? {
+        switch inputEvent {
+        case let .keyDown(keystroke):
+            return fromKeystrokeDown(keystroke)
+            
+        case let .keyUp(keystroke):
+            return fromKeystrokeUp(keystroke)
+            
+        case let .flagsChanged(keystroke, keyDown):
+            let cgEvent = Self(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: keyDown)
+            cgEvent?.flags = keystroke.flags
+            return cgEvent
+            
+        case .mouseDown:
+            let cgEvent = Self(mouseEventSource: nil, mouseType: CGEventType.leftMouseDown, mouseCursorPosition: .zero, mouseButton: .left)!
+            return cgEvent
+        }
+    }
+    
+    static func fromKeystrokeDown(_ keystroke: Keystroke) -> Self? {
+        let cgEvent = Self(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: true)
+        cgEvent?.flags = keystroke.flags
+        return cgEvent
+    }
+    
+    static func fromKeystrokeUp(_ keystroke: Keystroke) -> Self? {
+        let cgEvent = Self(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: false)
+        cgEvent?.flags = keystroke.flags
+        return cgEvent
+    }
+}
+
+// MARK: - Matchable
+
 extension CGEventFlags: Matchable {
     func matches(_ rhs: CGEventFlags) -> Bool {
         guard contains(.maskAlphaShift) == rhs.contains(.maskAlphaShift),
@@ -23,7 +65,9 @@ extension CGEventFlags: Matchable {
     }
 }
 
-extension CGEventFlags: CustomStringConvertible {
+// MARK: - CustomStringConvertible
+
+extension CGEventFlags: @retroactive CustomStringConvertible {
     public var description: String {
         var result: [String] = []
         if contains(.maskAlphaShift) {
@@ -50,19 +94,14 @@ extension CGEventFlags: CustomStringConvertible {
         if contains(.maskNumericPad) {
             result.append("maskNumericPad")
         }
-        if contains(.maskNonCoalesced) {
-            result.append("maskNonCoalesced")
-        }
         let joined = result.map { ".\($0)" }.joined(separator: ", ")
         if result.count == 1 {
             return joined
         }
         return "[\(joined)]"
     }
-}
-
-extension CGEventFlags: CustomDebugStringConvertible {
-    public var debugDescription: String {
+    
+    public var stringValues: [String] {
         var result: [String] = []
         if contains(.maskAlphaShift) {
             result.append("⇪")
@@ -71,10 +110,10 @@ extension CGEventFlags: CustomDebugStringConvertible {
             result.append("⇧")
         }
         if contains(.maskControl) {
-            result.append("Ctrl")
+            result.append("^")
         }
         if contains(.maskAlternate) {
-            result.append("Alt")
+            result.append("⌥")
         }
         if contains(.maskCommand) {
             result.append("⌘")
@@ -88,16 +127,11 @@ extension CGEventFlags: CustomDebugStringConvertible {
         if contains(.maskNumericPad) {
             result.append("NumPad")
         }
-        if contains(.maskNonCoalesced) {
-            result.append("nc")
-        }
-        let joined = result.joined(separator: ",")
-        if result.count == 1 {
-            return joined
-        }
-        return "[\(joined)]"
+        return result
     }
 }
+
+// MARK: -
 
 struct CGEventMaskSet: OptionSet {
     let rawValue: CGEventMask

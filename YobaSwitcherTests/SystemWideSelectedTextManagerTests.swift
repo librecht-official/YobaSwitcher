@@ -23,10 +23,12 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         
         systemWideMock._focusedElement.returnValue = focusedUIElementMock
     }
+    
+    // MARK: - replaceSelectedTextWithAlternativeKeyboardLanguage
 
-    func testSwitchingSelectedTextLanguage_EnglishText_EnInputSource() {
+    func testSwitchingSelectedTextLanguage_EngCharacters_EnInputSource() {
         // given
-        focusedUIElementMock._selectedText.stubValue = TestData.engText
+        focusedUIElementMock._selectedText.stubValue = TestData.engCharacters
         keyboardMock._layoutMappingForText.returnValue = KeyboardLayoutMapping.enToRu
         keyboardMock._inputSourceForLanguageId.returnValue = TestData.enInputSource
         keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.enInputSource
@@ -40,18 +42,18 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         focusedUIElementMock._selectedText
             .wasGot(1)
             .wasSet(1)
-            .equalTo(TestData.rusText)
+            .equalTo(TestData.rusCharacters)
         keyboardMock._layoutMappingForText
-            .wasCalled(1, withArguments: TestData.engText)
+            .wasCalled(1, withArguments: TestData.engCharacters)
         keyboardMock._inputSourceForLanguageId
             .wasCalled(1, withArguments: KeyboardLayoutMapping.enToRu.targetLanguage)
         keyboardMock._currentKeyboardLayoutInputSource.wasCalled(1)
         keyboardMock._switchInputSource.wasCalled(0)
     }
     
-    func testSwitchingSelectedTextLanguage_EnglishText_RuInputSource() {
+    func testSwitchingSelectedTextLanguage_EngCharacters_RuInputSource() {
         // given
-        focusedUIElementMock._selectedText.stubValue = TestData.engText
+        focusedUIElementMock._selectedText.stubValue = TestData.engCharacters
         keyboardMock._layoutMappingForText.returnValue = KeyboardLayoutMapping.enToRu
         keyboardMock._inputSourceForLanguageId.returnValue = TestData.enInputSource
         keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.ruInputSource
@@ -65,18 +67,18 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         focusedUIElementMock._selectedText
             .wasGot(1)
             .wasSet(1)
-            .equalTo(TestData.rusText)
+            .equalTo(TestData.rusCharacters)
         keyboardMock._layoutMappingForText
-            .wasCalled(1, withArguments: TestData.engText)
+            .wasCalled(1, withArguments: TestData.engCharacters)
         keyboardMock._inputSourceForLanguageId
             .wasCalled(1, withArguments: KeyboardLayoutMapping.enToRu.targetLanguage)
         keyboardMock._currentKeyboardLayoutInputSource.wasCalled(1)
         keyboardMock._switchInputSource.wasCalled(1)
     }
     
-    func testSwitchingSelectedTextLanguage_RussianText_RuInputSource() {
+    func testSwitchingSelectedTextLanguage_RusCharacters_RuInputSource() {
         // given
-        focusedUIElementMock._selectedText.stubValue = TestData.rusText
+        focusedUIElementMock._selectedText.stubValue = TestData.rusCharacters
         keyboardMock._layoutMappingForText.returnValue = KeyboardLayoutMapping.ruToEn
         keyboardMock._inputSourceForLanguageId.returnValue = TestData.ruInputSource
         keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.ruInputSource
@@ -90,18 +92,18 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         focusedUIElementMock._selectedText
             .wasGot(1)
             .wasSet(1)
-            .equalTo(TestData.engText)
+            .equalTo(TestData.engCharacters)
         keyboardMock._layoutMappingForText
-            .wasCalled(1, withArguments: TestData.rusText)
+            .wasCalled(1, withArguments: TestData.rusCharacters)
         keyboardMock._inputSourceForLanguageId
             .wasCalled(1, withArguments: KeyboardLayoutMapping.ruToEn.targetLanguage)
         keyboardMock._currentKeyboardLayoutInputSource.wasCalled(1)
         keyboardMock._switchInputSource.wasCalled(0)
     }
     
-    func testSwitchingSelectedTextLanguage_RussianText_EnInputSource() {
+    func testSwitchingSelectedTextLanguage_RusCharacters_EnInputSource() {
         // given
-        focusedUIElementMock._selectedText.stubValue = TestData.rusText
+        focusedUIElementMock._selectedText.stubValue = TestData.rusCharacters
         keyboardMock._layoutMappingForText.returnValue = KeyboardLayoutMapping.ruToEn
         keyboardMock._inputSourceForLanguageId.returnValue = TestData.ruInputSource
         keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.enInputSource
@@ -115,9 +117,9 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         focusedUIElementMock._selectedText
             .wasGot(1)
             .wasSet(1)
-            .equalTo(TestData.engText)
+            .equalTo(TestData.engCharacters)
         keyboardMock._layoutMappingForText
-            .wasCalled(1, withArguments: TestData.rusText)
+            .wasCalled(1, withArguments: TestData.rusCharacters)
         keyboardMock._inputSourceForLanguageId
             .wasCalled(1, withArguments: KeyboardLayoutMapping.ruToEn.targetLanguage)
         keyboardMock._currentKeyboardLayoutInputSource.wasCalled(1)
@@ -161,12 +163,102 @@ final class SystemWideSelectedTextManagerTests: XCTestCase {
         keyboardMock._currentKeyboardLayoutInputSource.wasCalled(0)
         keyboardMock._switchInputSource.wasCalled(0)
     }
+    
+    // MARK: - changeSelectedTextCase
+    
+    /// Should convert lowercased text to uppercased
+    func testSwitchingSelectedTextCase_Alphanumerics() {
+        // given
+        focusedUIElementMock._selectedText.stubValue = TestData.alphanumerics
+        
+        // when
+        let result = manager.changeSelectedTextCase()
+        
+        // then
+        XCTAssertTrue(result)
+        systemWideMock._focusedElement.wasCalled(1)
+        focusedUIElementMock._selectedText
+            .wasGot(1)
+            .wasSet(1)
+            .equalTo(TestData.alphanumerics.uppercased())
+    }
+    
+    /// Should convert uppercased text to lowercased
+    func testSwitchingSelectedTextCase_UppercasedAlphanumerics() {
+        // given
+        focusedUIElementMock._selectedText.stubValue = TestData.alphanumerics.uppercased()
+        
+        // when
+        let result = manager.changeSelectedTextCase()
+        
+        // then
+        XCTAssertTrue(result)
+        systemWideMock._focusedElement.wasCalled(1)
+        focusedUIElementMock._selectedText
+            .wasGot(1)
+            .wasSet(1)
+            .equalTo(TestData.alphanumerics)
+    }
+    
+    /// Should convert text with mixed cased characters to uppercased text
+    func testSwitchingSelectedTextCase_Mixcased() {
+        // given
+        focusedUIElementMock._selectedText.stubValue = TestData.mixcased
+        
+        // when
+        let result = manager.changeSelectedTextCase()
+        
+        // then
+        XCTAssertTrue(result)
+        systemWideMock._focusedElement.wasCalled(1)
+        focusedUIElementMock._selectedText
+            .wasGot(1)
+            .wasSet(1)
+            .equalTo(TestData.mixcased.uppercased())
+    }
+    
+    func testSwitchingSelectedTextCase_NoSelectedText() {
+        // given
+        focusedUIElementMock._selectedText.stubValue = ""
+        
+        // when
+        let result = manager.changeSelectedTextCase()
+        
+        // then
+        XCTAssertFalse(result)
+        systemWideMock._focusedElement.wasCalled(1)
+        focusedUIElementMock._selectedText
+            .wasGot(1)
+            .wasSet(0)
+    }
+    
+    func testSwitchingSelectedTextCase_NoFocusedElement() {
+        // given
+        systemWideMock._focusedElement.returnValue = nil
+        
+        // when
+        let result = manager.changeSelectedTextCase()
+        
+        // then
+        XCTAssertFalse(result)
+        systemWideMock._focusedElement.wasCalled(1)
+        focusedUIElementMock._selectedText
+            .wasGot(0)
+            .wasSet(0)
+    }
 }
 
-enum TestData {
-    static let enInputSource = InputSource(TISCopyInputSourceForLanguage("en" as CFString).takeRetainedValue())
-    static let ruInputSource = InputSource(TISCopyInputSourceForLanguage("ru" as CFString).takeRetainedValue())
+private enum TestData {
+    static let enInputSource = TextInputSource(TISCopyInputSourceForLanguage("en" as CFString).takeRetainedValue())
+    static let ruInputSource = TextInputSource(TISCopyInputSourceForLanguage("ru" as CFString).takeRetainedValue())
     
-    static let engText = #"§1234567890-=qwertyuiop[]asdfghjkl;'\zxcvbnm,./ ±!@#$%^&*{}:"|~`<>?"#
-    static let rusText = #">1234567890-=йцукенгшщзхъфывапролджэёячсмитьбю/ <!"№%:,.;ХЪЖЭЁ[]БЮ?"#
+    static let engCharacters    = #"§1234567890-=qwertyuiop[]asdfghjkl;'\zxcvbnm,./ ±!@#$%^&*{}:"|~`<>?"#
+    static let rusCharacters    = #">1234567890-=йцукенгшщзхъфывапролджэёячсмитьбю/ <!"№%:,.;ХЪЖЭЁ[]БЮ?"#
+    static let engLetters       = "qwertyuiopasdfghjklzxcvbnm"
+    static let rusLetters       = "йцукенгшщзхъфывапролджэёячсмитьбю"
+    static let numerics         = "1234567890"
+    static let alphanumerics    = numerics + engLetters + rusLetters
+    static let engTextMixcased  = "Eng TeXt"
+    static let rusTextMixcased  = "Рус ТеКСт"
+    static let mixcased         = engTextMixcased + rusTextMixcased
 }

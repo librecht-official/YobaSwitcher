@@ -13,16 +13,16 @@ struct Keystroke: Equatable {
     let flags: CGEventFlags
     let isAutorepeat: Bool
     
-    init(_ keyCode: KeyCode, flags: CGEventFlags = .maskNonCoalesced, isAutorepeat: Bool = false) {
+    init(_ keyCode: KeyCode, flags: CGEventFlags = .maskNonCoalesced, autorepeat: Bool = false) {
         self.keyCode = keyCode
         self.flags = flags
-        self.isAutorepeat = isAutorepeat
+        self.isAutorepeat = autorepeat
     }
     
-    init(keyCode: Int, flags: CGEventFlags = .maskNonCoalesced, isAutorepeat: Bool = false) {
+    init(keyCode: Int, flags: CGEventFlags = .maskNonCoalesced, autorepeat: Bool = false) {
         self.keyCode = KeyCode(keyCode)
         self.flags = flags
-        self.isAutorepeat = isAutorepeat
+        self.isAutorepeat = autorepeat
     }
     
     init(event: CGEvent) {
@@ -47,7 +47,7 @@ extension Keystroke: Matchable {
 
 // MARK: - CustomStringConvertible
 
-extension Keystroke: CustomStringConvertible {
+extension Keystroke: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String {
         var arguments: [String] = ["keyCode: \(keyCode)"]
         if flags != .maskNonCoalesced {
@@ -58,9 +58,21 @@ extension Keystroke: CustomStringConvertible {
         }
         return "Keystroke(\(arguments.joined(separator: ", ")))"
     }
+    
+    var debugDescription: String {
+        var mods = flags.stringValues
+        if isAutorepeat {
+            mods.append("AR")
+        }
+        var result = keyCode.debugDescription
+        if !mods.isEmpty {
+            result.append("(\(mods))")
+        }
+        return result
+    }
 }
 
-// MARK: -
+// MARK: - KeyCode
 
 struct KeyCode: Equatable, RawRepresentable {
     let rawValue: Int
@@ -88,7 +100,7 @@ struct KeyCode: Equatable, RawRepresentable {
     static let option = KeyCode(kVK_Option)
     static let delete = KeyCode(kVK_Delete)
     static let shift = KeyCode(kVK_Shift)
-    static let Z = KeyCode(kVK_ANSI_Z)
+    static let z = KeyCode(kVK_ANSI_Z)
 }
 
 // MARK: - Matchable
@@ -122,23 +134,50 @@ extension KeyCode: CustomDebugStringConvertible {
 
 private let keyCodesToString: [Int: String] = [
     // Supplement as necessary
-    kVK_ANSI_D: "D",
+    kVK_ANSI_Q: "Q",
+    kVK_ANSI_W: "W",
     kVK_ANSI_E: "E",
-    kVK_ANSI_H: "H",
-    kVK_ANSI_L: "L",
-    kVK_ANSI_O: "O",
     kVK_ANSI_R: "R",
-    kVK_ANSI_W: "W",    
+    kVK_ANSI_T: "T",
+    kVK_ANSI_Y: "Y",
+    kVK_ANSI_U: "U",
+    kVK_ANSI_I: "I",
+    kVK_ANSI_O: "O",
+    kVK_ANSI_P: "P",
+    kVK_ANSI_A: "A",
+    kVK_ANSI_S: "S",
+    kVK_ANSI_D: "D",
+    kVK_ANSI_F: "F",
+    kVK_ANSI_G: "G",
+    kVK_ANSI_H: "H",
+    kVK_ANSI_J: "J",
+    kVK_ANSI_K: "K",
+    kVK_ANSI_L: "L",
+    kVK_ANSI_Z: "Z",
+    kVK_ANSI_X: "X",
+    kVK_ANSI_C: "C",
+    kVK_ANSI_V: "V",
+    kVK_ANSI_B: "B",
+    kVK_ANSI_N: "N",
+    kVK_ANSI_M: "M",
     
     kVK_Space: "␣",
-    kVK_Command: "⌘",
-    kVK_RightCommand: "R⌘",
-    kVK_Control: "⌃",
-    kVK_RightControl: "R⌃",
-    kVK_Option: "⌥",
-    kVK_RightOption: "R⌥",
-    kVK_Shift: "⇧",
-    kVK_RightShift: "R⇧",
+    kVK_Return: "↵",
     kVK_Delete: "⌫",
     kVK_ForwardDelete: "F⌫",
+    
+    kVK_UpArrow: "↑",
+    kVK_DownArrow: "↓",
+    kVK_LeftArrow: "←",
+    kVK_RightArrow: "→",
+    
+    kVK_Command: "Cmd",
+    kVK_RightCommand: "RCmd",
+    kVK_Control: "Ctrl",
+    kVK_RightControl: "RCtrl",
+    kVK_Option: "Alt",
+    kVK_RightOption: "RAlt",
+    kVK_Shift: "Shift",
+    kVK_RightShift: "RShift",
+    kVK_CapsLock: "Capslock",
 ]

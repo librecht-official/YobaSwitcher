@@ -8,13 +8,13 @@ import XCTest
 @testable import YobaSwitcher
 
 open class AccessibilityUIElementMock: AccessibilityUIElement {
-    public let id: String?
+    public let _mockId: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
-        self.id = id
+        self._mockId = id
     }
 
     // MARK: systemWide
@@ -53,14 +53,71 @@ open class AccessibilityUIElementMock: AccessibilityUIElement {
 
 // MARK: -
 
-open class FocusedUIElementMock: FocusedUIElement {
-    public let id: String?
+open class CoreGraphicsEventMock: CoreGraphicsEvent {
+    public let _mockId: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
-        self.id = id
+        self._mockId = id
+    }
+
+    public private(set) static var _fromInputEvent = MethodStub<InputEvent, CoreGraphicsEventMock?>(name: "fromInputEvent(_:)", testCase)
+
+    public static func fromInputEvent(_ inputEvent: InputEvent) -> Self? {
+        _fromInputEvent.callWithOptionalReturnValue(arguments: inputEvent) as? Self
+    }
+
+    public private(set) lazy var _tapPostEvent = MethodStub<CGEventTapProxy?, Void>(name: "tapPostEvent(_:)", testCase)
+
+    public func tapPostEvent(_ proxy: CGEventTapProxy?) -> Void {
+        _tapPostEvent.call(with: proxy)
+    }
+
+    static func resetState() {
+        _fromInputEvent.reset()
+    }
+}
+
+// MARK: -
+
+open class DistributedNotificationCenterMock: DistributedNotificationCenterProtocol {
+    public let _mockId: String?
+    public static weak var testCase: XCTestCase?
+    public private(set) weak var testCase: XCTestCase?
+
+    public init(_ testCase: XCTestCase, id: String? = nil) {
+        self.testCase = testCase
+        self._mockId = id
+    }
+
+    public private(set) lazy var _addObserver = MethodStub<(NSNotification.Name?, Any?, OperationQueue?, (Notification) -> Void), NSObjectProtocol>(name: "addObserver(forName:object:queue:using:)", testCase)
+
+    public func addObserver(forName name: NSNotification.Name?, object obj: Any?, queue: OperationQueue?, using block: @escaping (Notification) -> Void) -> NSObjectProtocol {
+        _addObserver.callWithReturnValue(arguments: (name, obj, queue, block))
+    }
+
+    public private(set) lazy var _removeObserver = MethodStub<(Any, NSNotification.Name?, String?), Void>(name: "removeObserver(_:name:object:)", testCase)
+
+    public func removeObserver(_ observer: Any, name aName: NSNotification.Name?, object anObject: String?) -> Void {
+        _removeObserver.call(with: (observer, aName, anObject))
+    }
+
+    static func resetState() {
+    }
+}
+
+// MARK: -
+
+open class FocusedUIElementMock: FocusedUIElement {
+    public let _mockId: String?
+    public static weak var testCase: XCTestCase?
+    public private(set) weak var testCase: XCTestCase?
+
+    public init(_ testCase: XCTestCase, id: String? = nil) {
+        self.testCase = testCase
+        self._mockId = id
     }
 
     // MARK: selectedText
@@ -79,13 +136,13 @@ open class FocusedUIElementMock: FocusedUIElement {
 // MARK: -
 
 open class GlobalInputMonitorMock: GlobalInputMonitorProtocol {
-    public let id: String?
+    public let _mockId: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
-        self.id = id
+        self._mockId = id
     }
 
     // MARK: handler
@@ -110,13 +167,13 @@ open class GlobalInputMonitorMock: GlobalInputMonitorProtocol {
 // MARK: -
 
 open class SelectedTextManagerMock: SelectedTextManager {
-    public let id: String?
+    public let _mockId: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
-        self.id = id
+        self._mockId = id
     }
 
     public private(set) lazy var _replaceSelectedTextWithAlternativeKeyboardLanguage = MethodStub<(), Bool>(name: "replaceSelectedTextWithAlternativeKeyboardLanguage", testCase)
@@ -140,13 +197,13 @@ open class SelectedTextManagerMock: SelectedTextManager {
 // MARK: -
 
 open class SystemWideAccessibilityMock: SystemWideAccessibility {
-    public let id: String?
+    public let _mockId: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
-        self.id = id
+        self._mockId = id
     }
 
     public private(set) lazy var _focusedElement = MethodStub<(), FocusedUIElement?>(name: "focusedElement", testCase)
@@ -161,14 +218,48 @@ open class SystemWideAccessibilityMock: SystemWideAccessibility {
 
 // MARK: -
 
-open class VirtualKeyboardMock: VirtualKeyboardProtocol {
-    public let id: String?
+open class TextInputSourceManagerMock: TextInputSourceManager {
+    public let _mockId: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
-        self.id = id
+        self._mockId = id
+    }
+
+    public private(set) lazy var _currentKeyboardLayoutInputSource = MethodStub<(), TextInputSource>(name: "currentKeyboardLayoutInputSource", testCase)
+
+    public func currentKeyboardLayoutInputSource() -> TextInputSource {
+        _currentKeyboardLayoutInputSource.callWithReturnValue(arguments: ())
+    }
+
+    public private(set) lazy var _inputSource = MethodStub<String, TextInputSource>(name: "inputSource(forLanguage:)", testCase)
+
+    public func inputSource(forLanguage id: String) -> TextInputSource {
+        _inputSource.callWithReturnValue(arguments: id)
+    }
+
+    public private(set) lazy var _inputSourceList = MethodStub<[CFString: Any], [TextInputSource]>(name: "inputSourceList(filter:)", testCase)
+
+    public func inputSourceList(filter: [CFString: Any]) -> [TextInputSource] {
+        _inputSourceList.callWithReturnValue(arguments: filter)
+    }
+
+    static func resetState() {
+    }
+}
+
+// MARK: -
+
+open class VirtualKeyboardMock: VirtualKeyboardProtocol {
+    public let _mockId: String?
+    public static weak var testCase: XCTestCase?
+    public private(set) weak var testCase: XCTestCase?
+
+    public init(_ testCase: XCTestCase, id: String? = nil) {
+        self.testCase = testCase
+        self._mockId = id
     }
 
     public private(set) lazy var _postInputEvent = MethodStub<(InputEvent, CGEventTapProxy), Void>(name: "postInputEvent(_:_:)", testCase)
@@ -183,15 +274,15 @@ open class VirtualKeyboardMock: VirtualKeyboardProtocol {
         _layoutMappingForText.callWithReturnValue(arguments: text)
     }
 
-    public private(set) lazy var _currentKeyboardLayoutInputSource = MethodStub<(), InputSource>(name: "currentKeyboardLayoutInputSource", testCase)
+    public private(set) lazy var _currentKeyboardLayoutInputSource = MethodStub<(), TextInputSource>(name: "currentKeyboardLayoutInputSource", testCase)
 
-    public func currentKeyboardLayoutInputSource() -> InputSource {
+    public func currentKeyboardLayoutInputSource() -> TextInputSource {
         _currentKeyboardLayoutInputSource.callWithReturnValue(arguments: ())
     }
 
-    public private(set) lazy var _inputSourceForLanguageId = MethodStub<LanguageIdentifier, InputSource>(name: "inputSource(forLanguage:)", testCase)
+    public private(set) lazy var _inputSourceForLanguageId = MethodStub<LanguageIdentifier, TextInputSource>(name: "inputSource(forLanguage:)", testCase)
 
-    public func inputSource(forLanguage id: LanguageIdentifier) -> InputSource {
+    public func inputSource(forLanguage id: LanguageIdentifier) -> TextInputSource {
         _inputSourceForLanguageId.callWithReturnValue(arguments: id)
     }
 

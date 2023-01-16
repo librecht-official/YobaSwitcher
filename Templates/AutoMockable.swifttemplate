@@ -8,14 +8,14 @@ import XCTest
 
 <% for type in types.protocols where type.annotations["AutoMockable"] != nil { -%>
 
-  <%_ %>open class <%= type.name.replacingOccurrences(of: "Protocol", with: "") %>Mock: <%= type.name %> {
-    public let id: String?
+  <%_ %>open class <%= type.mockName %>: <%= type.name %> {
+    public let _mockId: String?
     public static weak var testCase: XCTestCase?
     public private(set) weak var testCase: XCTestCase?
 
     public init(_ testCase: XCTestCase, id: String? = nil) {
         self.testCase = testCase
-        self.id = id
+        self._mockId = id
     }
   <%_ %><%# ///// GENERATE PROPERTIES STUBS \\\\\ -%>
   <%_ %><%_ for property in type.variables { -%>
@@ -36,18 +36,18 @@ import XCTest
   <%_ %><%# ///// GENERATE METHODS STUBS \\\\\ -%>
   <%_ for method in type.methods { -%>
 
-    public private(set) lazy var _<%= method.unambiguousName() %> = MethodStub<<%= tuple(from: method.parameters.map { $0.typeName.name }) %>, <%= method.returnTypeName %>>(name: "<%= method.selectorName %>", testCase)
+    public private(set) <%= method.isStatic ? "static" : "lazy" %> var _<%= method.unambiguousName() %> = MethodStub<<%= tuple(from: method.parameters.map { $0.typeName.name }) %>, <%= method.returnTypeNameForMethodStub %>>(name: "<%= method.selectorName %>", testCase)
 
     <%_ for (_, attributes) in method.attributes { -%>
       <%_ for attribute in attributes { -%>
     <%= attribute %>
       <%_ } -%>
     <%_ } -%>
-    public func <%= method.name %> -> <%= method.returnTypeName %> {
+    public <%= method.isStatic ? "static " : "" %>func <%= method.name %> -> <%= method.returnTypeName %> {
       <%_ if method.returnTypeName.isVoid { -%>
         _<%= method.unambiguousName() %>.call(with: <%= tuple(from: method.parameters.map { $0.name }) %>)
       <%_ } else if method.isOptionalReturnType { -%>
-        _<%= method.unambiguousName() %>.callWithOptionalReturnValue(arguments: <%= tuple(from: method.parameters.map { $0.name }) %>)
+        _<%= method.unambiguousName() %>.callWithOptionalReturnValue(arguments: <%= tuple(from: method.parameters.map { $0.name }) %>)<%= method.unwrappedReturnTypeName == "Self" ? " as? Self" : "" %>
       <%_ } else { -%>
         _<%= method.unambiguousName() %>.callWithReturnValue(arguments: <%= tuple(from: method.parameters.map { $0.name }) %>)
       <%_ }-%>
@@ -56,6 +56,9 @@ import XCTest
     static func resetState() {
     <%_ for property in type.staticVariables { -%>
         _<%= property.name %>.reset()
+    <%_ } -%>
+    <%_ for method in type.staticMethods { -%>
+        _<%= method.unambiguousName() %>.reset()
     <%_ } -%>
     }
 }
@@ -74,6 +77,12 @@ func tuple<T>(from array: [T]) -> String {
   return "(\(content))"
 }
 
+extension Type {
+  var mockName: String {
+    name.replacingOccurrences(of: "Protocol", with: "") + "Mock"
+  }
+}
+
 extension SourceryMethod {
   func unambiguousName() -> String {
     if let stubName = annotations["stubName"] as? String {
@@ -83,6 +92,17 @@ extension SourceryMethod {
       return callName
     }
     return callName + parameters.compactMap { $0.unambiguousName() }.joined()
+  }
+
+  var returnTypeNameForMethodStub: String {
+    if unwrappedReturnTypeName == "Self" {
+      var result = definedInType?.mockName
+      if isOptionalReturnType {
+        result = result.map { $0 + "?" }
+      }
+      return result ?? returnTypeName.name
+    }
+    return returnTypeName.name
   }
 }
 

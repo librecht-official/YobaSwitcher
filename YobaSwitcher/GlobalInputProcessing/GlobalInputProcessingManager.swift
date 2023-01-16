@@ -15,7 +15,7 @@ final class GlobalInputProcessingManager {
     private var timer: Timer?
     
     init(inputMonitor: GlobalInputMonitorProtocol = GlobalInputMonitor()) {
-        let keyboard = VirtualKeyboard()
+        let keyboard = VirtualKeyboard<CGEvent>()
         let systemWide = SystemWide<AXUIElement>()
         self.inputProcessingController = GlobalInputProcessingController(
             selectedTextManager: SystemWideSelectedTextManager(keyboard: keyboard, systemWide: systemWide),

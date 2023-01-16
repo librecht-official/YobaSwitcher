@@ -29,7 +29,7 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
         let selectedText = focusedElement.selectedText
         
         if selectedText.isEmpty {
-            Log.info("Selected text is empty")
+            Log.debug("Selected text is empty")
             return false
         }
         
@@ -51,7 +51,7 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
         let selectedText = focusedElement.selectedText
         
         if selectedText.isEmpty {
-            Log.info("Selected text is empty")
+            Log.debug("Selected text is empty")
             return false
         }
         let uppercasedText = selectedText.uppercased()

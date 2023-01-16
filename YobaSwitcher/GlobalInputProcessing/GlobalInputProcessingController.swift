@@ -14,10 +14,10 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     let systemWide: SystemWideAccessibility
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps Option key
     private(set) var characterKeystrokes: [Keystroke] = [] {
-        didSet { Log.trace(characterKeystrokes) }
+        didSet { Log.debug(characterKeystrokes) }
     }
     private(set) var latestInputEvents = DisplacingBuffer<InputEvent>(maxSize: 3) {
-        didSet { Log.trace(latestInputEvents) }
+        didSet { Log.debug(latestInputEvents) }
     }
     
     init(selectedTextManager: SelectedTextManager, keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility) {
@@ -57,7 +57,7 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         latestInputEvents.append(.flagsChanged(keystroke))
         
         let last2 = latestInputEvents.takeLast(2)
-        if last2.matches(Patterns.optionDownAndUp) {
+        if last2.matches(Patterns.optionPress) {
             Log.info("Hit Option")
             if selectedTextManager.replaceSelectedTextWithAlternativeKeyboardLanguage() {
                 return nil
@@ -79,12 +79,16 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     // MARK: Helpers
     
     private enum Patterns {
-        static let optionDownAndUp: [InputEvent] = [
+        static let optionPress: [InputEvent] = [
             .flagsChanged(Keystroke(.option, flags: .maskAlternate)),
             .flagsChanged(Keystroke(.option))
         ]
+        static let optionPressWithCapslock: [InputEvent] = [
+            .flagsChanged(Keystroke(.option, flags: [.maskAlternate, .maskAlphaShift])),
+            .flagsChanged(Keystroke(.option, flags: .maskAlphaShift))
+        ]
         static let ctrlOptZ: InputEvent =
-            .keyDown(Keystroke(.Z, flags: [.maskControl, .maskAlternate]))
+            .keyDown(Keystroke(.z, flags: [.maskControl, .maskAlternate]))
     }
     
     private func isItCharacterProducingKey(_ keyCode: KeyCode) -> Bool {
@@ -121,37 +125,32 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         
         Log.info("Retype character keystrokes: \(characterKeystrokes)")
         
-        for _ in characterKeystrokes {
-            keyboard.postInputEvent(.keyDown(Keystroke(.delete)), proxy)
-            keyboard.postInputEvent(.keyUp(Keystroke(.delete)), proxy)
-        }
-        
         keyboard.switchInputSource { [weak self] in
-            self?.typeCharacterKeystrokes(proxy)
+            self?.eraseAndTypeKeystrokes(proxy)
         }
         
         return nil
     }
     
+    private func eraseAndTypeKeystrokes(_ proxy: CGEventTapProxy) {
+        for _ in characterKeystrokes {
+            keyboard.postInputEvent(.keyDown(Keystroke(.delete)), proxy)
+            keyboard.postInputEvent(.keyUp(Keystroke(.delete)), proxy)
+        }
+        typeCharacterKeystrokes(proxy)
+    }
+    
     private func typeCharacterKeystrokes(_ proxy: CGEventTapProxy) {
         for keystroke in characterKeystrokes {
             if keystroke.flags.contains(.maskShift) {
-                let shift = InputEvent.flagsChanged(
-                    Keystroke(.shift, flags: [.maskShift, .maskNonCoalesced]),
-                    keyDown: true
-                )
-                keyboard.postInputEvent(shift, proxy)
+                keyboard.postInputEvent(.shiftDown, proxy)
             }
             
             keyboard.postInputEvent(.keyDown(keystroke), proxy)
             keyboard.postInputEvent(.keyUp(keystroke), proxy)
             
             if keystroke.flags.contains(.maskShift) {
-                let shift = InputEvent.flagsChanged(
-                    Keystroke(.shift, flags: [.maskNonCoalesced]),
-                    keyDown: false
-                )
-                keyboard.postInputEvent(shift, proxy)
+                keyboard.postInputEvent(.shiftUp, proxy)
             }
         }
     }

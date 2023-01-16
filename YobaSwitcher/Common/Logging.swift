@@ -13,7 +13,7 @@ extension Log.Hashtag {
 
 enum Log {
     struct Config {
-        var logLevel: Level = .info
+        var logLevel: Level = .debug
         var fileWhitelist: [String] = []
         var hashtagsWhitelist: Set<Log.Hashtag> = []
         var hashtagsBlacklist: Set<Log.Hashtag> = [.recording]
@@ -22,8 +22,7 @@ enum Log {
     static var config = Config()
     
     enum Level: Int {
-        case trace = 0
-        case debug
+        case debug = 0
         case info
         case error
         case critical
@@ -33,18 +32,8 @@ enum Log {
         let rawValue: Int
     }
     
-    static func trace(
-        _ item: @autoclosure () -> Any,
-        separator: String = " ",
-        terminator: String = "\n",
-        hashtags: Set<Hashtag> = [],
-        file: String = #file,
-        function: StaticString = #function
-    ) {
-        filterLog(level: .trace, hashtags: hashtags, sourceFile: file) {
-            print(function, terminator: ": ")
-            print(item(), separator: separator, terminator: terminator)
-        }
+    private static func printDateTime() {
+        print(Date().ISO8601Format(.iso8601.time(includingFractionalSeconds: true)), terminator: " ")
     }
     
     static func debug(
@@ -55,10 +44,13 @@ enum Log {
         file: String = #file,
         function: StaticString = #function
     ) {
+#if DEBUG
         filterLog(level: .debug, hashtags: hashtags, sourceFile: file) {
-            print(function, terminator: ": ")
-            print(item(), separator: separator, terminator: terminator)
+            printDateTime()
+            print("🐞 [\(function)]", terminator: ": ")
+            debugPrint(item(), separator: separator, terminator: terminator)
         }
+#endif
     }
     
     static func info(
@@ -69,7 +61,8 @@ enum Log {
         file: String = #file
     ) {
         filterLog(level: .info, hashtags: hashtags, sourceFile: file) {
-            print("[info]", terminator: " ")
+            printDateTime()
+            print("ℹ️", terminator: " ")
             print(item(), separator: separator, terminator: terminator)
         }
     }
@@ -82,7 +75,8 @@ enum Log {
         file: String = #file
     ) {
         filterLog(level: .error, hashtags: hashtags, sourceFile: file) {
-            print("[error]", terminator: " ")
+            printDateTime()
+            print("⚠️", terminator: " ")
             print(item(), separator: separator, terminator: terminator)
         }
     }
@@ -95,7 +89,8 @@ enum Log {
         file: String = #file
     ) {
         filterLog(level: .critical, hashtags: hashtags, sourceFile: file) {
-            print("[critical]", terminator: " ")
+            printDateTime()
+            print("☠️", terminator: " ")
             print(item(), separator: separator, terminator: terminator)
         }
     }
@@ -127,5 +122,15 @@ extension Set {
 extension Log.Level: Comparable {
     static func < (lhs: Log.Level, rhs: Log.Level) -> Bool {
         lhs.rawValue < rhs.rawValue
+    }
+}
+
+extension String.StringInterpolation {
+    mutating func appendInterpolation<T>(_ optional: T?) {
+        if let value = optional {
+            appendInterpolation("\(value)")
+        } else {
+            appendInterpolation("nil")
+        }
     }
 }

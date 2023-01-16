@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		F51E2FF229707AFB00F42AD8 /* FocusedUIElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF129707AFB00F42AD8 /* FocusedUIElement.swift */; };
 		F51E2FF429707D4300F42AD8 /* MethodStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF329707D4300F42AD8 /* MethodStub.swift */; };
-		F51E2FF82970969E00F42AD8 /* DistributedNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */; };
+		F51E2FF82970969E00F42AD8 /* DistributedNotificationCenterExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF72970969E00F42AD8 /* DistributedNotificationCenterExt.swift */; };
 		F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */; };
 		F51E2FFE2970B60B00F42AD8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFD2970B60B00F42AD8 /* main.swift */; };
 		F52777D7296EF55500B55BC3 /* InputEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D6296EF55500B55BC3 /* InputEvent.swift */; };
@@ -39,6 +39,7 @@
 		F5C7FB632971BD740050CAE0 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7FB622971BD740050CAE0 /* Mocks.swift */; };
 		F5EC0B6A297448A600A8D55D /* SystemWideTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EC0B69297448A600A8D55D /* SystemWideTests.swift */; };
 		F5EC0B7129759B3800A8D55D /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = F5EC0B7029759B3800A8D55D /* SnapshotTesting */; };
+		F5EC0B732975CA9500A8D55D /* VirtualKeyboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EC0B722975CA9500A8D55D /* VirtualKeyboardTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +55,7 @@
 /* Begin PBXFileReference section */
 		F51E2FF129707AFB00F42AD8 /* FocusedUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedUIElement.swift; sourceTree = "<group>"; };
 		F51E2FF329707D4300F42AD8 /* MethodStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodStub.swift; sourceTree = "<group>"; };
-		F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedNotificationCenter.swift; sourceTree = "<group>"; };
+		F51E2FF72970969E00F42AD8 /* DistributedNotificationCenterExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedNotificationCenterExt.swift; sourceTree = "<group>"; };
 		F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
 		F51E2FFD2970B60B00F42AD8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F52777D6296EF55500B55BC3 /* InputEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEvent.swift; sourceTree = "<group>"; };
@@ -86,6 +87,7 @@
 		F5B4CEB4297314060029549C /* EntryPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPoint.swift; sourceTree = "<group>"; };
 		F5C7FB622971BD740050CAE0 /* Mocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		F5EC0B69297448A600A8D55D /* SystemWideTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideTests.swift; sourceTree = "<group>"; };
+		F5EC0B722975CA9500A8D55D /* VirtualKeyboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualKeyboardTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,7 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				F592B27E296E09B200CAF8AD /* DispatchExt.swift */,
-				F51E2FF72970969E00F42AD8 /* DistributedNotificationCenter.swift */,
+				F51E2FF72970969E00F42AD8 /* DistributedNotificationCenterExt.swift */,
 				F52777D8296EF6FF00B55BC3 /* Logging.swift */,
 				F5B4CEAE29723CBF0029549C /* Matchable.swift */,
 				F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */,
@@ -184,6 +186,7 @@
 				F592B25A296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift */,
 				F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */,
 				F5EC0B69297448A600A8D55D /* SystemWideTests.swift */,
+				F5EC0B722975CA9500A8D55D /* VirtualKeyboardTests.swift */,
 				F592B264296DC41B00CAF8AD /* Infrastructure */,
 				F592B261296DC28400CAF8AD /* Mocks */,
 			);
@@ -325,7 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F592B27D296E071D00CAF8AD /* SystemWideAccessibility.swift in Sources */,
-				F51E2FF82970969E00F42AD8 /* DistributedNotificationCenter.swift in Sources */,
+				F51E2FF82970969E00F42AD8 /* DistributedNotificationCenterExt.swift in Sources */,
 				F51E2FFE2970B60B00F42AD8 /* main.swift in Sources */,
 				F52777D7296EF55500B55BC3 /* InputEvent.swift in Sources */,
 				F592B27B296E002700CAF8AD /* VirtualKeyboard.swift in Sources */,
@@ -355,6 +358,7 @@
 				F5750AD32973400300DA8E34 /* FocusedUIElementAccessorTests.swift in Sources */,
 				F5C7FB632971BD740050CAE0 /* Mocks.swift in Sources */,
 				F5B4CEB5297314060029549C /* EntryPoint.swift in Sources */,
+				F5EC0B732975CA9500A8D55D /* VirtualKeyboardTests.swift in Sources */,
 				F5EC0B6A297448A600A8D55D /* SystemWideTests.swift in Sources */,
 				F592B285296E0E5400CAF8AD /* DispatchQueueMock.swift in Sources */,
 				F592B266296DC43000CAF8AD /* PropertyStub.swift in Sources */,

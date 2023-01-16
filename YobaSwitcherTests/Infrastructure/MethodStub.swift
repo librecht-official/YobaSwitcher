@@ -42,6 +42,11 @@ public final class MethodStub<Arguments, ReturnValue> {
     /// Number of times the method was called
     public private(set) var callCount: Int = 0
     
+    public func reset() {
+        argumentsHistory = []
+        callCount = 0
+    }
+    
     private let name: StaticString
     private weak var testCase: XCTestCase?
     

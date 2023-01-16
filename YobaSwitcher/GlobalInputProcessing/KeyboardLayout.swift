@@ -14,7 +14,7 @@ struct LanguageIdentifier: Hashable, RawRepresentable {
 
 // MARK: - 
 
-struct KeyboardLayoutMapping {
+struct KeyboardLayoutMapping: Equatable {
     let sourceLanguage: LanguageIdentifier
     let targetLanguage: LanguageIdentifier
     private let dict: [Character: Character]

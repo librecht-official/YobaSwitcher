@@ -17,6 +17,20 @@ enum InputEvent: Equatable {
     /// `keyDown` is important only when constructing `CGEvent` to post. Incoming `CGEvent`s doesn't have this information. You can understant direction only by checking flags. For example 'Option down' event has `maskAlternate` flag and 'Option up' doesn't.
     case flagsChanged(Keystroke, keyDown: Bool = false)
     case mouseDown
+    
+    static var shiftDown: InputEvent {
+        InputEvent.flagsChanged(
+            Keystroke(.shift, flags: [.maskShift, .maskNonCoalesced]),
+            keyDown: true
+        )
+    }
+    
+    static var shiftUp: InputEvent {
+        InputEvent.flagsChanged(
+            Keystroke(.shift, flags: [.maskNonCoalesced]),
+            keyDown: false
+        )
+    }
 }
 
 // MARK: - Matchable
@@ -82,45 +96,10 @@ extension InputEvent: CustomDebugStringConvertible {
     }
     
     private func debugString(from keystroke: Keystroke, direction: String) -> String {
-        var mods: [String] = [direction, keystroke.flags.debugDescription]
+        var mods: [String] = [direction] + keystroke.flags.stringValues
         if keystroke.isAutorepeat {
             mods.append("AR")
         }
         return "\(keystroke.keyCode.debugDescription)(\(mods.joined(separator: ",")))"
-    }
-}
-
-// MARK: - InputEvent to CGEvent
-
-extension CGEvent {
-    static func fromInputEvent(_ inputEvent: InputEvent) -> CGEvent? {
-        switch inputEvent {
-        case let .keyDown(keystroke):
-            return CGEvent.fromKeystrokeDown(keystroke)
-            
-        case let .keyUp(keystroke):
-            return CGEvent.fromKeystrokeUp(keystroke)
-            
-        case let .flagsChanged(keystroke, keyDown):
-            let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: keyDown)
-            cgEvent?.flags = keystroke.flags
-            return cgEvent
-            
-        case .mouseDown:
-            let cgEvent = CGEvent(mouseEventSource: nil, mouseType: CGEventType.leftMouseDown, mouseCursorPosition: .zero, mouseButton: .left)!
-            return cgEvent
-        }
-    }
-    
-    static func fromKeystrokeDown(_ keystroke: Keystroke) -> CGEvent? {
-        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: true)
-        cgEvent?.flags = keystroke.flags
-        return cgEvent
-    }
-    
-    static func fromKeystrokeUp(_ keystroke: Keystroke) -> CGEvent? {
-        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: false)
-        cgEvent?.flags = keystroke.flags
-        return cgEvent
     }
 }
