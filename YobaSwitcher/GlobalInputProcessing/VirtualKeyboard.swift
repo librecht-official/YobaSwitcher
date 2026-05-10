@@ -47,6 +47,10 @@ final class VirtualKeyboard<CGEvent: CoreGraphicsEvent>: VirtualKeyboardProtocol
         )
     }
     
+    deinit {
+        distributedNotificationCenter.removeObserver(self, name: nil, object: nil)
+    }
+    
     func postInputEvent(_ inputEvent: InputEvent, _ proxy: CGEventTapProxy) {
         Log.debug(inputEvent)
         let event = CGEvent.fromInputEvent(inputEvent)

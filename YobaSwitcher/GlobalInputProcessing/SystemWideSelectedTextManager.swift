@@ -14,9 +14,11 @@ protocol SelectedTextManager {
     func changeSelectedTextCase() -> Bool
 }
 
+// TODO: Rename
 final class SystemWideSelectedTextManager: SelectedTextManager {
     let keyboard: VirtualKeyboardProtocol
     let systemWide: SystemWideAccessibility
+    let textExtractor = PasteboardBasedSelectedTextExtractor()
     
     init(keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility) {
         self.keyboard = keyboard
@@ -25,21 +27,28 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
     
     @discardableResult
     func replaceSelectedTextWithAlternativeKeyboardLanguage() -> Bool {
-        guard let focusedElement = systemWide.focusedElement() else { return false }
-        let selectedText = focusedElement.selectedText
-        
-        if selectedText.isEmpty {
-            Log.debug("Selected text is empty")
+//        guard let focusedElement = systemWide.focusedElement() else { return false }
+//        let selectedText = focusedElement.selectedText
+        do {
+            let selectedText = try textExtractor.selectedText()
+            
+            if selectedText.isEmpty {
+                Log.debug("Selected text is empty")
+                return false
+            }
+            
+            let layoutMapping = keyboard.layoutMapping(for: selectedText)
+            let translatedText = String(selectedText.map { layoutMapping[$0] })
+            textExtractor.setSelectedText(translatedText)
+//            focusedElement.selectedText = translatedText
+            
+            let targetInputSource = keyboard.inputSource(forLanguage: layoutMapping.targetLanguage)
+            if keyboard.currentKeyboardLayoutInputSource().id != targetInputSource.id {
+                keyboard.switchInputSource()
+            }
+        } catch {
+            Log.debug("Selected text not found: \(error)")
             return false
-        }
-        
-        let layoutMapping = keyboard.layoutMapping(for: selectedText)
-        let translatedText = String(selectedText.map { layoutMapping[$0] })
-        focusedElement.selectedText = translatedText
-        
-        let targetInputSource = keyboard.inputSource(forLanguage: layoutMapping.targetLanguage)
-        if keyboard.currentKeyboardLayoutInputSource().id != targetInputSource.id {
-            keyboard.switchInputSource()
         }
         
         return true

@@ -19,6 +19,10 @@ protocol AccessibilityUIElement {
     
     @discardableResult
     func setAttributeValue(_ attribute: String, _ value: CFTypeRef) -> AXError
+    
+    func _copyAttributeValue(_ attribute: String) -> (CFTypeRef?, AXError)
+    
+    func _copyAttributeNames() -> ([AnyObject], AXError)
 }
 
 extension AXUIElement: AccessibilityUIElement {
@@ -29,6 +33,19 @@ extension AXUIElement: AccessibilityUIElement {
     @discardableResult
     func copyAttributeValue(_ attribute: String, _ value: UnsafeMutablePointer<CFTypeRef?>) -> AXError {
         AXUIElementCopyAttributeValue(self, attribute as CFString, value)
+    }
+    
+    func _copyAttributeValue(_ attribute: String) -> (CFTypeRef?, AXError) {
+        var ref: CFTypeRef?
+        let error = AXUIElementCopyAttributeValue(self, attribute as CFString, &ref)
+        return (ref, error)
+    }
+    
+    func _copyAttributeNames() -> ([AnyObject], AXError) {
+        var array: CFArray?
+        let error = AXUIElementCopyAttributeNames(self, &array)
+        let names = array as? [AnyObject] ?? []
+        return (names, error)
     }
     
     @discardableResult

@@ -36,7 +36,7 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
         guard let eventTap = CGEvent.tapCreate(
             tap: .cghidEventTap,
             place: .tailAppendEventTap,
-            options: .defaultTap, // listenOnly defaultTap
+            options: .defaultTap,
             eventsOfInterest: mask.rawValue,
             callback: { proxy, eventType, event, ctx in
                 guard let context = ctx else { return Unmanaged.passUnretained(event) }
@@ -53,7 +53,7 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
         let source = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0)
         CFRunLoopAddSource(CFRunLoopGetCurrent(), source, .commonModes)
         
-        CGEvent.tapEnable(tap: eventTap, enable: true)
+        CGEvent.tapEnable(tap: eventTap, enable: true)// TODO: is it needed?
     }
     
     private func handleEventTapCallback(_ proxy: CGEventTapProxy, _ eventType: CGEventType, _ event: CGEvent) -> CGEvent? {

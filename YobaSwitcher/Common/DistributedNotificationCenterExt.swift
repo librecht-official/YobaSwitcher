@@ -10,7 +10,6 @@ import Foundation
 
 // sourcery: AutoMockable
 protocol DistributedNotificationCenterProtocol {
-//    func addObserver(forName name: NSNotification.Name?, object obj: Any?, queue: OperationQueue?, using block: @escaping (Notification) -> Void) -> NSObjectProtocol
     func addObserver(
         _ observer: Any,
         selector: Selector,

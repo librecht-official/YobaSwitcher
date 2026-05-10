@@ -57,12 +57,14 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         latestInputEvents.append(.flagsChanged(keystroke))
         
         let last2 = latestInputEvents.takeLast(2)
-        if last2.matches(Patterns.optionPress) {
+        
+        if last2.matches(Patterns.optionPress) || last2.matches(Patterns.optionPressWithCapslock) {
             Log.info("Hit Option")
-            if selectedTextManager.replaceSelectedTextWithAlternativeKeyboardLanguage() {
-                return nil
+            if characterKeystrokes.isEmpty {
+                selectedTextManager.replaceSelectedTextWithAlternativeKeyboardLanguage()
+            } else {
+                retypeCharacterKeystrokes(event, proxy)
             }
-            return retypeCharacterKeystrokes(event, proxy)
         }
         
         return event
@@ -120,16 +122,14 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         }
     }
     
-    private func retypeCharacterKeystrokes(_ event: CGEvent, _ proxy: CGEventTapProxy) -> CGEvent? {
-        if characterKeystrokes.isEmpty { return event }
+    private func retypeCharacterKeystrokes(_ event: CGEvent, _ proxy: CGEventTapProxy) {
+        if characterKeystrokes.isEmpty { return }
         
         Log.info("Retype character keystrokes: \(characterKeystrokes)")
         
         keyboard.switchInputSource { [weak self] in
             self?.eraseAndTypeKeystrokes(proxy)
         }
-        
-        return nil
     }
     
     private func eraseAndTypeKeystrokes(_ proxy: CGEventTapProxy) {
