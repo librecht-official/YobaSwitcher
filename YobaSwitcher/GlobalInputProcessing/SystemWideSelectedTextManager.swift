@@ -30,28 +30,33 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
 //        guard let focusedElement = systemWide.focusedElement() else { return false }
 //        let selectedText = focusedElement.selectedText
         do {
-            let selectedText = try textExtractor.selectedText()
+//            let selectedText = try textExtractor.selectedText()
             
-            if selectedText.isEmpty {
-                Log.debug("Selected text is empty")
-                return false
-            }
-            
-            let layoutMapping = keyboard.layoutMapping(for: selectedText)
-            let translatedText = String(selectedText.map { layoutMapping[$0] })
-            textExtractor.setSelectedText(translatedText)
-//            focusedElement.selectedText = translatedText
-            
-            let targetInputSource = keyboard.inputSource(forLanguage: layoutMapping.targetLanguage)
-            if keyboard.currentKeyboardLayoutInputSource().id != targetInputSource.id {
-                keyboard.switchInputSource()
+            return try textExtractor.withSelectedText { selectedText in
+                if selectedText.isEmpty {
+                    Log.debug("Selected text is empty")
+                    return false
+                }
+                
+                let layoutMapping = keyboard.layoutMapping(for: selectedText)
+                let translatedText = String(selectedText.map { layoutMapping[$0] })
+                textExtractor.setSelectedText(translatedText)
+                
+    //            focusedElement.selectedText = translatedText
+                
+                let targetInputSource = keyboard.inputSource(forLanguage: layoutMapping.targetLanguage)
+                if keyboard.currentKeyboardLayoutInputSource().id != targetInputSource.id {
+                    keyboard.switchInputSource()
+                }
+                
+                return true
             }
         } catch {
             Log.debug("Selected text not found: \(error)")
             return false
         }
         
-        return true
+//        return true
     }
     
     @discardableResult

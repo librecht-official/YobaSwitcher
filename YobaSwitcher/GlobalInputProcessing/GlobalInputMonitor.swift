@@ -75,7 +75,7 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
             return handler?.handleMouseDown(event: event, proxy: proxy)
             
         case .tapDisabledByTimeout:
-            Log.info("tapDisabledByTimeout")
+            Log.info("Event tap disabled by timeout. Re-enabling")
             CGEvent.tapEnable(tap: eventTap!, enable: true)
             
         default:

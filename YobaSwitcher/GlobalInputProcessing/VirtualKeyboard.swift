@@ -30,11 +30,21 @@ protocol VirtualKeyboardProtocol {
     func switchInputSource(completion: @escaping () -> ())
 }
 
-final class VirtualKeyboard<CGEvent: CoreGraphicsEvent>: VirtualKeyboardProtocol {
+//enum Env {
+//    static var CGEvent = CoreGraphics.CGEvent.self
+//}
+
+class Event {
+    
+}
+
+final class VirtualKeyboard/*<CGEvent: CoreGraphicsEvent>*/: VirtualKeyboardProtocol {
     let distributedNotificationCenter: DistributedNotificationCenterProtocol
     let inputSourceManager: TextInputSourceManager
     
     init(distributedNotificationCenter: DistributedNotificationCenterProtocol = DistributedNotificationCenter.default(), inputSourceManager: TextInputSourceManager = DefaultTextInputSourceManager()) {
+        assert(Thread.isMainThread, "VirtualKeyboard is supposed to be used in main thread")
+        
         self.distributedNotificationCenter = distributedNotificationCenter
         self.inputSourceManager = inputSourceManager
         
@@ -83,10 +93,11 @@ final class VirtualKeyboard<CGEvent: CoreGraphicsEvent>: VirtualKeyboardProtocol
     func switchInputSource(completion: @escaping () -> Void) {
         let criteria = [
             kTISPropertyInputSourceCategory!: kTISCategoryKeyboardInputSource as Any,
-            kTISPropertyInputSourceIsSelectCapable!: true
+            kTISPropertyInputSourceIsSelectCapable!: true,
+            kTISPropertyInputSourceIsSelected!: false
         ]
         let sourceList = inputSourceManager.inputSourceList(filter: criteria)
-        guard let nonSelectedSource = sourceList.first(where: { !$0.isSelected }) else {
+        guard let nonSelectedSource = sourceList.first else {
             Log.debug("Input source to select not found")
             return
         }
@@ -102,7 +113,6 @@ final class VirtualKeyboard<CGEvent: CoreGraphicsEvent>: VirtualKeyboardProtocol
     @objc func selectedKeyboardInputSourceChanged(_ notification: Any) {
         Log.debug("""
             [DNC] Selected input source has changed.
-            thread: \(Thread.current)
             notification: \(notification)
             completion: \(switchInputSourceCompletion)
             """)

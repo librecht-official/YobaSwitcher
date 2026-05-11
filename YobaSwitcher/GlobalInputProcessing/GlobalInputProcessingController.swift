@@ -11,7 +11,7 @@ import CoreGraphics
 final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     let selectedTextManager: SelectedTextManager
     let keyboard: VirtualKeyboardProtocol
-    let systemWide: SystemWideAccessibility
+    
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps Option key
     private(set) var characterKeystrokes: [Keystroke] = [] {
         didSet { Log.debug(characterKeystrokes) }
@@ -20,10 +20,9 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         didSet { Log.debug(latestInputEvents) }
     }
     
-    init(selectedTextManager: SelectedTextManager, keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility) {
+    init(selectedTextManager: SelectedTextManager, keyboard: VirtualKeyboardProtocol) {
         self.selectedTextManager = selectedTextManager
         self.keyboard = keyboard
-        self.systemWide = systemWide
     }
 
     // MARK: GlobalInputMonitorHandler

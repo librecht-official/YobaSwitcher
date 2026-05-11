@@ -21,6 +21,7 @@ protocol NSPasteboardProtocol {
 }
 
 extension NSPasteboard: NSPasteboardProtocol {
+    @discardableResult
     func prepareForNewContents() -> Int {
         prepareForNewContents(with: [])
     }

@@ -37,10 +37,6 @@ struct DefaultTextInputSourceManager: TextInputSourceManager {
     }
     
     func inputSourceList(filter: [CFString: Any]) -> [TextInputSource] {
-//        let criteria = [
-//            kTISPropertyInputSourceCategory: kTISCategoryKeyboardInputSource as Any,
-//            kTISPropertyInputSourceIsSelectCapable: true
-//        ] as CFDictionary
         guard let sources = TISCreateInputSourceList(filter as CFDictionary, false).takeRetainedValue() as? [TISInputSource] else {
             Log.error("Failed to fetch input source list")
             return []
