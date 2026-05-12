@@ -32,7 +32,7 @@
 		F592B25B296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B25A296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift */; };
 		F592B266296DC43000CAF8AD /* PropertyStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B265296DC43000CAF8AD /* PropertyStub.swift */; };
 		F592B279296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B278296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift */; };
-		F592B27B296E002700CAF8AD /* VirtualKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */; };
+		F592B27B296E002700CAF8AD /* TextInputSourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27A296E002700CAF8AD /* TextInputSourceManager.swift */; };
 		F592B27D296E071D00CAF8AD /* SystemWideAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */; };
 		F592B27F296E09B200CAF8AD /* DispatchExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27E296E09B200CAF8AD /* DispatchExt.swift */; };
 		F592B285296E0E5400CAF8AD /* DispatchQueueMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B284296E0E5400CAF8AD /* DispatchQueueMock.swift */; };
@@ -84,7 +84,7 @@
 		F592B25A296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputProcessingControllerTests.swift; sourceTree = "<group>"; };
 		F592B265296DC43000CAF8AD /* PropertyStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyStub.swift; sourceTree = "<group>"; };
 		F592B278296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputProcessingManager.swift; sourceTree = "<group>"; };
-		F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualKeyboard.swift; sourceTree = "<group>"; };
+		F592B27A296E002700CAF8AD /* TextInputSourceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputSourceManager.swift; sourceTree = "<group>"; };
 		F592B27C296E071D00CAF8AD /* SystemWideAccessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemWideAccessibility.swift; sourceTree = "<group>"; };
 		F592B27E296E09B200CAF8AD /* DispatchExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchExt.swift; sourceTree = "<group>"; };
 		F592B284296E0E5400CAF8AD /* DispatchQueueMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueueMock.swift; sourceTree = "<group>"; };
@@ -191,7 +191,7 @@
 				F5B4CEAA29721B5E0029549C /* Keystroke.swift */,
 				F57C10182FB0B376008AE406 /* PasteboardBasedSelectedTextExtractor.swift */,
 				F533F0CC2970600600549477 /* SystemWideSelectedTextManager.swift */,
-				F592B27A296E002700CAF8AD /* VirtualKeyboard.swift */,
+				F592B27A296E002700CAF8AD /* TextInputSourceManager.swift */,
 			);
 			path = GlobalInputProcessing;
 			sourceTree = "<group>";
@@ -347,7 +347,7 @@
 				F51E2FF82970969E00F42AD8 /* DistributedNotificationCenterExt.swift in Sources */,
 				F51E2FFE2970B60B00F42AD8 /* main.swift in Sources */,
 				F52777D7296EF55500B55BC3 /* InputEvent.swift in Sources */,
-				F592B27B296E002700CAF8AD /* VirtualKeyboard.swift in Sources */,
+				F592B27B296E002700CAF8AD /* TextInputSourceManager.swift in Sources */,
 				F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */,
 				F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */,
 				F54E94EF2961DF5E0066D33F /* GlobalInputProcessingController.swift in Sources */,

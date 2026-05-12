@@ -14,7 +14,6 @@ protocol SelectedTextManager {
     func changeSelectedTextCase() -> Bool
 }
 
-// TODO: Rename
 final class SystemWideSelectedTextManager: SelectedTextManager {
     let tisManager: TextInputSourceManager
     let systemWide: SystemWideAccessibility
@@ -30,9 +29,7 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
 //        guard let focusedElement = systemWide.focusedElement() else { return false }
 //        let selectedText = focusedElement.selectedText
         do {
-//            let selectedText = try textExtractor.selectedText()
-            
-            return try textExtractor.withSelectedText { selectedText in
+            return try textExtractor.withSelectedText { selectedText, writeSelectedText in
                 if selectedText.isEmpty {
                     Log.debug("Selected text is empty")
                     return false
@@ -40,9 +37,7 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
                 
                 let layoutMapping = tisManager.layoutMapping(for: selectedText)
                 let translatedText = String(selectedText.map { layoutMapping[$0] })
-                textExtractor.setSelectedText(translatedText)
-                
-    //            focusedElement.selectedText = translatedText
+                writeSelectedText(translatedText)
                 
                 let targetInputSource = tisManager.inputSource(forLanguage: layoutMapping.targetLanguage)
                 if tisManager.currentKeyboardLayoutInputSource().id != targetInputSource.id {
@@ -55,8 +50,6 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
             Log.debug("Selected text not found: \(error)")
             return false
         }
-        
-//        return true
     }
     
     @discardableResult

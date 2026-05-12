@@ -269,7 +269,7 @@ import XCTest
 
 final class EventTapProxyStub {}
 
-enum Keystrokes {// TODO: Rename to Events
+enum Events {
     static let rightOption: [InputEvent] = [
         .flagsChanged(Keystroke(keyCode: kVK_RightOption, flags: [.maskAlternate, .maskNonCoalesced])), // opt down
         .flagsChanged(Keystroke(keyCode: kVK_RightOption)), // opt up

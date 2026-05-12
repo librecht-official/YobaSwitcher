@@ -35,3 +35,11 @@ struct SystemEvents {
         _postEvent(inputEvent, location)
     }
 }
+
+extension DI {
+    #if TEST
+    static var systemEvents = SystemEvents.default
+    #else
+    static let systemEvents = SystemEvents.default
+    #endif
+}

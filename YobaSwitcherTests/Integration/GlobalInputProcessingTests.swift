@@ -9,12 +9,14 @@ import Carbon
 @testable import YobaSwitcher
 
 @MainActor
+//@Suite("Integration tests of global input events processing")
 struct GlobalInputProcessingTests {
     let events = SystemEventsRecorder()
     
-    var processor: GlobalInputProcessingController
+    let processor: GlobalInputProcessingController
     
     init() {
+        
         let tisAPIMock = TISAPIMock()
         
         let tisManager = DefaultTextInputSourceManager(
@@ -23,25 +25,37 @@ struct GlobalInputProcessingTests {
         )
         let systemWide = SystemWide<AXUIElement>()
         
+        let systemEvents = SystemEvents.mock(recorder: events)
+        DI.systemEvents = systemEvents
+        
+//        DI.pasteboard
+        
         self.processor = GlobalInputProcessingController(
             selectedTextManager: SystemWideSelectedTextManager(tisManager: tisManager, systemWide: systemWide),
             inputSourceManager: tisManager,
-            systemEvents: SystemEvents.mock(recorder: events)
+            systemEvents: systemEvents
         )
     }
     
     /// Type all character-producing keys, 'space', 'tab' and 'return' then press 'right option'. It should delete all characters, switch input source and retype the same keys
     @Test("All character-producing keys")
-    func allCharacterProducingKeys() async throws {
+    func allCharacterProducingKeys() {
         // given
-        let input = Keystrokes.allCharacterProducing + Keystrokes.rightOption
-        
+        let input = Events.allCharacterProducing + Events.rightOption
         // when
         input.forEach(processInputEvent)
-        
         // then
-        let output = Keystrokes.backspaces(count: (Keystrokes.allCharacterProducing.count / 2)) + Keystrokes.allCharacterProducing
+        let output = Events.backspaces(count: (Events.allCharacterProducing.count / 2)) + Events.allCharacterProducing
         #expect(events.recordedEvents == output)
+    }
+    
+    @Test
+    func selectedText() {
+        let input = Events.option
+        
+        input.forEach(processInputEvent)
+        
+        
     }
     
     // MARK: Helpers

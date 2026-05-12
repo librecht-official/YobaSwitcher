@@ -28,29 +28,74 @@ class PasteboardItemStash: NSObject, NSPasteboardWriting {
     }
 }
 
-struct PasteboardBasedSelectedTextExtractor {
-    let pasteboard: NSPasteboard//Protocol
+protocol DependencyKey {
+    associatedtype Value
     
-    init(pasteboard: NSPasteboard = NSPasteboard.general) {
-        self.pasteboard = pasteboard
+    static var defaultValue: Value { get }
+}
+
+struct DependencyValues {
+    fileprivate static let shared = DependencyValues()
+    private let storage = DependencyValuesStorage()
+    
+    subscript<K>(key: K.Type) -> K.Value where K : DependencyKey {
+        get {
+            key.defaultValue
+        }
+        set(newValue) {
+            
+        }
     }
+}
+
+private class DependencyValuesStorage {
+    
+}
+
+@propertyWrapper
+struct Dependency<Value> {
+    let wrappedValue: Value
+    
+    init(_ keyPath: KeyPath<DependencyValues, Value>) {
+        wrappedValue = DependencyValues.shared[keyPath: keyPath]
+    }
+}
+
+extension DependencyValues {
+    var pasteboard: NSPasteboardProtocol {
+        get { self[PasteboardDependencyKey.self] }
+        set { self[PasteboardDependencyKey.self] = newValue }
+    }
+}
+
+private struct PasteboardDependencyKey: DependencyKey {
+    static let defaultValue: NSPasteboardProtocol = NSPasteboard.general
+}
+
+
+
+struct PasteboardBasedSelectedTextExtractor {
+//    @Dependency(\.pasteboard) var pasteboard
+    let pasteboard = DI.pasteboard
+    let systemEvents = DI.systemEvents
+    
+    typealias Writer = (String) -> Void
     
     // TODO: Clean up
-    func withSelectedText<R>(_ action: (String) throws -> R) throws -> R {
+    func withSelectedText<R>(_ action: (String, Writer) throws -> R) throws -> R {
         let originalItems = pasteboard.pasteboardItems ?? []
         let pasteboardStash = originalItems.map(PasteboardItemStash.init)
-        
-        let text = try selectedText()
         
         defer {
             pasteboard.prepareForNewContents()
             pasteboard.writeObjects(pasteboardStash)
         }
         
-        return try action(text)
+        let text = try selectedText()
+        return try action(text, setSelectedText)
     }
     
-    func selectedText() throws -> String {
+    private func selectedText() throws -> String {
 //        let originalItems = pasteboard.pasteboardItems ?? []
 //        let pasteboardStash = originalItems.map(PasteboardItemStash.init)
         
@@ -75,7 +120,7 @@ struct PasteboardBasedSelectedTextExtractor {
         return result
     }
     
-    func setSelectedText(_ newText: String) {
+    private func setSelectedText(_ newText: String) {
 //        let originalItems = pasteboard.pasteboardItems ?? []
 //        let pasteboardStash = originalItems.map(PasteboardItemStash.init)
         
@@ -122,14 +167,4 @@ extension CGEvent {
         event?.flags = flags
         return event
     }
-}
-
-struct TextError: LocalizedError {
-    let message: String
-    
-    init(_ message: String) {
-        self.message = message
-    }
-    
-    var errorDescription: String? { message }
 }

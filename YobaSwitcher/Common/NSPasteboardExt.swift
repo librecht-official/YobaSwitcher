@@ -6,18 +6,21 @@ import Cocoa
 
 // sourcery: AutoMockable
 protocol NSPasteboardProtocol {
-    // sourcery: stubName = "dataForType"
-    func data(forType dataType: NSPasteboard.PasteboardType) -> Data?
+    var pasteboardItems: [NSPasteboardItem]? { get }
+    
+    var changeCount: Int { get }
     
     // sourcery: stubName = "stringForType"
     func string(forType dataType: NSPasteboard.PasteboardType) -> String?
     
     @discardableResult
+    func setString(_ string: String, forType dataType: NSPasteboard.PasteboardType) -> Bool
+    
+    @discardableResult
     func prepareForNewContents() -> Int
     
     @discardableResult
-    // sourcery: stubName = "setDataForType"
-    func setData(_ data: Data?, forType dataType: NSPasteboard.PasteboardType) -> Bool
+    func writeObjects(_ objects: [any NSPasteboardWriting]) -> Bool
 }
 
 extension NSPasteboard: NSPasteboardProtocol {
@@ -25,4 +28,15 @@ extension NSPasteboard: NSPasteboardProtocol {
     func prepareForNewContents() -> Int {
         prepareForNewContents(with: [])
     }
+}
+
+enum DI {
+}
+
+extension DI {
+    #if TEST
+    static var pasteboard: NSPasteboardProtocol = NSPasteboard.general
+    #else
+    static var pasteboard: NSPasteboard { NSPasteboard.general }
+    #endif
 }
