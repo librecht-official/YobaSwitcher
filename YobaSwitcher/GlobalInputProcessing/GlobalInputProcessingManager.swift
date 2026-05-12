@@ -15,12 +15,13 @@ final class GlobalInputProcessingManager {
     private var timer: Timer?
     
     init(inputMonitor: GlobalInputMonitorProtocol = GlobalInputMonitor()) {
-        let keyboard = VirtualKeyboard<CGEvent>()
+        let inputSourceManager = DefaultTextInputSourceManager()
+        let systemEvents = SystemEvents.default
         let systemWide = SystemWide<AXUIElement>()
         self.inputProcessingController = GlobalInputProcessingController(
-            selectedTextManager: SystemWideSelectedTextManager(keyboard: keyboard, systemWide: systemWide),
-            keyboard: keyboard,
-            systemWide: systemWide
+            selectedTextManager: SystemWideSelectedTextManager(tisManager: inputSourceManager, systemWide: systemWide),
+            inputSourceManager: inputSourceManager,
+            systemEvents: systemEvents
         )
         self.inputMonitor = inputMonitor
     }

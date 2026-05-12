@@ -14,8 +14,83 @@ protocol CoreGraphicsEvent {
     func tapPostEvent(_ proxy: CGEventTapProxy?)
 }
 
-extension CGEvent: CoreGraphicsEvent {
-    static func fromInputEvent(_ inputEvent: InputEvent) -> Self? {
+#if TEST
+class CGEvent: Equatable {
+    static func == (lhs: CGEvent, rhs: CGEvent) -> Bool {
+        lhs.flags == rhs.flags && lhs.data == rhs.data
+    }
+    
+    var data: [String: AnyHashable] = [:]
+    var flags: CGEventFlags = []
+
+    required init?(
+        keyboardEventSource source: CGEventSource?,
+        virtualKey: CGKeyCode,
+        keyDown: Bool
+    ) {
+        data["keyboardEventSource"] = source
+        data["keyboardEventKeycode"] = virtualKey
+        data["keyDown"] = keyDown
+    }
+
+    init?(
+        mouseEventSource source: CGEventSource?,
+        mouseType: CGEventType,
+        mouseCursorPosition: CGPoint,
+        mouseButton: CGMouseButton
+    ) {
+        data["mouseEventSource"] = source
+        data["mouseType"] = mouseType
+        data["mouseCursorPosition"] = mouseCursorPosition
+        data["mouseButton"] = mouseButton
+    }
+    
+    func getIntegerValueField(_ field: CGEventField) -> Int64 {
+        switch field {
+        case .keyboardEventKeycode:
+            return data["keyboardEventKeycode"] as! Int64
+        case .keyboardEventAutorepeat:
+            return 0
+        default:
+            return 0
+        }
+    }
+    
+    class func tapCreate(
+        tap: CGEventTapLocation,
+        place: CGEventTapPlacement,
+        options: CGEventTapOptions,
+        eventsOfInterest: CGEventMask,
+        callback: CGEventTapCallBack,
+        userInfo: UnsafeMutableRawPointer?
+    ) -> CFMachPort? {
+        nil
+    }
+    
+    class func tapEnable(tap: CFMachPort, enable: Bool) {
+        
+    }
+    
+    func post(tap: CGEventTapLocation) {
+        
+    }
+    
+    func tapPostEvent(_ proxy: CGEventTapProxy?) {
+        SystemEventsRecorder.tapPostedEvents(self, proxy)
+        SystemEventsRecorder.recordedEvents.append(self)
+    }
+}
+
+enum SystemEventsRecorder {
+    static var recordedEvents: [CGEvent] = []
+    static var tapPostedEvents: (CGEvent, CGEventTapProxy?) -> () = { _,_ in }
+}
+
+typealias CGEventTapCallBack = (CGEventTapProxy, CGEventType, CGEvent, UnsafeMutableRawPointer?) -> Unmanaged<CGEvent>?
+#endif
+
+extension CGEvent {
+    static func fromInputEvent(_ inputEvent: InputEvent) -> CGEvent? {
         switch inputEvent {
         case let .keyDown(keystroke):
             return fromKeystrokeDown(keystroke)
@@ -24,24 +99,24 @@ extension CGEvent: CoreGraphicsEvent {
             return fromKeystrokeUp(keystroke)
             
         case let .flagsChanged(keystroke, keyDown):
-            let cgEvent = Self(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: keyDown)
+            let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: keyDown)
             cgEvent?.flags = keystroke.flags
             return cgEvent
             
         case .mouseDown:
-            let cgEvent = Self(mouseEventSource: nil, mouseType: CGEventType.leftMouseDown, mouseCursorPosition: .zero, mouseButton: .left)!
+            let cgEvent = CGEvent(mouseEventSource: nil, mouseType: CGEventType.leftMouseDown, mouseCursorPosition: .zero, mouseButton: .left)!
             return cgEvent
         }
     }
     
-    static func fromKeystrokeDown(_ keystroke: Keystroke) -> Self? {
-        let cgEvent = Self(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: true)
+    static func fromKeystrokeDown(_ keystroke: Keystroke) -> CGEvent? {
+        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: true)
         cgEvent?.flags = keystroke.flags
         return cgEvent
     }
     
-    static func fromKeystrokeUp(_ keystroke: Keystroke) -> Self? {
-        let cgEvent = Self(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: false)
+    static func fromKeystrokeUp(_ keystroke: Keystroke) -> CGEvent? {
+        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: false)
         cgEvent?.flags = keystroke.flags
         return cgEvent
     }

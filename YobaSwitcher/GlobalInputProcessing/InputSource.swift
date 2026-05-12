@@ -8,26 +8,14 @@
 
 import Carbon
 
-//struct TextInputSourceBox<TIS: TextInputSourceAPI> {
-//    private let ref: TIS.TextInputSource
-//    
-//    init(_ object: TIS.TextInputSource) {
-//        self.ref = object
-//    }
-//    
-//    func value<T>(key: CFString) -> T? {
-//        TIS.getInputSourceProperty(ref, key).map { Unmanaged<AnyObject>.fromOpaque($0).takeUnretainedValue() } as? T
-//    }
-//}
-
 // sourcery: AutoMockable
-protocol TextInputSourceManager {
+protocol TextInputSourceAPI {
     func currentKeyboardLayoutInputSource() -> TextInputSource
     func inputSource(forLanguage id: String) -> TextInputSource
     func inputSourceList(filter: [CFString: Any]) -> [TextInputSource]
 }
 
-struct DefaultTextInputSourceManager: TextInputSourceManager {
+struct TIS: TextInputSourceAPI {
     func currentKeyboardLayoutInputSource() -> TextInputSource {
         TextInputSource(TISCopyCurrentKeyboardLayoutInputSource().takeRetainedValue())
     }
@@ -44,17 +32,21 @@ struct DefaultTextInputSourceManager: TextInputSourceManager {
         
         return sources.map(TextInputSource.init)
     }
+    
+//    func select(_ source: TextInputSource) {
+//        TISSelectInputSource(source.ref)
+//    }
 }
 
 struct TextInputSource: Equatable {
-    static func == (lhs: TextInputSource, rhs: TextInputSource) -> Bool {
-        lhs.ref.isEqual(to: rhs.ref)
-    }
-    
-    private let ref: any TextInputSourceReference
+    fileprivate let ref: any TextInputSourceReference
     
     init(_ object: any TextInputSourceReference) {
         self.ref = object
+    }
+    
+    static func == (lhs: TextInputSource, rhs: TextInputSource) -> Bool {
+        lhs.ref.isEqual(to: rhs.ref)
     }
     
     var id: String? {
@@ -95,39 +87,3 @@ extension TISInputSource: TextInputSourceReference {
         TISSelectInputSource(self)
     }
 }
-
-//// sourcery: AutoMockable
-//protocol TextInputSourceProtocol: AnyObject {
-//    var id: String? { get }
-//}
-//
-//extension TISInputSource: TextInputSourceProtocol {
-//    func value<T>(key: CFString) -> T? {
-//        TISGetInputSourceProperty(self, key).map { Unmanaged<AnyObject>.fromOpaque($0).takeUnretainedValue() } as? T
-//    }
-//
-//    var id: String? {
-//        value(key: kTISPropertyInputSourceID)
-//    }
-//}
-
-//// sourcery: AutoMockable
-//protocol TextInputSourceAPI {
-//    associatedtype TextInputSource: TextInputSourceProtocol
-//    
-//    static func copyCurrentKeyboardLayoutInputSource() -> Unmanaged<TextInputSource>!
-//    
-//    static func getInputSourceProperty(_ inputSource: TextInputSource!, _ propertyKey: CFString!) -> UnsafeMutableRawPointer!
-//}
-//
-//enum TIS: TextInputSourceAPI {
-//    typealias TextInputSource = TISInputSource
-//    
-//    static func copyCurrentKeyboardLayoutInputSource() -> Unmanaged<TextInputSource>! {
-//        TISCopyCurrentKeyboardLayoutInputSource()
-//    }
-//    
-//    static func getInputSourceProperty(_ inputSource: TextInputSource!, _ propertyKey: CFString!) -> UnsafeMutableRawPointer! {
-//        TISGetInputSourceProperty(inputSource, propertyKey)
-//    }
-//}

@@ -16,12 +16,12 @@ protocol SelectedTextManager {
 
 // TODO: Rename
 final class SystemWideSelectedTextManager: SelectedTextManager {
-    let keyboard: VirtualKeyboardProtocol
+    let tisManager: TextInputSourceManager
     let systemWide: SystemWideAccessibility
     let textExtractor = PasteboardBasedSelectedTextExtractor()
     
-    init(keyboard: VirtualKeyboardProtocol, systemWide: SystemWideAccessibility) {
-        self.keyboard = keyboard
+    init(tisManager: TextInputSourceManager, systemWide: SystemWideAccessibility) {
+        self.tisManager = tisManager
         self.systemWide = systemWide
     }
     
@@ -38,15 +38,15 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
                     return false
                 }
                 
-                let layoutMapping = keyboard.layoutMapping(for: selectedText)
+                let layoutMapping = tisManager.layoutMapping(for: selectedText)
                 let translatedText = String(selectedText.map { layoutMapping[$0] })
                 textExtractor.setSelectedText(translatedText)
                 
     //            focusedElement.selectedText = translatedText
                 
-                let targetInputSource = keyboard.inputSource(forLanguage: layoutMapping.targetLanguage)
-                if keyboard.currentKeyboardLayoutInputSource().id != targetInputSource.id {
-                    keyboard.switchInputSource()
+                let targetInputSource = tisManager.inputSource(forLanguage: layoutMapping.targetLanguage)
+                if tisManager.currentKeyboardLayoutInputSource().id != targetInputSource.id {
+                    tisManager.switchInputSource()
                 }
                 
                 return true

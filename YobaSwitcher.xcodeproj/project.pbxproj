@@ -12,6 +12,7 @@
 		F51E2FF82970969E00F42AD8 /* DistributedNotificationCenterExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF72970969E00F42AD8 /* DistributedNotificationCenterExt.swift */; };
 		F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */; };
 		F51E2FFE2970B60B00F42AD8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFD2970B60B00F42AD8 /* main.swift */; };
+		F524619B2FB30AA40052748A /* GlobalInputProcessingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F524619A2FB30AA40052748A /* GlobalInputProcessingTests.swift */; };
 		F52777D7296EF55500B55BC3 /* InputEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D6296EF55500B55BC3 /* InputEvent.swift */; };
 		F52777D9296EF6FF00B55BC3 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777D8296EF6FF00B55BC3 /* Logging.swift */; };
 		F52777DC296FC67B00B55BC3 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */; };
@@ -20,6 +21,7 @@
 		F54E94DE2961C2980066D33F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94DD2961C2980066D33F /* AppDelegate.swift */; };
 		F54E94E22961C29A0066D33F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F54E94E12961C29A0066D33F /* Assets.xcassets */; };
 		F54E94EF2961DF5E0066D33F /* GlobalInputProcessingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94EE2961DF5E0066D33F /* GlobalInputProcessingController.swift */; };
+		F552076E2FB379A900DBA0BF /* SystemEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F552076D2FB379A900DBA0BF /* SystemEvents.swift */; };
 		F5750AD32973400300DA8E34 /* FocusedUIElementAccessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5750AD22973400300DA8E34 /* FocusedUIElementAccessorTests.swift */; };
 		F5750AD52973539300DA8E34 /* AccessibilityUIElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5750AD42973539300DA8E34 /* AccessibilityUIElement.swift */; };
 		F57C10192FB0B37A008AE406 /* PasteboardBasedSelectedTextExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C10182FB0B376008AE406 /* PasteboardBasedSelectedTextExtractor.swift */; };
@@ -40,7 +42,6 @@
 		F5B4CEB5297314060029549C /* EntryPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEB4297314060029549C /* EntryPoint.swift */; };
 		F5C7FB632971BD740050CAE0 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7FB622971BD740050CAE0 /* Mocks.swift */; };
 		F5EC0B6A297448A600A8D55D /* SystemWideTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EC0B69297448A600A8D55D /* SystemWideTests.swift */; };
-		F5EC0B7129759B3800A8D55D /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = F5EC0B7029759B3800A8D55D /* SnapshotTesting */; };
 		F5EC0B732975CA9500A8D55D /* VirtualKeyboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EC0B722975CA9500A8D55D /* VirtualKeyboardTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		F51E2FF72970969E00F42AD8 /* DistributedNotificationCenterExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedNotificationCenterExt.swift; sourceTree = "<group>"; };
 		F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
 		F51E2FFD2970B60B00F42AD8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		F524619A2FB30AA40052748A /* GlobalInputProcessingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputProcessingTests.swift; sourceTree = "<group>"; };
 		F52777D6296EF55500B55BC3 /* InputEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEvent.swift; sourceTree = "<group>"; };
 		F52777D8296EF6FF00B55BC3 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 		F54E94E12961C29A0066D33F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F54E94E62961C29A0066D33F /* YobaSwitcher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YobaSwitcher.entitlements; sourceTree = "<group>"; };
 		F54E94EE2961DF5E0066D33F /* GlobalInputProcessingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputProcessingController.swift; sourceTree = "<group>"; };
+		F552076D2FB379A900DBA0BF /* SystemEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEvents.swift; sourceTree = "<group>"; };
 		F5750AD22973400300DA8E34 /* FocusedUIElementAccessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedUIElementAccessorTests.swift; sourceTree = "<group>"; };
 		F5750AD42973539300DA8E34 /* AccessibilityUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityUIElement.swift; sourceTree = "<group>"; };
 		F57C10182FB0B376008AE406 /* PasteboardBasedSelectedTextExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardBasedSelectedTextExtractor.swift; sourceTree = "<group>"; };
@@ -106,7 +109,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5EC0B7129759B3800A8D55D /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +121,14 @@
 				F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */,
 			);
 			path = MainMenu;
+			sourceTree = "<group>";
+		};
+		F52461972FB309710052748A /* Integration */ = {
+			isa = PBXGroup;
+			children = (
+				F524619A2FB30AA40052748A /* GlobalInputProcessingTests.swift */,
+			);
+			path = Integration;
 			sourceTree = "<group>";
 		};
 		F52777DA296F36BB00B55BC3 /* Common */ = {
@@ -169,6 +179,7 @@
 		F592B24D296DBC4B00CAF8AD /* GlobalInputProcessing */ = {
 			isa = PBXGroup;
 			children = (
+				F552076D2FB379A900DBA0BF /* SystemEvents.swift */,
 				F5EC0B68297445C700A8D55D /* Accessibility */,
 				F592B252296DBE1600CAF8AD /* CGEventExt.swift */,
 				F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */,
@@ -188,6 +199,7 @@
 		F592B259296DC13100CAF8AD /* YobaSwitcherTests */ = {
 			isa = PBXGroup;
 			children = (
+				F52461972FB309710052748A /* Integration */,
 				F5750AD22973400300DA8E34 /* FocusedUIElementAccessorTests.swift */,
 				F592B25A296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift */,
 				F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */,
@@ -263,7 +275,6 @@
 			);
 			name = YobaSwitcherTests;
 			packageProductDependencies = (
-				F5EC0B7029759B3800A8D55D /* SnapshotTesting */,
 			);
 			productName = YobaSwitcherTests;
 			productReference = F592B258296DC13100CAF8AD /* YobaSwitcherTests.xctest */;
@@ -298,7 +309,6 @@
 			);
 			mainGroup = F54E94D12961C2980066D33F;
 			packageReferences = (
-				F5EC0B6F29759B3800A8D55D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			productRefGroup = F54E94DB2961C2980066D33F /* Products */;
 			projectDirPath = "";
@@ -348,6 +358,7 @@
 				F592B24F296DBC5900CAF8AD /* InputSource.swift in Sources */,
 				F52777D9296EF6FF00B55BC3 /* Logging.swift in Sources */,
 				F5B4CEB1297244EB0029549C /* DisplacingBuffer.swift in Sources */,
+				F552076E2FB379A900DBA0BF /* SystemEvents.swift in Sources */,
 				F52777DC296FC67B00B55BC3 /* KeyboardLayout.swift in Sources */,
 				F533F0CD2970600600549477 /* SystemWideSelectedTextManager.swift in Sources */,
 				F592B251296DBD4B00CAF8AD /* GlobalInputMonitor.swift in Sources */,
@@ -367,6 +378,7 @@
 				F5C7FB632971BD740050CAE0 /* Mocks.swift in Sources */,
 				F5B4CEB5297314060029549C /* EntryPoint.swift in Sources */,
 				F5EC0B732975CA9500A8D55D /* VirtualKeyboardTests.swift in Sources */,
+				F524619B2FB30AA40052748A /* GlobalInputProcessingTests.swift in Sources */,
 				F5EC0B6A297448A600A8D55D /* SystemWideTests.swift in Sources */,
 				F592B285296E0E5400CAF8AD /* DispatchQueueMock.swift in Sources */,
 				F592B266296DC43000CAF8AD /* PropertyStub.swift in Sources */,
@@ -387,6 +399,112 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		F52461922FB2FEE70052748A /* Test */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TEST";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Test;
+		};
+		F52461932FB2FEE70052748A /* Test */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = YobaSwitcher/YobaSwitcher.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BFCZTEYG58;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcher;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Test;
+		};
+		F52461942FB2FEE70052748A /* Test */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BFCZTEYG58;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_NAME).EntryPoint";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcherTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YobaSwitcher.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/YobaSwitcher";
+			};
+			name = Test;
+		};
 		F54E94E72961C29A0066D33F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -599,6 +717,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F54E94E72961C29A0066D33F /* Debug */,
+				F52461922FB2FEE70052748A /* Test */,
 				F54E94E82961C29A0066D33F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -608,6 +727,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F54E94EA2961C29A0066D33F /* Debug */,
+				F52461932FB2FEE70052748A /* Test */,
 				F54E94EB2961C29A0066D33F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -617,31 +737,13 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F592B25F296DC13200CAF8AD /* Debug */,
+				F52461942FB2FEE70052748A /* Test */,
 				F592B260296DC13200CAF8AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		F5EC0B6F29759B3800A8D55D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		F5EC0B7029759B3800A8D55D /* SnapshotTesting */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F5EC0B6F29759B3800A8D55D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
-			productName = SnapshotTesting;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F54E94D22961C2980066D33F /* Project object */;
 }

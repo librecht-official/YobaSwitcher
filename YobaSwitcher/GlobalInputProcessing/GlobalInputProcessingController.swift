@@ -10,7 +10,8 @@ import CoreGraphics
 
 final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     let selectedTextManager: SelectedTextManager
-    let keyboard: VirtualKeyboardProtocol
+    let inputSourceManager: TextInputSourceManager
+    let systemEvents: SystemEvents
     
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps Option key
     private(set) var characterKeystrokes: [Keystroke] = [] {
@@ -20,9 +21,10 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         didSet { Log.debug(latestInputEvents) }
     }
     
-    init(selectedTextManager: SelectedTextManager, keyboard: VirtualKeyboardProtocol) {
+    init(selectedTextManager: SelectedTextManager, inputSourceManager: TextInputSourceManager, systemEvents: SystemEvents) {
         self.selectedTextManager = selectedTextManager
-        self.keyboard = keyboard
+        self.inputSourceManager = inputSourceManager
+        self.systemEvents = systemEvents
     }
 
     // MARK: GlobalInputMonitorHandler
@@ -126,15 +128,15 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         
         Log.info("Retype character keystrokes: \(characterKeystrokes)")
         
-        keyboard.switchInputSource { [weak self] in
+        inputSourceManager.switchInputSource { [weak self] in
             self?.eraseAndTypeKeystrokes(proxy)
         }
     }
     
     private func eraseAndTypeKeystrokes(_ proxy: CGEventTapProxy) {
         for _ in characterKeystrokes {
-            keyboard.postInputEvent(.keyDown(Keystroke(.delete)), proxy)
-            keyboard.postInputEvent(.keyUp(Keystroke(.delete)), proxy)
+            systemEvents.postEvent(.keyDown(Keystroke(.delete)), proxy)
+            systemEvents.postEvent(.keyUp(Keystroke(.delete)), proxy)
         }
         typeCharacterKeystrokes(proxy)
     }
@@ -142,14 +144,14 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     private func typeCharacterKeystrokes(_ proxy: CGEventTapProxy) {
         for keystroke in characterKeystrokes {
             if keystroke.flags.contains(.maskShift) {
-                keyboard.postInputEvent(.shiftDown, proxy)
+                systemEvents.postEvent(.shiftDown, proxy)
             }
             
-            keyboard.postInputEvent(.keyDown(keystroke), proxy)
-            keyboard.postInputEvent(.keyUp(keystroke), proxy)
+            systemEvents.postEvent(.keyDown(keystroke), proxy)
+            systemEvents.postEvent(.keyUp(keystroke), proxy)
             
             if keystroke.flags.contains(.maskShift) {
-                keyboard.postInputEvent(.shiftUp, proxy)
+                systemEvents.postEvent(.shiftUp, proxy)
             }
         }
     }

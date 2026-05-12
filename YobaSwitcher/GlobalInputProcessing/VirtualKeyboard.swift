@@ -9,9 +9,7 @@ import Carbon
 import CoreGraphics
 
 // sourcery: AutoMockable
-protocol VirtualKeyboardProtocol {
-    func postInputEvent(_ inputEvent: InputEvent, _ proxy: CGEventTapProxy)
-    
+protocol TextInputSourceManager {
     // sourcery: stubNameMode = "medium"
     /// Returns keyboard layout mapping object for given text
     ///
@@ -30,23 +28,15 @@ protocol VirtualKeyboardProtocol {
     func switchInputSource(completion: @escaping () -> ())
 }
 
-//enum Env {
-//    static var CGEvent = CoreGraphics.CGEvent.self
-//}
-
-class Event {
-    
-}
-
-final class VirtualKeyboard/*<CGEvent: CoreGraphicsEvent>*/: VirtualKeyboardProtocol {
+final class DefaultTextInputSourceManager: TextInputSourceManager {
     let distributedNotificationCenter: DistributedNotificationCenterProtocol
-    let inputSourceManager: TextInputSourceManager
+    let tis: TextInputSourceAPI
     
-    init(distributedNotificationCenter: DistributedNotificationCenterProtocol = DistributedNotificationCenter.default(), inputSourceManager: TextInputSourceManager = DefaultTextInputSourceManager()) {
-        assert(Thread.isMainThread, "VirtualKeyboard is supposed to be used in main thread")
+    init(distributedNotificationCenter: DistributedNotificationCenterProtocol = DistributedNotificationCenter.default(), tis: TextInputSourceAPI = TIS()) {
+        assert(Thread.isMainThread, "DefaultTextInputSourceManager is supposed to be used in main thread")
         
         self.distributedNotificationCenter = distributedNotificationCenter
-        self.inputSourceManager = inputSourceManager
+        self.tis = tis
         
         distributedNotificationCenter.addObserver(
             self,
@@ -61,12 +51,6 @@ final class VirtualKeyboard/*<CGEvent: CoreGraphicsEvent>*/: VirtualKeyboardProt
         distributedNotificationCenter.removeObserver(self, name: nil, object: nil)
     }
     
-    func postInputEvent(_ inputEvent: InputEvent, _ proxy: CGEventTapProxy) {
-        Log.debug(inputEvent)
-        let event = CGEvent.fromInputEvent(inputEvent)
-        event?.tapPostEvent(proxy)
-    }
-    
     func layoutMapping(for text: String) -> KeyboardLayoutMapping {
         let enToRu = KeyboardLayoutMapping.enToRu
         guard let firstCharacter = text.first else {
@@ -79,11 +63,11 @@ final class VirtualKeyboard/*<CGEvent: CoreGraphicsEvent>*/: VirtualKeyboardProt
     }
     
     func currentKeyboardLayoutInputSource() -> TextInputSource {
-        inputSourceManager.currentKeyboardLayoutInputSource()
+        tis.currentKeyboardLayoutInputSource()
     }
     
     func inputSource(forLanguage id: LanguageIdentifier) -> TextInputSource {
-        inputSourceManager.inputSource(forLanguage: id.rawValue)
+        tis.inputSource(forLanguage: id.rawValue)
     }
     
     func switchInputSource() {
@@ -96,7 +80,7 @@ final class VirtualKeyboard/*<CGEvent: CoreGraphicsEvent>*/: VirtualKeyboardProt
             kTISPropertyInputSourceIsSelectCapable!: true,
             kTISPropertyInputSourceIsSelected!: false
         ]
-        let sourceList = inputSourceManager.inputSourceList(filter: criteria)
+        let sourceList = tis.inputSourceList(filter: criteria)
         guard let nonSelectedSource = sourceList.first else {
             Log.debug("Input source to select not found")
             return
