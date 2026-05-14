@@ -7,18 +7,11 @@
 
 import CoreGraphics
 
-// sourcery: AutoMockable
-protocol CoreGraphicsEvent {
-    static func fromInputEvent(_ inputEvent: InputEvent) -> Self?
-    
-    func tapPostEvent(_ proxy: CGEventTapProxy?)
-}
-
 extension CGEvent {
     static func fromInputEvent(_ inputEvent: InputEvent) -> CGEvent? {
         switch inputEvent {
         case let .keyDown(keystroke):
-            return fromKeystrokeDown(keystroke)
+            return fromKeystrokeDown(keystroke)// TODO: keyDown, keyUp and flagsChanged cases very similar
             
         case let .keyUp(keystroke):
             return fromKeystrokeUp(keystroke)

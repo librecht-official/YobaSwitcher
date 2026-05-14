@@ -13,6 +13,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private let globalInputProcessing = GlobalInputProcessingManager()
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        #if TEST
+        Log.info("Application Did Finish Launching for Tests")
+        return
+        #endif
         Log.info("Application Did Finish Launching")
         mainMenuController.start()
         globalInputProcessing.start()

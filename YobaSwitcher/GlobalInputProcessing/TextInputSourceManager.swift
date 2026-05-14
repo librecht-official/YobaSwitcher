@@ -53,7 +53,7 @@ final class DefaultTextInputSourceManager: TextInputSourceManager {
     
     func layoutMapping(for text: String) -> KeyboardLayoutMapping {
         let enToRu = KeyboardLayoutMapping.enToRu
-        guard let firstCharacter = text.first else {
+        guard let firstCharacter = text.first(where: \.isLetter) else {
             return enToRu
         }
         if enToRu.hasKey(Character(firstCharacter.lowercased())) {

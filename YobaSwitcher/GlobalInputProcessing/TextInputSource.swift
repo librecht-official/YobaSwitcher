@@ -8,7 +8,6 @@
 
 import Carbon
 
-// sourcery: AutoMockable
 protocol TextInputSourceAPI {
     func currentKeyboardLayoutInputSource() -> TextInputSource
     func inputSource(forLanguage id: String) -> TextInputSource

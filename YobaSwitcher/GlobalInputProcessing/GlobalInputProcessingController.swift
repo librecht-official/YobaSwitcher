@@ -11,20 +11,15 @@ import CoreGraphics
 final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     let selectedTextManager: SelectedTextManager
     let inputSourceManager: TextInputSourceManager
-    let systemEvents: SystemEvents
+    let systemEvents = StaticDependency.systemEvents
     
     // Contains "currently" pressed keys that will be retyped with another input source when the user taps Option key
-    private(set) var characterKeystrokes: [Keystroke] = [] {
-        didSet { Log.debug(characterKeystrokes) }
-    }
-    private(set) var latestInputEvents = DisplacingBuffer<InputEvent>(maxSize: 3) {
-        didSet { Log.debug(latestInputEvents) }
-    }
+    private(set) var characterKeystrokes: [Keystroke] = []
+    private(set) var latestInputEvents = DisplacingBuffer<InputEvent>(maxSize: 3)
     
-    init(selectedTextManager: SelectedTextManager, inputSourceManager: TextInputSourceManager, systemEvents: SystemEvents) {
+    init(selectedTextManager: SelectedTextManager, inputSourceManager: TextInputSourceManager) {
         self.selectedTextManager = selectedTextManager
         self.inputSourceManager = inputSourceManager
-        self.systemEvents = systemEvents
     }
 
     // MARK: GlobalInputMonitorHandler
@@ -57,12 +52,12 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         let keystroke = Keystroke(event: event)
         latestInputEvents.append(.flagsChanged(keystroke))
         
-        let last2 = latestInputEvents.takeLast(2)
+        let last2 = latestInputEvents.suffix(2)
         
         if last2.matches(Patterns.optionPress) || last2.matches(Patterns.optionPressWithCapslock) {
             Log.info("Hit Option")
             if characterKeystrokes.isEmpty {
-                selectedTextManager.replaceSelectedTextWithAlternativeKeyboardLanguage()
+                selectedTextManager.replaceSelectedTextWithAlternativeKeyboardLayout()
             } else {
                 retypeCharacterKeystrokes(event, proxy)
             }

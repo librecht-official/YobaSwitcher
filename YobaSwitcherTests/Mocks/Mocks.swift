@@ -176,11 +176,11 @@
 //        self._mockId = id
 //    }
 //
-//    public private(set) lazy var _replaceSelectedTextWithAlternativeKeyboardLanguage = MethodStub<(), Bool>(name: "replaceSelectedTextWithAlternativeKeyboardLanguage", testCase)
+//    public private(set) lazy var _replaceSelectedTextWithAlternativeKeyboardLayout = MethodStub<(), Bool>(name: "replaceSelectedTextWithAlternativeKeyboardLayout", testCase)
 //
 //    @discardableResult
-//    public func replaceSelectedTextWithAlternativeKeyboardLanguage() -> Bool {
-//        _replaceSelectedTextWithAlternativeKeyboardLanguage.callWithReturnValue(arguments: ())
+//    public func replaceSelectedTextWithAlternativeKeyboardLayout() -> Bool {
+//        _replaceSelectedTextWithAlternativeKeyboardLayout.callWithReturnValue(arguments: ())
 //    }
 //
 //    public private(set) lazy var _changeSelectedTextCase = MethodStub<(), Bool>(name: "changeSelectedTextCase", testCase)

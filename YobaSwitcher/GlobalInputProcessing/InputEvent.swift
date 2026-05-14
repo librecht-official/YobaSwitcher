@@ -10,6 +10,7 @@ import CoreGraphics
 
 /// A value type that represents input event
 enum InputEvent: Equatable {
+    // TODO: Make keyDown, keyUp and flagsChanged a single case?
     case keyDown(Keystroke)
     case keyUp(Keystroke)
     /// Key changed event for a modifier or status key.

@@ -24,7 +24,7 @@
 //        systemWideMock._focusedElement.returnValue = focusedUIElementMock
 //    }
 //    
-//    // MARK: - replaceSelectedTextWithAlternativeKeyboardLanguage
+//    // MARK: - replaceSelectedTextWithAlternativeKeyboardLayout
 //
 //    func testSwitchingSelectedTextLanguage_EngCharacters_EnInputSource() {
 //        // given
@@ -34,7 +34,7 @@
 //        keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.enInputSource
 //
 //        // when
-//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
+//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLayout()
 //        
 //        // then
 //        XCTAssertTrue(result)
@@ -59,7 +59,7 @@
 //        keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.ruInputSource
 //
 //        // when
-//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
+//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLayout()
 //
 //        // then
 //        XCTAssertTrue(result)
@@ -84,7 +84,7 @@
 //        keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.ruInputSource
 //
 //        // when
-//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
+//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLayout()
 //
 //        // then
 //        XCTAssertTrue(result)
@@ -109,7 +109,7 @@
 //        keyboardMock._currentKeyboardLayoutInputSource.returnValue = TestData.enInputSource
 //
 //        // when
-//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
+//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLayout()
 //
 //        // then
 //        XCTAssertTrue(result)
@@ -131,7 +131,7 @@
 //        focusedUIElementMock._selectedText.stubValue = ""
 //
 //        // when
-//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
+//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLayout()
 //
 //        // then
 //        XCTAssertFalse(result)
@@ -150,7 +150,7 @@
 //        systemWideMock._focusedElement.returnValue = nil
 //
 //        // when
-//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLanguage()
+//        let result = manager.replaceSelectedTextWithAlternativeKeyboardLayout()
 //
 //        // then
 //        XCTAssertFalse(result)

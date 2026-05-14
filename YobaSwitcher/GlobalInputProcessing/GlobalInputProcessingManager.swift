@@ -16,12 +16,10 @@ final class GlobalInputProcessingManager {
     
     init(inputMonitor: GlobalInputMonitorProtocol = GlobalInputMonitor()) {
         let inputSourceManager = DefaultTextInputSourceManager()
-        let systemEvents = SystemEvents.default
         let systemWide = SystemWide<AXUIElement>()
         self.inputProcessingController = GlobalInputProcessingController(
             selectedTextManager: SystemWideSelectedTextManager(tisManager: inputSourceManager, systemWide: systemWide),
-            inputSourceManager: inputSourceManager,
-            systemEvents: systemEvents
+            inputSourceManager: inputSourceManager
         )
         self.inputMonitor = inputMonitor
     }

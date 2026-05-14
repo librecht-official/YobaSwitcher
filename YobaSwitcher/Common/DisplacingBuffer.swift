@@ -7,7 +7,7 @@
 
 /// An ordered, random-access collection with limited size.
 ///
-/// When adding a new element, if there is no space buffer removes first element.
+/// When adding a new element, if there is no space the buffer removes first element.
 struct DisplacingBuffer<Element>: RandomAccessCollection {
     typealias Index = Int
     
@@ -35,15 +35,6 @@ struct DisplacingBuffer<Element>: RandomAccessCollection {
             storage.removeFirst()
         }
         storage.append(newElement)
-    }
-    
-    func takeLast(_ k: Int) -> [Element] {
-        var result: [Element] = []
-        let n = Swift.min(k, endIndex)
-        for i in (endIndex - n) ..< endIndex {
-            result.append(self[i])
-        }
-        return result
     }
 }
 

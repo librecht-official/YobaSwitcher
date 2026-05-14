@@ -5,10 +5,9 @@
 //  Created by Vladislav Librecht on 12.01.2023.
 //
 
-// sourcery: AutoMockable
 protocol SelectedTextManager {
     @discardableResult
-    func replaceSelectedTextWithAlternativeKeyboardLanguage() -> Bool
+    func replaceSelectedTextWithAlternativeKeyboardLayout() -> Bool
     
     @discardableResult
     func changeSelectedTextCase() -> Bool
@@ -17,7 +16,7 @@ protocol SelectedTextManager {
 final class SystemWideSelectedTextManager: SelectedTextManager {
     let tisManager: TextInputSourceManager
     let systemWide: SystemWideAccessibility
-    let textExtractor = PasteboardBasedSelectedTextExtractor()
+    let textReaderWriter = PasteboardTextReaderWriter()
     
     init(tisManager: TextInputSourceManager, systemWide: SystemWideAccessibility) {
         self.tisManager = tisManager
@@ -25,11 +24,9 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
     }
     
     @discardableResult
-    func replaceSelectedTextWithAlternativeKeyboardLanguage() -> Bool {
-//        guard let focusedElement = systemWide.focusedElement() else { return false }
-//        let selectedText = focusedElement.selectedText
+    func replaceSelectedTextWithAlternativeKeyboardLayout() -> Bool {
         do {
-            return try textExtractor.withSelectedText { selectedText, writeSelectedText in
+            return try textReaderWriter.withSelectedText { selectedText, writeSelectedText in
                 if selectedText.isEmpty {
                     Log.debug("Selected text is empty")
                     return false

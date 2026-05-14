@@ -8,7 +8,6 @@
 import Carbon
 import Foundation
 
-// sourcery: AutoMockable
 protocol DistributedNotificationCenterProtocol {
     func addObserver(
         _ observer: Any,

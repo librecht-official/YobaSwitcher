@@ -32,7 +32,7 @@ import XCTest
 //        controller = GlobalInputProcessingController(selectedTextManager: selectedTextManagerMock, keyboard: keyboardMock)
 //        
 //        systemWideMock._focusedElement.returnValue = focusedUIElementMock
-//        selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLanguage.returnValue = false
+//        selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLayout.returnValue = false
 //    }
 //    
 //    // MARK: - Type and press Option
@@ -189,17 +189,17 @@ import XCTest
 //    
 //    // MARK: Switching selected text language
 //    
-//    /// When there is selected text somewhere replaceSelectedTextWithAlternativeKeyboardLanguage() returns true. In this case when Option is pressed controller should replace selected text and not produce keystrokes
+//    /// When there is selected text somewhere replaceSelectedTextWithAlternativeKeyboardLayout() returns true. In this case when Option is pressed controller should replace selected text and not produce keystrokes
 //    func testSwitchingSelectedTextLanguage() {
 //        // given
-//        selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLanguage.returnValue = true
+//        selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLayout.returnValue = true
 //        let keystrokes = Keystrokes.hello + Keystrokes.option
 //        
 //        // when
 //        keystrokes.forEach(performInputEvent)
 //        
 //        // then
-//        selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLanguage.wasCalled(1)
+//        selectedTextManagerMock._replaceSelectedTextWithAlternativeKeyboardLayout.wasCalled(1)
 //        XCTAssertEqual(ksRecorder.keystrokesBeforeSwitching, [])
 //        keyboardMock._switchInputSourceCompletion.wasCalled(0)
 //        XCTAssertEqual(ksRecorder.keystrokesAfterSwitching, [])
@@ -439,6 +439,7 @@ enum Events {
         .flagsChanged(Keystroke(keyCode: 56), keyDown: false)
     ]
     
+    // TODO: Shift, 'space', 'tab' and 'return'
     /// §1234567890-=qwertyuiop[]asdfghjkl;'\`zxcvbnm,./
     static let allCharacterProducing: [InputEvent] = [
         .keyDown(Keystroke(keyCode: 10)),

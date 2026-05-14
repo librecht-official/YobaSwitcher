@@ -98,8 +98,11 @@ struct KeyCode: Equatable, RawRepresentable {
     }
     
     static let option = KeyCode(kVK_Option)
-    static let delete = KeyCode(kVK_Delete)
+    static let command = KeyCode(kVK_Command)
     static let shift = KeyCode(kVK_Shift)
+    static let delete = KeyCode(kVK_Delete)
+    static let c = KeyCode(kVK_ANSI_C)
+    static let v = KeyCode(kVK_ANSI_V)
     static let z = KeyCode(kVK_ANSI_Z)
 }
 
@@ -172,12 +175,12 @@ private let keyCodesToString: [Int: String] = [
     kVK_RightArrow: "→",
     
     kVK_Command: "Cmd",
-    kVK_RightCommand: "RCmd",
+    kVK_RightCommand: "R Cmd",
     kVK_Control: "Ctrl",
-    kVK_RightControl: "RCtrl",
+    kVK_RightControl: "R Ctrl",
     kVK_Option: "Alt",
-    kVK_RightOption: "RAlt",
+    kVK_RightOption: "R Alt",
     kVK_Shift: "Shift",
-    kVK_RightShift: "RShift",
+    kVK_RightShift: "R Shift",
     kVK_CapsLock: "Capslock",
 ]

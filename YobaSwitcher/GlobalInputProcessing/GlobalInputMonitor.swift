@@ -7,7 +7,6 @@
 
 import CoreGraphics
 
-// sourcery: AutoMockable
 protocol GlobalInputMonitorProtocol: AnyObject {
     var handler: GlobalInputMonitorHandler? { get set }
     

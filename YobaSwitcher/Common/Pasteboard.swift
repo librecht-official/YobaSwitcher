@@ -4,13 +4,11 @@
 
 import Cocoa
 
-// sourcery: AutoMockable
 protocol NSPasteboardProtocol {
     var pasteboardItems: [NSPasteboardItem]? { get }
     
     var changeCount: Int { get }
     
-    // sourcery: stubName = "stringForType"
     func string(forType dataType: NSPasteboard.PasteboardType) -> String?
     
     @discardableResult
@@ -30,10 +28,13 @@ extension NSPasteboard: NSPasteboardProtocol {
     }
 }
 
-enum DI {
+extension NSPasteboard.PasteboardType: @retroactive CustomStringConvertible {
+    public var description: String {
+        rawValue
+    }
 }
 
-extension DI {
+extension StaticDependency {
     #if TEST
     static var pasteboard: NSPasteboardProtocol = NSPasteboard.general
     #else

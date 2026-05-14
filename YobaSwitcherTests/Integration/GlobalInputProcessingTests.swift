@@ -3,19 +3,20 @@
 //
 
 import Testing
-//import Mockingbird
 import Cocoa
 import Carbon
 @testable import YobaSwitcher
 
 @MainActor
-//@Suite("Integration tests of global input events processing")
 struct GlobalInputProcessingTests {
     let events = SystemEventsRecorder()
+    let pasteboard = PasteboardMock()
     
     let processor: GlobalInputProcessingController
     
     init() {
+        StaticDependency.systemEvents = events
+        StaticDependency.pasteboard = pasteboard
         
         let tisAPIMock = TISAPIMock()
         
@@ -25,21 +26,17 @@ struct GlobalInputProcessingTests {
         )
         let systemWide = SystemWide<AXUIElement>()
         
-        let systemEvents = SystemEvents.mock(recorder: events)
-        DI.systemEvents = systemEvents
-        
-//        DI.pasteboard
-        
         self.processor = GlobalInputProcessingController(
             selectedTextManager: SystemWideSelectedTextManager(tisManager: tisManager, systemWide: systemWide),
-            inputSourceManager: tisManager,
-            systemEvents: systemEvents
+            inputSourceManager: tisManager
         )
     }
     
+    // MARK: Typing traslation
+    
     /// Type all character-producing keys, 'space', 'tab' and 'return' then press 'right option'. It should delete all characters, switch input source and retype the same keys
-    @Test("All character-producing keys")
-    func allCharacterProducingKeys() {
+    @Test
+    func typingAllCharacterProducingKeys() {
         // given
         let input = Events.allCharacterProducing + Events.rightOption
         // when
@@ -49,14 +46,34 @@ struct GlobalInputProcessingTests {
         #expect(events.recordedEvents == output)
     }
     
+    // TODO: With Backspaces
+    
+    // MARK: - Selected Text switching
+    
+    /// Type "hello world", then delete 2 characters and types "d", so the result is "hello word", then press Option. It should delete 10 characters, switch input source and retype "hello word"
+    
+    
+    /// Switch selected text English -> Russian. Base case
     @Test
-    func selectedText() {
+    func switchSelectedText_EngRus() {
+        // given
+        events.pasteboard = pasteboard
+        pasteboard._selectedText = TestData.engCharacters
         let input = Events.option
-        
+        // when
         input.forEach(processInputEvent)
-        
-        
+        // then
+        // selected text should be switched to russian
+        #expect(pasteboard._selectedText == TestData.rusCharacters)
+        // pasteboard should have the same content as before switching
+        #expect(pasteboard.pasteboardItems == pasteboard._initialItems)
     }
+    
+    // TODO: Test when selected/typed text start with 'space'
+    
+    // TODO: Test when selected text has capital letters
+    
+    // TODO: Test when first char is space or other non-letter
     
     // MARK: Helpers
     
@@ -78,98 +95,8 @@ struct GlobalInputProcessingTests {
     }
 }
 
-final class TISRefMock: TextInputSourceReference {
-    let id: String
-    var isSelected: Bool
-    weak var tisAPI: TISAPIMock?
+private enum TestData {
     
-    init(id: String = "en", isSelected: Bool = false, tisAPI: TISAPIMock?) {
-        self.id = id
-        self.isSelected = isSelected
-        self.tisAPI = tisAPI
-    }
-    
-    func value<T>(key: CFString) -> T? {
-        switch key {
-        case kTISPropertyInputSourceID:
-            return id as? T
-        case kTISPropertyInputSourceIsSelected:
-            return isSelected as? T
-        default:
-            return nil
-        }
-    }
-    
-    func select() {
-        tisAPI?.select(TextInputSource(self))
-        isSelected = true
-    }
-    
-    static func == (lhs: TISRefMock, rhs: TISRefMock) -> Bool {
-        lhs.id == rhs.id && lhs.isSelected == rhs.isSelected
-    }
-}
-
-final class TISAPIMock: TextInputSourceAPI, DistributedNotificationCenterProtocol {
-    var data: [TISRefMock] = []
-    var observer: Any?, selector: Selector?
-    
-    init() {
-        self.data = [
-            TISRefMock(id: "en", isSelected: true, tisAPI: self),
-            TISRefMock(id: "ru", isSelected: false, tisAPI: self),
-        ]
-    }
-    
-    func currentKeyboardLayoutInputSource() -> TextInputSource {
-        let tisRef = data.first(where: \.isSelected)!
-        return TextInputSource(tisRef)
-    }
-    
-    func inputSource(forLanguage id: String) -> TextInputSource {
-        let tisRef = data.first(where: { $0.id == id })!
-        return TextInputSource(tisRef)
-    }
-    
-    func inputSourceList(filter: [CFString : Any]) -> [TextInputSource] {
-        data.map { TextInputSource($0) }
-    }
-    
-    func select(_ source: TextInputSource) {
-        data.forEach {
-            if $0.id != source.id {
-                $0.isSelected = false
-            }
-        }
-        guard let observer = observer as? AnyObject, let selector else {
-            assertionFailure("No observer and selector")
-            return
-        }
-        _ = observer.perform(selector, with: "test-notification")
-    }
-    
-    func addObserver(_ observer: Any, selector: Selector, name: NSNotification.Name?, object: String?, suspensionBehavior: DistributedNotificationCenter.SuspensionBehavior) {
-        self.observer = observer
-        self.selector = selector
-    }
-    
-    func removeObserver(_ observer: Any, name aName: NSNotification.Name?, object anObject: String?) {
-        
-    }
-}
-
-extension SystemEvents {
-    static func mock(recorder: SystemEventsRecorder) -> SystemEvents {
-        SystemEvents(
-            postEventWithProxy: { event, proxy in
-                recorder.recordedEvents.append(event)
-            },
-            postEvent: { event, location in
-                recorder.recordedEvents.append(event)
-            })
-    }
-}
-
-class SystemEventsRecorder {
-    var recordedEvents: [InputEvent] = []
+    static let engCharacters       = #"qwertyuiopasdfghjklzxcvbnm QWERTYUIOPASDFGHJKLZXCVBNM [];'\,./ {}:"|<>? §1234567890-= ±!@#$%^&*()_+"#
+    static let rusCharacters       = #"йцукенгшщзфывапролдячсмить ЙЦУКЕНГШЩЗФЫВАПРОЛДЯЧСМИТЬ хъжэёбю/ ХЪЖЭЁБЮ? >1234567890-= <!"№%:,.;()_+"#
 }
