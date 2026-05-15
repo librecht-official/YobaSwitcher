@@ -25,7 +25,7 @@ struct TIS: TextInputSourceAPI {
     
     func inputSourceList(filter: [CFString: Any]) -> [TextInputSource] {
         guard let sources = TISCreateInputSourceList(filter as CFDictionary, false).takeRetainedValue() as? [TISInputSource] else {
-            Log.error("Failed to fetch input source list")
+            Log.inputSource.error("Failed to fetch input source list")
             return []
         }
         

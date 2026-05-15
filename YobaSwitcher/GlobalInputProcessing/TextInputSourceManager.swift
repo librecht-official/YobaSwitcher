@@ -82,25 +82,22 @@ final class DefaultTextInputSourceManager: TextInputSourceManager {
         ]
         let sourceList = tis.inputSourceList(filter: criteria)
         guard let nonSelectedSource = sourceList.first else {
-            Log.debug("Input source to select not found")
+            Log.inputSource.debug("Input source to select not found")
             return
         }
         
         switchInputSourceCompletion = completion
         
-        Log.debug("Selecting input source: \(nonSelectedSource.id)")
+        Log.inputSource.debug("Selecting input source: \(nonSelectedSource.id)")
         nonSelectedSource.select()
     }
     
     private var switchInputSourceCompletion: (() -> Void)?
     
     @objc func selectedKeyboardInputSourceChanged(_ notification: Any) {
-        Log.debug("""
-            [DNC] Selected input source has changed.
-            notification: \(notification)
-            completion: \(switchInputSourceCompletion)
-            """)
+        Log.inputSource.debug("[DNC] Selected input source has changed.\n notification: \(String(describing: notification))\n completion: \(self.switchInputSourceCompletion)")
         switchInputSourceCompletion?()
         switchInputSourceCompletion = nil
     }
 }
+

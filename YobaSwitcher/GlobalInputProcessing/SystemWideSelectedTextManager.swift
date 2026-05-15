@@ -28,7 +28,7 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
         do {
             return try textReaderWriter.withSelectedText { selectedText, writeSelectedText in
                 if selectedText.isEmpty {
-                    Log.debug("Selected text is empty")
+                    Log.selectedText.debug("Selected text is empty")
                     return false
                 }
                 
@@ -44,7 +44,7 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
                 return true
             }
         } catch {
-            Log.debug("Selected text not found: \(error)")
+            Log.selectedText.debug("Selected text not found: \(error)")
             return false
         }
     }
@@ -55,7 +55,7 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
         let selectedText = focusedElement.selectedText
         
         if selectedText.isEmpty {
-            Log.debug("Selected text is empty")
+            Log.selectedText.debug("Selected text is empty")
             return false
         }
         let uppercasedText = selectedText.uppercased()

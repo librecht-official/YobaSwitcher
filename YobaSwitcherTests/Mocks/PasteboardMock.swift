@@ -9,8 +9,8 @@ import Testing
 final class PasteboardMock: NSPasteboardProtocol {
     var _initialItems: [NSPasteboardItem] = [
         build(NSPasteboardItem(), {
-            $0.setString("file:///.file/id=6571367.400663454", forType: .fileURL)
-            $0.setString("file.png", forType: .string)
+            $0.setData(Data("file:///.file/id=6571367.400663454".utf8), forType: .fileURL)
+            $0.setData(Data("file.png".utf8), forType: .string)
         }),
     ]
     var _selectedText: String?
@@ -49,12 +49,8 @@ final class PasteboardMock: NSPasteboardProtocol {
             let item = NSPasteboardItem()
             let types = object.writableTypes(for: NSPasteboard.general)
             for type in types {
-                if let plist = object.pasteboardPropertyList(forType: type) {
-                    if let string = plist as? String {
-                        item.setString(string, forType: type)
-                    } else {
-                        item.setPropertyList(plist, forType: type)
-                    }
+                if let data = object.pasteboardPropertyList(forType: type) as? Data {
+                    item.setData(data, forType: type)
                 }
             }
             return item
@@ -70,6 +66,7 @@ extension NSPasteboardItem {
         var result: [NSPasteboard.PasteboardType: String] = [:]
         for type in types {
             result[type] = string(forType: type)
+            #expect(result[type] != nil)
         }
         return result
     }

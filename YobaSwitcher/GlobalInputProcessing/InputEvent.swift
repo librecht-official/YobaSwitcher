@@ -97,10 +97,6 @@ extension InputEvent: CustomDebugStringConvertible {
     }
     
     private func debugString(from keystroke: Keystroke, direction: String) -> String {
-        var mods: [String] = [direction] + keystroke.flags.stringValues
-        if keystroke.isAutorepeat {
-            mods.append("AR")
-        }
-        return "\(keystroke.keyCode.debugDescription)(\(mods.joined(separator: ",")))"
+        return direction + keystroke.debugDescription
     }
 }

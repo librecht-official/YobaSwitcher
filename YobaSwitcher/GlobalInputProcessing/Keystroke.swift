@@ -66,7 +66,7 @@ extension Keystroke: CustomStringConvertible, CustomDebugStringConvertible {
         }
         var result = keyCode.debugDescription
         if !mods.isEmpty {
-            result.append("(\(mods))")
+            result.append("(\(mods.joined(separator: ",")))")
         }
         return result
     }
@@ -123,13 +123,9 @@ extension KeyCode: Matchable {
 
 // MARK: - CustomStringConvertible
 
-extension KeyCode: CustomStringConvertible {
+extension KeyCode: CustomStringConvertible, CustomDebugStringConvertible {
     var description: String { rawValue.description }
-}
-
-// MARK: - CustomDebugStringConvertible
-
-extension KeyCode: CustomDebugStringConvertible {
+    
     var debugDescription: String {
         keyCodesToString[rawValue] ?? String(rawValue)
     }
@@ -168,6 +164,19 @@ private let keyCodesToString: [Int: String] = [
     kVK_Return: "↵",
     kVK_Delete: "⌫",
     kVK_ForwardDelete: "F⌫",
+    kVK_Tab: "⇥",
+    kVK_ANSI_LeftBracket: "[",
+    kVK_ANSI_RightBracket: "]",
+    kVK_ANSI_Semicolon: ";",
+    kVK_ANSI_Quote: "'",
+    kVK_ANSI_Backslash: "\\",
+    kVK_ANSI_Comma: ",",
+    kVK_ANSI_Period: ".",
+    kVK_ANSI_Slash: "/",
+    kVK_ANSI_Grave: "~",
+    kVK_ISO_Section: "§",
+    
+    // MARK: Non-character producing
     
     kVK_UpArrow: "↑",
     kVK_DownArrow: "↓",
@@ -178,9 +187,10 @@ private let keyCodesToString: [Int: String] = [
     kVK_RightCommand: "R Cmd",
     kVK_Control: "Ctrl",
     kVK_RightControl: "R Ctrl",
-    kVK_Option: "Alt",
-    kVK_RightOption: "R Alt",
+    kVK_Option: "Opt",
+    kVK_RightOption: "R Opt",
     kVK_Shift: "Shift",
     kVK_RightShift: "R Shift",
     kVK_CapsLock: "Capslock",
+    kVK_Function: "fn"
 ]

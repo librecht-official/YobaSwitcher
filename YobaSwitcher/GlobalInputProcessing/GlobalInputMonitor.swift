@@ -8,12 +8,12 @@
 import CoreGraphics
 
 protocol GlobalInputMonitorProtocol: AnyObject {
-    var handler: GlobalInputMonitorHandler? { get set }
+    var handler: GlobalInputHandler? { get set }
     
     func start()
 }
 
-protocol GlobalInputMonitorHandler: AnyObject {
+protocol GlobalInputHandler: AnyObject {
     func handleKeyDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
     
     func handleKeyUp(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
@@ -25,7 +25,7 @@ protocol GlobalInputMonitorHandler: AnyObject {
 
 // Tracks specific input events such as keystrokes and mouse clicks
 final class GlobalInputMonitor: GlobalInputMonitorProtocol {
-    weak var handler: GlobalInputMonitorHandler?
+    weak var handler: GlobalInputHandler?
     private var eventTap: CFMachPort?
     
     func start() {
@@ -44,7 +44,7 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
             },
             userInfo: context
         ) else {
-            Log.critical("Event tap is not created")
+            Log.inputProcessing.critical("Event tap is not created")
             return
         }
         self.eventTap = eventTap
@@ -54,25 +54,34 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
     }
     
     private func handleEventTapCallback(_ proxy: CGEventTapProxy, _ eventType: CGEventType, _ event: CGEvent) -> CGEvent? {
+        let recording = true
         switch eventType {
         case .keyDown:
-            Log.debug(InputEvent.keyDown(.init(event: event)), terminator: ",\n", hashtags: [.recording])
+            if recording {
+                Log.recording.debug("\(InputEvent.keyDown(.init(event: event))),")
+            }
             return handler?.handleKeyDown(event: event, proxy: proxy)
         
         case .keyUp:
-            Log.debug(InputEvent.keyUp(.init(event: event)), terminator: ",\n", hashtags: [.recording])
+            if recording {
+                Log.recording.debug("\(InputEvent.keyUp(.init(event: event))),")
+            }
             return handler?.handleKeyUp(event: event, proxy: proxy)
             
         case .flagsChanged:
-            Log.debug(InputEvent.flagsChanged(.init(event: event)), terminator: ",\n", hashtags: [.recording])
+            if recording {
+                Log.recording.debug("\(InputEvent.flagsChanged(.init(event: event))),")
+            }
             return handler?.handleFlagsChange(event: event, proxy: proxy)
             
         case .leftMouseDown, .rightMouseDown, .otherMouseDown:
-            Log.debug(InputEvent.mouseDown, terminator: ",\n", hashtags: [.recording])
+            if recording {
+                Log.recording.debug("\(InputEvent.mouseDown),")
+            }
             return handler?.handleMouseDown(event: event, proxy: proxy)
             
         case .tapDisabledByTimeout:
-            Log.info("Event tap disabled by timeout. Re-enabling")
+            Log.inputProcessing.info("Event tap disabled by timeout. Re-enabling")
             CGEvent.tapEnable(tap: eventTap!, enable: true)
             
         default:

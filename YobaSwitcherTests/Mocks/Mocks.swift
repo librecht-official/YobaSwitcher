@@ -147,9 +147,9 @@
 //
 //    // MARK: handler
 //
-//    public private(set) lazy var _handler = PropertyStub<GlobalInputMonitorHandler>(name: "handler", testCase)
+//    public private(set) lazy var _handler = PropertyStub<GlobalInputHandler>(name: "handler", testCase)
 //
-//    public var handler: GlobalInputMonitorHandler? {
+//    public var handler: GlobalInputHandler? {
 //        get { _handler._optionalValue }
 //        set { _handler._optionalValue = newValue }
 //    }

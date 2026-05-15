@@ -14,12 +14,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         #if TEST
-        Log.info("Application Did Finish Launching for Tests")
+        Log.app.info("Application Did Finish Launching for Tests")
         return
         #endif
-        Log.info("Application Did Finish Launching")
+        Log.app.info("Application Did Finish Launching")
         mainMenuController.start()
         globalInputProcessing.start()
     }
 }
-

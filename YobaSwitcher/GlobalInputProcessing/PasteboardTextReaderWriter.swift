@@ -25,9 +25,9 @@ struct PasteboardTextReaderWriter {
     
     private func readSelectedText() throws -> String {
         let pbChangeCountBeforeCopy = pasteboard.changeCount
-        Log.debug("Pasteboard change count before Cmd+C: \(pbChangeCountBeforeCopy)")
+        Log.selectedText.debug("Pasteboard change count before Cmd+C: \(pbChangeCountBeforeCopy)")
         performCopyShortcut()
-        Log.debug("Pasteboard change count after Cmd+C: \(pasteboard.changeCount)")
+        Log.selectedText.debug("Pasteboard change count after Cmd+C: \(pasteboard.changeCount)")
         
         if pasteboard.changeCount == pbChangeCountBeforeCopy {
             // If 'change count' hasn't change after 'copy' it means there was no selected text to copy
@@ -86,23 +86,33 @@ struct PasteboardTextReaderWriter {
 ///
 class PasteboardItemStash: NSObject, NSPasteboardWriting {
     private let types: [NSPasteboard.PasteboardType]
-    private var plistsForType: [NSPasteboard.PasteboardType: Any] = [:]
+    private var dataForType: [NSPasteboard.PasteboardType: Any] = [:]
     
     init(source: NSPasteboardItem) {
         self.types = source.types
         for type in types {
-            plistsForType[type] = source.propertyList(forType: type)
+            dataForType[type] = source.data(forType: type)
         }
     }
     
+    #if DEBUG || TEST
+    deinit {
+        Log.selectedText.debug("PasteboardItemStash deinit")
+    }
+    #endif
+    
     func writableTypes(for pasteboard: NSPasteboard) -> [NSPasteboard.PasteboardType] {
-        Log.debug("writable types: \(types)")
+        Log.selectedText.debug("Writable types: \(self.types)")
         return types
     }
     
     func pasteboardPropertyList(forType type: NSPasteboard.PasteboardType) -> Any? {
-        let plist = plistsForType[type]
-        Log.debug("plist for type \(type): \(plist)")
+        let plist = dataForType[type]
+        Log.selectedText.debug("Data for type \(type): \(plist)")
         return plist
+    }
+    
+    func writingOptions(forType type: NSPasteboard.PasteboardType, pasteboard: NSPasteboard) -> NSPasteboard.WritingOptions {
+        NSPasteboard.WritingOptions(rawValue: 0)
     }
 }

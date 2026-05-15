@@ -8,7 +8,8 @@
 import Carbon
 import CoreGraphics
 
-final class GlobalInputProcessingController: GlobalInputMonitorHandler {
+// TODO: Rename GlobalInputProcessor
+final class GlobalInputProcessingController: GlobalInputHandler {
     let selectedTextManager: SelectedTextManager
     let inputSourceManager: TextInputSourceManager
     let systemEvents = StaticDependency.systemEvents
@@ -22,7 +23,7 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         self.inputSourceManager = inputSourceManager
     }
 
-    // MARK: GlobalInputMonitorHandler
+    // MARK: GlobalInputHandler
     
     @discardableResult
     func handleKeyDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent? {
@@ -31,7 +32,7 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         updateCharacterKeystrokes(withNew: keystroke)
         
         if latestInputEvents.last.matches(Patterns.ctrlOptZ) {
-            Log.info("Hit Ctrl+Opt+Z")
+            Log.inputProcessing.info("Hit Ctrl+Opt+Z")
             selectedTextManager.changeSelectedTextCase()
             return nil
         }
@@ -55,7 +56,7 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
         let last2 = latestInputEvents.suffix(2)
         
         if last2.matches(Patterns.optionPress) || last2.matches(Patterns.optionPressWithCapslock) {
-            Log.info("Hit Option")
+            Log.inputProcessing.info("Hit Option")
             if characterKeystrokes.isEmpty {
                 selectedTextManager.replaceSelectedTextWithAlternativeKeyboardLayout()
             } else {
@@ -121,7 +122,7 @@ final class GlobalInputProcessingController: GlobalInputMonitorHandler {
     private func retypeCharacterKeystrokes(_ event: CGEvent, _ proxy: CGEventTapProxy) {
         if characterKeystrokes.isEmpty { return }
         
-        Log.info("Retype character keystrokes: \(characterKeystrokes)")
+        Log.inputProcessing.debug("Retype character keystrokes: \(self.characterKeystrokes)")
         
         inputSourceManager.switchInputSource { [weak self] in
             self?.eraseAndTypeKeystrokes(proxy)

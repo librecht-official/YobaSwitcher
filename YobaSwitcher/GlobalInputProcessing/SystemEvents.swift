@@ -14,13 +14,13 @@ struct SystemEvents: SystemEventsAPI {
     static let `default` = SystemEvents()
     
     func postEvent(_ inputEvent: InputEvent, _ proxy: CGEventTapProxy) {
-        Log.debug("Posting event: \(inputEvent) using proxy")
+        Log.events.debug("Posting event: \(inputEvent.debugDescription) using proxy")
         let event = CGEvent.fromInputEvent(inputEvent)
         event?.tapPostEvent(proxy)
     }
     
     func postEvent(_ inputEvent: InputEvent, at location: CGEventTapLocation) {
-        Log.debug("Posting event: \(inputEvent)")
+        Log.events.debug("Posting event: \(inputEvent.debugDescription)")
         let event = CGEvent.fromInputEvent(inputEvent)
         event?.post(tap: location)
     }

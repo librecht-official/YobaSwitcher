@@ -50,12 +50,12 @@ struct GlobalInputProcessingTests {
     
     // MARK: - Selected Text switching
     
-    /// Type "hello world", then delete 2 characters and types "d", so the result is "hello word", then press Option. It should delete 10 characters, switch input source and retype "hello word"
+    /// Type "hello world", then delete 5 characters and types "word", then press Option. It should delete 10 characters, switch input source and retype "hello word"
     
     
     /// Switch selected text English -> Russian. Base case
     @Test
-    func switchSelectedText_EngRus() {
+    func switchSelectedText_EngToRus() {
         // given
         events.pasteboard = pasteboard
         pasteboard._selectedText = TestData.engCharacters
@@ -69,11 +69,23 @@ struct GlobalInputProcessingTests {
         #expect(pasteboard.pasteboardItems == pasteboard._initialItems)
     }
     
-    // TODO: Test when selected/typed text start with 'space'
+    /// Switch selected text Russian -> English. Base case
+    @Test
+    func switchSelectedText_RusToEng() {
+        // given
+        events.pasteboard = pasteboard
+        pasteboard._selectedText = TestData.rusCharacters
+        let input = Events.option
+        // when
+        input.forEach(processInputEvent)
+        // then
+        // selected text should be switched to russian
+        #expect(pasteboard._selectedText == TestData.engCharacters)
+        // pasteboard should have the same content as before switching
+        #expect(pasteboard.pasteboardItems == pasteboard._initialItems)
+    }
     
-    // TODO: Test when selected text has capital letters
-    
-    // TODO: Test when first char is space or other non-letter
+    // TODO: Test when selected/typed text start with 'space' or other non-letter (including emoji) -> better in unit test
     
     // MARK: Helpers
     
