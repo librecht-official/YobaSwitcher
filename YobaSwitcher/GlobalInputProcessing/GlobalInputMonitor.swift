@@ -54,7 +54,7 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
     }
     
     private func handleEventTapCallback(_ proxy: CGEventTapProxy, _ eventType: CGEventType, _ event: CGEvent) -> CGEvent? {
-        let recording = true
+        let recording = false
         switch eventType {
         case .keyDown:
             if recording {

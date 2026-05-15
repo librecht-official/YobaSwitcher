@@ -95,9 +95,8 @@ final class DefaultTextInputSourceManager: TextInputSourceManager {
     private var switchInputSourceCompletion: (() -> Void)?
     
     @objc func selectedKeyboardInputSourceChanged(_ notification: Any) {
-        Log.inputSource.debug("[DNC] Selected input source has changed.\n notification: \(String(describing: notification))\n completion: \(self.switchInputSourceCompletion)")
+        Log.inputSource.debug("[DNC] Selected input source has changed.\n notification: \(String(describing: notification))\n current input source: \(self.currentKeyboardLayoutInputSource().id)\n completion: \(self.switchInputSourceCompletion)")
         switchInputSourceCompletion?()
         switchInputSourceCompletion = nil
     }
 }
-
