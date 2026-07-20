@@ -16,7 +16,7 @@ final class MainMenuController {
         statusItem.button?.image = NSImage(systemSymbolName: "keyboard.fill", accessibilityDescription: "Status bar icon")
         
         let about = NSMenuItem()
-        about.title = "YobaSwitcher. Version \(Bundle.main.applicationVersion ?? "unknown")"
+        about.title = "YobaSwitcher - Version \(Bundle.main.applicationVersion ?? "unknown")"
         
         let quitItem = NSMenuItem()
         quitItem.title = "Quit"

@@ -15,18 +15,16 @@ protocol SelectedTextManager {
 
 final class SystemWideSelectedTextManager: SelectedTextManager {
     let tisManager: TextInputSourceManager
-    let systemWide: SystemWideAccessibility
-    let textReaderWriter = PasteboardTextReaderWriter()
+    let systemWide = PasteboardTextReaderWriter()
     
-    init(tisManager: TextInputSourceManager, systemWide: SystemWideAccessibility) {
+    init(tisManager: TextInputSourceManager) {
         self.tisManager = tisManager
-        self.systemWide = systemWide
     }
     
     @discardableResult
     func replaceSelectedTextWithAlternativeKeyboardLayout() -> Bool {
         do {
-            return try textReaderWriter.withSelectedText { selectedText, writeSelectedText in
+            return try systemWide.withSelectedText { selectedText, writeSelectedText in
                 if selectedText.isEmpty {
                     Log.selectedText.debug("Selected text is empty")
                     return false
@@ -51,20 +49,25 @@ final class SystemWideSelectedTextManager: SelectedTextManager {
     
     @discardableResult
     func changeSelectedTextCase() -> Bool {
-        guard let focusedElement = systemWide.focusedElement() else { return false }
-        let selectedText = focusedElement.selectedText
-        
-        if selectedText.isEmpty {
-            Log.selectedText.debug("Selected text is empty")
+        do {
+            return try systemWide.withSelectedText { selectedText, writeSelectedText in
+                if selectedText.isEmpty {
+                    Log.selectedText.debug("Selected text is empty")
+                    return false
+                }
+                
+                let uppercasedText = selectedText.uppercased()
+                if selectedText == uppercasedText {
+                    writeSelectedText(selectedText.lowercased())
+                } else {
+                    writeSelectedText(uppercasedText)
+                }
+                
+                return true
+            }
+        } catch {
+            Log.selectedText.debug("Selected text not found: \(error)")
             return false
         }
-        let uppercasedText = selectedText.uppercased()
-        if selectedText == uppercasedText {
-            focusedElement.selectedText = selectedText.lowercased()
-        } else {
-            focusedElement.selectedText = uppercasedText
-        }
-        
-        return true
     }
 }
