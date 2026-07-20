@@ -6,37 +6,69 @@
 //
 
 import CoreGraphics
+import Carbon
 
-extension CGEvent {
+/// Human Interface Device Event
+protocol HIDEvent {
+    var type: CGEventType { get }
+    
+    var flags: CGEventFlags { get }
+    
+    func getIntegerValueField(_ field: CGEventField) -> Int64
+}
+
+extension CGEvent: HIDEvent {
     static func fromInputEvent(_ inputEvent: InputEvent) -> CGEvent? {
         switch inputEvent {
-        case let .keyDown(keystroke):
-            return fromKeystrokeDown(keystroke)// TODO: keyDown, keyUp and flagsChanged cases very similar
+        case let .key(direction, keystroke):
+            let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: direction == .down)
+            cgEvent?.flags = keystroke.flags
+            return cgEvent
             
-        case let .keyUp(keystroke):
-            return fromKeystrokeUp(keystroke)
-            
-        case let .flagsChanged(keystroke, keyDown):
-            let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: keyDown)
+        case let .flagsChanged(keystroke):
+            let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: false)
             cgEvent?.flags = keystroke.flags
             return cgEvent
             
         case .mouseDown:
-            let cgEvent = CGEvent(mouseEventSource: nil, mouseType: CGEventType.leftMouseDown, mouseCursorPosition: .zero, mouseButton: .left)!
+            let cgEvent = CGEvent(mouseEventSource: nil, mouseType: CGEventType.leftMouseDown, mouseCursorPosition: .zero, mouseButton: .left)
             return cgEvent
         }
     }
-    
-    static func fromKeystrokeDown(_ keystroke: Keystroke) -> CGEvent? {
-        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: true)
-        cgEvent?.flags = keystroke.flags
-        return cgEvent
+}
+
+// Used for recording events for tests
+extension CGEvent: @retroactive CustomStringConvertible {
+    public var description: String {
+        switch type {
+        case .flagsChanged:
+            return "CGEvent.flagsChanged(\(printedParameters))"
+            
+        case .keyDown:
+            return "CGEvent.key(.down,   \(printedParameters))"
+            
+        case .keyUp:
+            return "CGEvent.key(.up,     \(printedParameters))"
+        
+        case .leftMouseDown, .rightMouseDown, .otherMouseDown:
+            return "CGEvent.mouseDown"
+            
+        default:
+            return "<CGEvent unknown>"
+        }
     }
     
-    static func fromKeystrokeUp(_ keystroke: Keystroke) -> CGEvent? {
-        let cgEvent = CGEvent(keyboardEventSource: nil, virtualKey: keystroke.keyCode.cgKeyCode, keyDown: false)
-        cgEvent?.flags = keystroke.flags
-        return cgEvent
+    private var printedParameters: String {
+        var params = [keyCodeName]
+        if flags != .maskNonCoalesced {
+            params.append(flags.description)
+        }
+        return params.joined(separator: ", ")
+    }
+    
+    private var keyCodeName: String {
+        let keyCode = Int(getIntegerValueField(.keyboardEventKeycode))
+        return KeyCode.keyCodeNames[keyCode] ?? keyCode.description
     }
 }
 
@@ -87,6 +119,9 @@ extension CGEventFlags: @retroactive CustomStringConvertible {
         if contains(.maskNumericPad) {
             result.append("maskNumericPad")
         }
+//        if contains(.maskNonCoalesced) {
+//            result.append("maskNonCoalesced")
+//        }
         let joined = result.map { ".\($0)" }.joined(separator: ", ")
         if result.count == 1 {
             return joined

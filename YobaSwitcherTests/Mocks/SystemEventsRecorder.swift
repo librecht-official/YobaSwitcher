@@ -7,7 +7,7 @@ import CoreGraphics
 
 final class SystemEventsRecorder: SystemEventsAPI {
     var recordedEvents: [InputEvent] = []
-    var pasteboard: PasteboardMock?
+    var pasteboard: PasteboardEmulator?
     
     func postEvent(_ inputEvent: InputEvent, _ proxy: CGEventTapProxy) {
         recordedEvents.append(inputEvent)
@@ -19,8 +19,8 @@ final class SystemEventsRecorder: SystemEventsAPI {
         // On Cmd+C emulate copying selectedText to pasteboard
         if let pasteboard {
             let isCmdC = recordedEvents.suffix(2).matches([
-                .keyUp(Keystroke(.c, flags: .maskCommand)),
-                .flagsChanged(Keystroke(.command, flags: []), keyDown: false),
+                .key(.up, Keystroke(.c, flags: .maskCommand)),
+                .flagsChanged(Keystroke(.command, flags: [])),
             ])
             if isCmdC, let selectedText = pasteboard._selectedText {
                 pasteboard.setString(selectedText, forType: .string)

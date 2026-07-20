@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F51E2FF429707D4300F42AD8 /* MethodStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF329707D4300F42AD8 /* MethodStub.swift */; };
 		F51E2FF82970969E00F42AD8 /* DistributedNotificationCenterExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FF72970969E00F42AD8 /* DistributedNotificationCenterExt.swift */; };
 		F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */; };
 		F51E2FFE2970B60B00F42AD8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51E2FFD2970B60B00F42AD8 /* main.swift */; };
@@ -19,27 +18,24 @@
 		F533F0CF297062EE00549477 /* SystemWideSelectedTextManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */; };
 		F54E94DE2961C2980066D33F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94DD2961C2980066D33F /* AppDelegate.swift */; };
 		F54E94E22961C29A0066D33F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F54E94E12961C29A0066D33F /* Assets.xcassets */; };
-		F54E94EF2961DF5E0066D33F /* GlobalInputProcessingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94EE2961DF5E0066D33F /* GlobalInputProcessingController.swift */; };
+		F54E94EF2961DF5E0066D33F /* GlobalInputProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54E94EE2961DF5E0066D33F /* GlobalInputProcessor.swift */; };
 		F552076E2FB379A900DBA0BF /* SystemEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F552076D2FB379A900DBA0BF /* SystemEvents.swift */; };
 		F57C10192FB0B37A008AE406 /* PasteboardTextReaderWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C10182FB0B376008AE406 /* PasteboardTextReaderWriter.swift */; };
 		F57C101B2FB0B3E5008AE406 /* Pasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C101A2FB0B3E5008AE406 /* Pasteboard.swift */; };
-		F58144E92FB5F7E00035A04E /* TISAPIMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58144E82FB5F7DF0035A04E /* TISAPIMock.swift */; };
+		F58144E92FB5F7E00035A04E /* TISAPIEmulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58144E82FB5F7DF0035A04E /* TISAPIEmulator.swift */; };
 		F58144EB2FB5F8110035A04E /* SystemEventsRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58144EA2FB5F8100035A04E /* SystemEventsRecorder.swift */; };
-		F58144ED2FB5F8AD0035A04E /* PasteboardMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58144EC2FB5F8AC0035A04E /* PasteboardMock.swift */; };
+		F58144ED2FB5F8AD0035A04E /* PasteboardEmulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58144EC2FB5F8AC0035A04E /* PasteboardEmulator.swift */; };
 		F58144EF2FB607C80035A04E /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58144EE2FB607B50035A04E /* Helpers.swift */; };
 		F58144F12FB61C7E0035A04E /* StaticDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58144F02FB61C7C0035A04E /* StaticDependency.swift */; };
 		F592B24F296DBC5900CAF8AD /* TextInputSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B24E296DBC5900CAF8AD /* TextInputSource.swift */; };
 		F592B251296DBD4B00CAF8AD /* GlobalInputMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */; };
 		F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B252296DBE1600CAF8AD /* CGEventExt.swift */; };
-		F592B25B296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B25A296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift */; };
-		F592B266296DC43000CAF8AD /* PropertyStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B265296DC43000CAF8AD /* PropertyStub.swift */; };
 		F592B279296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B278296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift */; };
 		F592B27B296E002700CAF8AD /* TextInputSourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F592B27A296E002700CAF8AD /* TextInputSourceManager.swift */; };
 		F5B4CEAB29721B5E0029549C /* Keystroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEAA29721B5E0029549C /* Keystroke.swift */; };
 		F5B4CEAF29723CBF0029549C /* Matchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEAE29723CBF0029549C /* Matchable.swift */; };
 		F5B4CEB1297244EB0029549C /* DisplacingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */; };
-		F5B4CEB5297314060029549C /* EntryPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B4CEB4297314060029549C /* EntryPoint.swift */; };
-		F5EC0B732975CA9500A8D55D /* VirtualKeyboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EC0B722975CA9500A8D55D /* VirtualKeyboardTests.swift */; };
+		F5EA5EA4300EFA5100CDFB34 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EA5EA3300EFA4B00CDFB34 /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +49,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F51E2FF329707D4300F42AD8 /* MethodStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodStub.swift; sourceTree = "<group>"; };
 		F51E2FF72970969E00F42AD8 /* DistributedNotificationCenterExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributedNotificationCenterExt.swift; sourceTree = "<group>"; };
 		F51E2FFA2970AD5400F42AD8 /* MainMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
 		F51E2FFD2970B60B00F42AD8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -67,28 +62,25 @@
 		F54E94DD2961C2980066D33F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F54E94E12961C29A0066D33F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F54E94E62961C29A0066D33F /* YobaSwitcher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YobaSwitcher.entitlements; sourceTree = "<group>"; };
-		F54E94EE2961DF5E0066D33F /* GlobalInputProcessingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputProcessingController.swift; sourceTree = "<group>"; };
+		F54E94EE2961DF5E0066D33F /* GlobalInputProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputProcessor.swift; sourceTree = "<group>"; };
 		F552076D2FB379A900DBA0BF /* SystemEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEvents.swift; sourceTree = "<group>"; };
 		F57C10182FB0B376008AE406 /* PasteboardTextReaderWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardTextReaderWriter.swift; sourceTree = "<group>"; };
 		F57C101A2FB0B3E5008AE406 /* Pasteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pasteboard.swift; sourceTree = "<group>"; };
-		F58144E82FB5F7DF0035A04E /* TISAPIMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TISAPIMock.swift; sourceTree = "<group>"; };
+		F58144E82FB5F7DF0035A04E /* TISAPIEmulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TISAPIEmulator.swift; sourceTree = "<group>"; };
 		F58144EA2FB5F8100035A04E /* SystemEventsRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemEventsRecorder.swift; sourceTree = "<group>"; };
-		F58144EC2FB5F8AC0035A04E /* PasteboardMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardMock.swift; sourceTree = "<group>"; };
+		F58144EC2FB5F8AC0035A04E /* PasteboardEmulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardEmulator.swift; sourceTree = "<group>"; };
 		F58144EE2FB607B50035A04E /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		F58144F02FB61C7C0035A04E /* StaticDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticDependency.swift; sourceTree = "<group>"; };
 		F592B24E296DBC5900CAF8AD /* TextInputSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputSource.swift; sourceTree = "<group>"; };
 		F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputMonitor.swift; sourceTree = "<group>"; };
 		F592B252296DBE1600CAF8AD /* CGEventExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGEventExt.swift; sourceTree = "<group>"; };
 		F592B258296DC13100CAF8AD /* YobaSwitcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YobaSwitcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F592B25A296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputProcessingControllerTests.swift; sourceTree = "<group>"; };
-		F592B265296DC43000CAF8AD /* PropertyStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyStub.swift; sourceTree = "<group>"; };
 		F592B278296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalInputProcessingManager.swift; sourceTree = "<group>"; };
 		F592B27A296E002700CAF8AD /* TextInputSourceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputSourceManager.swift; sourceTree = "<group>"; };
 		F5B4CEAA29721B5E0029549C /* Keystroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keystroke.swift; sourceTree = "<group>"; };
 		F5B4CEAE29723CBF0029549C /* Matchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matchable.swift; sourceTree = "<group>"; };
 		F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplacingBuffer.swift; sourceTree = "<group>"; };
-		F5B4CEB4297314060029549C /* EntryPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPoint.swift; sourceTree = "<group>"; };
-		F5EC0B722975CA9500A8D55D /* VirtualKeyboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualKeyboardTests.swift; sourceTree = "<group>"; };
+		F5EA5EA3300EFA4B00CDFB34 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +120,7 @@
 		F52777DA296F36BB00B55BC3 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				F592B252296DBE1600CAF8AD /* CGEventExt.swift */,
 				F5B4CEB0297244EB0029549C /* DisplacingBuffer.swift */,
 				F51E2FF72970969E00F42AD8 /* DistributedNotificationCenterExt.swift */,
 				F58144EE2FB607B50035A04E /* Helpers.swift */,
@@ -174,9 +167,8 @@
 		F592B24D296DBC4B00CAF8AD /* GlobalInputProcessing */ = {
 			isa = PBXGroup;
 			children = (
-				F592B252296DBE1600CAF8AD /* CGEventExt.swift */,
 				F592B250296DBD4B00CAF8AD /* GlobalInputMonitor.swift */,
-				F54E94EE2961DF5E0066D33F /* GlobalInputProcessingController.swift */,
+				F54E94EE2961DF5E0066D33F /* GlobalInputProcessor.swift */,
 				F592B278296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift */,
 				F52777D6296EF55500B55BC3 /* InputEvent.swift */,
 				F52777DB296FC67B00B55BC3 /* KeyboardLayout.swift */,
@@ -193,12 +185,10 @@
 		F592B259296DC13100CAF8AD /* YobaSwitcherTests */ = {
 			isa = PBXGroup;
 			children = (
+				F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */,
 				F592B264296DC41B00CAF8AD /* Infrastructure */,
 				F52461972FB309710052748A /* Integration */,
 				F592B261296DC28400CAF8AD /* Mocks */,
-				F592B25A296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift */,
-				F533F0CE297062EE00549477 /* SystemWideSelectedTextManagerTests.swift */,
-				F5EC0B722975CA9500A8D55D /* VirtualKeyboardTests.swift */,
 			);
 			path = YobaSwitcherTests;
 			sourceTree = "<group>";
@@ -206,9 +196,9 @@
 		F592B261296DC28400CAF8AD /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				F58144EC2FB5F8AC0035A04E /* PasteboardMock.swift */,
+				F58144EC2FB5F8AC0035A04E /* PasteboardEmulator.swift */,
 				F58144EA2FB5F8100035A04E /* SystemEventsRecorder.swift */,
-				F58144E82FB5F7DF0035A04E /* TISAPIMock.swift */,
+				F58144E82FB5F7DF0035A04E /* TISAPIEmulator.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -216,9 +206,7 @@
 		F592B264296DC41B00CAF8AD /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				F5B4CEB4297314060029549C /* EntryPoint.swift */,
-				F51E2FF329707D4300F42AD8 /* MethodStub.swift */,
-				F592B265296DC43000CAF8AD /* PropertyStub.swift */,
+				F5EA5EA3300EFA4B00CDFB34 /* Helpers.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -332,7 +320,7 @@
 				F592B27B296E002700CAF8AD /* TextInputSourceManager.swift in Sources */,
 				F51E2FFB2970AD5400F42AD8 /* MainMenuController.swift in Sources */,
 				F592B253296DBE1600CAF8AD /* CGEventExt.swift in Sources */,
-				F54E94EF2961DF5E0066D33F /* GlobalInputProcessingController.swift in Sources */,
+				F54E94EF2961DF5E0066D33F /* GlobalInputProcessor.swift in Sources */,
 				F5B4CEAF29723CBF0029549C /* Matchable.swift in Sources */,
 				F592B279296DEC6B00CAF8AD /* GlobalInputProcessingManager.swift in Sources */,
 				F58144F12FB61C7E0035A04E /* StaticDependency.swift in Sources */,
@@ -355,16 +343,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F58144ED2FB5F8AD0035A04E /* PasteboardMock.swift in Sources */,
-				F5B4CEB5297314060029549C /* EntryPoint.swift in Sources */,
-				F5EC0B732975CA9500A8D55D /* VirtualKeyboardTests.swift in Sources */,
+				F58144ED2FB5F8AD0035A04E /* PasteboardEmulator.swift in Sources */,
 				F524619B2FB30AA40052748A /* GlobalInputProcessingTests.swift in Sources */,
-				F592B266296DC43000CAF8AD /* PropertyStub.swift in Sources */,
-				F592B25B296DC13200CAF8AD /* GlobalInputProcessingControllerTests.swift in Sources */,
+				F5EA5EA4300EFA5100CDFB34 /* Helpers.swift in Sources */,
 				F533F0CF297062EE00549477 /* SystemWideSelectedTextManagerTests.swift in Sources */,
-				F51E2FF429707D4300F42AD8 /* MethodStub.swift in Sources */,
 				F58144EB2FB5F8110035A04E /* SystemEventsRecorder.swift in Sources */,
-				F58144E92FB5F7E00035A04E /* TISAPIMock.swift in Sources */,
+				F58144E92FB5F7E00035A04E /* TISAPIEmulator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,7 +443,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -475,7 +459,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BFCZTEYG58;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_NAME).EntryPoint";
+				INFOPLIST_KEY_NSPrincipalClass = "";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -618,7 +602,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -646,7 +630,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -662,7 +646,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BFCZTEYG58;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_NAME).EntryPoint";
+				INFOPLIST_KEY_NSPrincipalClass = "";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -680,7 +664,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BFCZTEYG58;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_NAME).EntryPoint";
+				INFOPLIST_KEY_NSPrincipalClass = "";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.librekht.YobaSwitcherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

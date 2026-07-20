@@ -8,25 +8,23 @@
 import CoreGraphics
 
 protocol GlobalInputMonitorProtocol: AnyObject {
-    var handler: GlobalInputHandler? { get set }
-    
     func start()
 }
 
-protocol GlobalInputHandler: AnyObject {
-    func handleKeyDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
+protocol GlobalInputHandler<Event> {
+    associatedtype Event: HIDEvent
     
-    func handleKeyUp(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
-    
-    func handleFlagsChange(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
-    
-    func handleMouseDown(event: CGEvent, proxy: CGEventTapProxy) -> CGEvent?
+    func handleEvent(event: Event, proxy: CGEventTapProxy) -> Event?
 }
 
 // Tracks specific input events such as keystrokes and mouse clicks
 final class GlobalInputMonitor: GlobalInputMonitorProtocol {
-    weak var handler: GlobalInputHandler?
+    let handler: any GlobalInputHandler<CGEvent>
     private var eventTap: CFMachPort?
+    
+    init(handler: any GlobalInputHandler<CGEvent>) {
+        self.handler = handler
+    }
     
     func start() {
         let mask: CGEventMaskSet = [.keyDown, .keyUp, .flagsChanged, .leftMouseDown, .rightMouseDown, .otherMouseDown]
@@ -54,40 +52,16 @@ final class GlobalInputMonitor: GlobalInputMonitorProtocol {
     }
     
     private func handleEventTapCallback(_ proxy: CGEventTapProxy, _ eventType: CGEventType, _ event: CGEvent) -> CGEvent? {
-        let recording = false
-        switch eventType {
-        case .keyDown:
-            if recording {
-                Log.recording.debug("\(InputEvent.keyDown(.init(event: event))),")
-            }
-            return handler?.handleKeyDown(event: event, proxy: proxy)
+        #if DEBUG
+        if Log.isRecording {
+            Log.recording.debug("\(event),")
+        }
+        #endif
         
-        case .keyUp:
-            if recording {
-                Log.recording.debug("\(InputEvent.keyUp(.init(event: event))),")
-            }
-            return handler?.handleKeyUp(event: event, proxy: proxy)
-            
-        case .flagsChanged:
-            if recording {
-                Log.recording.debug("\(InputEvent.flagsChanged(.init(event: event))),")
-            }
-            return handler?.handleFlagsChange(event: event, proxy: proxy)
-            
-        case .leftMouseDown, .rightMouseDown, .otherMouseDown:
-            if recording {
-                Log.recording.debug("\(InputEvent.mouseDown),")
-            }
-            return handler?.handleMouseDown(event: event, proxy: proxy)
-            
-        case .tapDisabledByTimeout:
+        if eventType == .tapDisabledByTimeout {
             Log.inputProcessing.info("Event tap disabled by timeout. Re-enabling")
             CGEvent.tapEnable(tap: eventTap!, enable: true)
-            
-        default:
-            break
         }
-        
-        return event
+        return handler.handleEvent(event: event, proxy: proxy)
     }
 }

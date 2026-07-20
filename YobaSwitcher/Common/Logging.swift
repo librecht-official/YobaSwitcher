@@ -15,11 +15,23 @@ extension Logger {
 
 enum Log {
     static let app = Logger(category: "Application")
-    static let recording = Logger(category: "Recording")
     static let inputProcessing = Logger(category: "GlobalInputProcessing")
     static let selectedText = Logger(category: "SelectedText")
     static let inputSource = Logger(category: "TextInputSource")
     static let events = Logger(category: "Events")
+    
+    static var isRecording: Bool {
+        #if DEBUG
+        false // Set to true to record events for tests
+        #else
+        false // Must be false
+        #endif
+    }
+    #if DEBUG
+    static let recording = Logger(category: "Recording")
+    #else
+    static let recording = Logger(OSLog.disabled)
+    #endif
 }
 
 extension Optional: @retroactive CustomStringConvertible {

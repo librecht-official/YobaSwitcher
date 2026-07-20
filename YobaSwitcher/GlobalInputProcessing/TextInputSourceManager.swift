@@ -8,9 +8,7 @@
 import Carbon
 import CoreGraphics
 
-// sourcery: AutoMockable
 protocol TextInputSourceManager {
-    // sourcery: stubNameMode = "medium"
     /// Returns keyboard layout mapping object for given text
     ///
     /// If language of the first character in text is English return En-Ru mapping, otherwise Ru-En
@@ -18,13 +16,11 @@ protocol TextInputSourceManager {
     
     func currentKeyboardLayoutInputSource() -> TextInputSource
     
-    // sourcery: stubNameMode = "medium"
     func inputSource(forLanguage id: LanguageIdentifier) -> TextInputSource
     
     /// Selects first non-selected keyboard input source
     func switchInputSource()
     
-    // sourcery: stubNameMode = "medium"
     func switchInputSource(completion: @escaping () -> ())
 }
 

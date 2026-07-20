@@ -31,29 +31,17 @@ struct TIS: TextInputSourceAPI {
         
         return sources.map(TextInputSource.init)
     }
-    
-//    func select(_ source: TextInputSource) {
-//        TISSelectInputSource(source.ref)
-//    }
 }
 
-struct TextInputSource: Equatable {
+struct TextInputSource {
     fileprivate let ref: any TextInputSourceReference
     
     init(_ object: any TextInputSourceReference) {
         self.ref = object
     }
     
-    static func == (lhs: TextInputSource, rhs: TextInputSource) -> Bool {
-        lhs.ref.isEqual(to: rhs.ref)
-    }
-    
     var id: String? {
         ref.value(key: kTISPropertyInputSourceID)
-    }
-    
-    var isSelected: Bool {
-        ref.value(key: kTISPropertyInputSourceIsSelected) ?? false
     }
     
     func select() {
@@ -64,17 +52,6 @@ struct TextInputSource: Equatable {
 protocol TextInputSourceReference: AnyObject, Equatable {
     func value<T>(key: CFString) -> T?
     func select()
-    
-    func isEqual(to other: any TextInputSourceReference) -> Bool
-}
-
-extension TextInputSourceReference {
-    func isEqual(to other: any TextInputSourceReference) -> Bool {
-        guard let casted = other as? Self else {
-            return false
-        }
-        return self == casted
-    }
 }
 
 extension TISInputSource: TextInputSourceReference {

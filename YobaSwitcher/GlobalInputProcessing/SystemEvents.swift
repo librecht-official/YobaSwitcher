@@ -14,15 +14,26 @@ struct SystemEvents: SystemEventsAPI {
     static let `default` = SystemEvents()
     
     func postEvent(_ inputEvent: InputEvent, _ proxy: CGEventTapProxy) {
-        Log.events.debug("Posting event: \(inputEvent.debugDescription) using proxy")
+        log(inputEvent)
+        
         let event = CGEvent.fromInputEvent(inputEvent)
         event?.tapPostEvent(proxy)
     }
     
     func postEvent(_ inputEvent: InputEvent, at location: CGEventTapLocation) {
-        Log.events.debug("Posting event: \(inputEvent.debugDescription)")
+        log(inputEvent)
+        
         let event = CGEvent.fromInputEvent(inputEvent)
         event?.post(tap: location)
+    }
+    
+    private func log(_ inputEvent: InputEvent) {
+        #if DEBUG
+        if Log.isRecording {
+            Log.recording.debug("\(inputEvent),")
+        }
+        Log.events.debug("Posting event: <\(inputEvent.debugDescription)>")
+        #endif
     }
 }
 

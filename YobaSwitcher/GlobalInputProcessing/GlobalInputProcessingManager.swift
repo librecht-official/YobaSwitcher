@@ -9,26 +9,25 @@ import Cocoa
 
 /// Facade for global input processing solution
 final class GlobalInputProcessingManager {
-    let inputProcessingController: GlobalInputProcessingController
     let inputMonitor: GlobalInputMonitorProtocol
     
     private var timer: Timer?
     
-    init(inputMonitor: GlobalInputMonitorProtocol = GlobalInputMonitor()) {
+    init() {
         let inputSourceManager = DefaultTextInputSourceManager()
-        self.inputProcessingController = GlobalInputProcessingController(
+        let inputProcessingController = GlobalInputProcessor<CGEvent>(
             selectedTextManager: SystemWideSelectedTextManager(tisManager: inputSourceManager),
             inputSourceManager: inputSourceManager
         )
-        self.inputMonitor = inputMonitor
+        self.inputMonitor = GlobalInputMonitor(handler: inputProcessingController)
     }
     
     func start() {
         let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue() as CFString: true] as CFDictionary
         if AXIsProcessTrustedWithOptions(options) {
-            inputMonitor.handler = inputProcessingController
             inputMonitor.start()
         } else {
+            // TODO: Show window with hint
             Log.inputProcessing.error("Accessibility is not allowed for this app")
             timer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
                 self?.relaunchIfProcessTrusted()

@@ -17,6 +17,9 @@ final class MainMenuController {
         
         let about = NSMenuItem()
         about.title = "YobaSwitcher - Version \(Bundle.main.applicationVersion ?? "unknown")"
+        #if DEBUG
+        about.title.append(" [DEBUG]")
+        #endif
         
         let quitItem = NSMenuItem()
         quitItem.title = "Quit"

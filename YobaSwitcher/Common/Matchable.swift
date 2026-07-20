@@ -13,7 +13,7 @@ protocol Matchable {
 }
 
 extension Collection where Element: Matchable {
-    func matches(_ rhs: [Element.Pattern]) -> Bool {
+    func matches<C>(_ rhs: C) -> Bool where C: Collection, C.Element == Element.Pattern {
         guard count == rhs.count else { return false }
         return zip(self, rhs).allSatisfy { $0.matches($1) }
     }

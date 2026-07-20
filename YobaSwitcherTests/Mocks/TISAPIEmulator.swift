@@ -9,9 +9,9 @@ import Carbon
 final class TISRefMock: TextInputSourceReference {
     let id: String
     var isSelected: Bool
-    weak var tisAPI: TISAPIMock?
+    weak var tisAPI: TISAPIEmulator?
     
-    init(id: String = "en", isSelected: Bool = false, tisAPI: TISAPIMock?) {
+    init(id: String = "en", isSelected: Bool = false, tisAPI: TISAPIEmulator?) {
         self.id = id
         self.isSelected = isSelected
         self.tisAPI = tisAPI
@@ -38,7 +38,7 @@ final class TISRefMock: TextInputSourceReference {
     }
 }
 
-final class TISAPIMock: TextInputSourceAPI, DistributedNotificationCenterProtocol {
+final class TISAPIEmulator: TextInputSourceAPI, DistributedNotificationCenterProtocol {
     var data: [TISRefMock] = []
     var observer: Any?, selector: Selector?
     

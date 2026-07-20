@@ -6,7 +6,7 @@ import Cocoa
 import Testing
 @testable import YobaSwitcher
 
-final class PasteboardMock: NSPasteboardProtocol {
+final class PasteboardEmulator: NSPasteboardProtocol {
     var _initialItems: [NSPasteboardItem] = [
         build(NSPasteboardItem(), {
             $0.setData(Data("file:///.file/id=6571367.400663454".utf8), forType: .fileURL)

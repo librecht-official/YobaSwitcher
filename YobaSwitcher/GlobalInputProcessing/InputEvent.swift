@@ -10,27 +10,51 @@ import CoreGraphics
 
 /// A value type that represents input event
 enum InputEvent: Equatable {
-    // TODO: Make keyDown, keyUp and flagsChanged a single case?
-    case keyDown(Keystroke)
-    case keyUp(Keystroke)
-    /// Key changed event for a modifier or status key.
-    ///
-    /// `keyDown` is important only when constructing `CGEvent` to post. Incoming `CGEvent`s doesn't have this information. You can understant direction only by checking flags. For example 'Option down' event has `maskAlternate` flag and 'Option up' doesn't.
-    case flagsChanged(Keystroke, keyDown: Bool = false)
+    enum Direction {
+        case up, down
+    }
+    
+    case key(Direction, Keystroke)
+    
+    /// 'Key changed' event for a modifier or status key.
+    case flagsChanged(Keystroke)
+    
     case mouseDown
     
     static var shiftDown: InputEvent {
-        InputEvent.flagsChanged(
-            Keystroke(.shift, flags: [.maskShift, .maskNonCoalesced]),
-            keyDown: true
-        )
+        InputEvent.flagsChanged(Keystroke(.shift, flags: [.maskShift]))
     }
     
     static var shiftUp: InputEvent {
-        InputEvent.flagsChanged(
-            Keystroke(.shift, flags: [.maskNonCoalesced]),
-            keyDown: false
-        )
+        InputEvent.flagsChanged(Keystroke(.shift, flags: []))
+    }
+    
+    // TODO: Clean up
+//    static func key(_ keyCode: KeyCode, _ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
+//        .key(direction, Keystroke(keyCode, flags: flags))
+//    }
+//    
+//    static func v(_ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
+//        .key(.v, direction, flags)
+//    }
+//    static func z(_ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
+//        .key(.z, direction, flags)
+//    }
+    static func option(_ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
+        switch direction {
+        case .down:
+            return .flagsChanged(Keystroke(.option, flags: flags.union(.maskAlternate)))
+        case .up:
+            return .flagsChanged(Keystroke(.option, flags: flags))
+        }
+    }
+    static func command(_ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
+        switch direction {
+        case .down:
+            return .flagsChanged(Keystroke(.command, flags: flags.union(.maskCommand)))
+        case .up:
+            return .flagsChanged(Keystroke(.command, flags: flags))
+        }
     }
 }
 
@@ -39,13 +63,10 @@ enum InputEvent: Equatable {
 extension InputEvent: Matchable {
     func matches(_ rhs: InputEvent) -> Bool {
         switch (self, rhs) {
-        case let (.keyDown(ks1), .keyDown(ks2)):
-            return ks1.matches(ks2)
+        case let (.key(dir1, ks1), .key(dir2, ks2)):
+            return dir1 == dir2 && ks1.matches(ks2)
             
-        case let (.keyUp(ks1), .keyUp(ks2)):
-            return ks1.matches(ks2)
-            
-        case let (.flagsChanged(ks1, _), .flagsChanged(ks2, _)):// Ignore keyDown intentionally
+        case let (.flagsChanged(ks1), .flagsChanged(ks2)):
             return ks1.matches(ks2)
             
         case (.mouseDown, .mouseDown):
@@ -62,18 +83,26 @@ extension InputEvent: Matchable {
 extension InputEvent: CustomStringConvertible {
     var description: String {
         switch self {
-        case let .keyDown(keystroke):
-            return ".keyDown(\(keystroke))"
+        case let .key(.down, keystroke):
+            return ".key(.down,   \(keystrokePrintedParameters(keystroke)))"
             
-        case .keyUp(let keystroke):
-            return ".keyUp(\(keystroke))"
+        case let .key(.up, keystroke):
+            return ".key(.up,     \(keystrokePrintedParameters(keystroke)))"
             
-        case let .flagsChanged(keystroke, keyDown):
-            return ".flagsChanged(\(keystroke), keyDown: \(keyDown))"
+        case let .flagsChanged(keystroke):
+            return ".flagsChanged(\(keystrokePrintedParameters(keystroke)))"
             
         case .mouseDown:
             return ".mouseDown"
         }
+    }
+    
+    private func keystrokePrintedParameters(_ keystroke: Keystroke) -> String {
+        var params = [keystroke.keyCode.description]
+        if keystroke.flags != .maskNonCoalesced {
+            params.append(keystroke.flags.description)
+        }
+        return params.joined(separator: ", ")
     }
 }
 
@@ -82,21 +111,29 @@ extension InputEvent: CustomStringConvertible {
 extension InputEvent: CustomDebugStringConvertible {
     var debugDescription: String {
         switch self {
-        case let .keyDown(keystroke):
-            return debugString(from: keystroke, direction: "↓")
-        
-        case .keyUp(let keystroke):
-            return debugString(from: keystroke, direction: "↑")
+        case let .key(direction, keystroke):
+            return direction.debugDescription + keystroke.debugDescription
             
-        case let .flagsChanged(keystroke, keyDown):
-            return debugString(from: keystroke, direction: keyDown ? "↓" : "↑")
+        case let .flagsChanged(keystroke):
+            return keystroke.debugDescription
             
         case .mouseDown:
             return "🐁[↓]"
         }
     }
-    
-    private func debugString(from keystroke: Keystroke, direction: String) -> String {
-        return direction + keystroke.debugDescription
+}
+
+extension InputEvent.Direction: CustomStringConvertible, CustomDebugStringConvertible {
+    var description: String {
+        switch self {
+        case .up: return ".up"
+        case .down: return ".down"
+        }
+    }
+    var debugDescription: String {
+        switch self {
+        case .up: return "↑"
+        case .down: return "↓"
+        }
     }
 }

@@ -51,10 +51,10 @@ struct PasteboardTextReaderWriter {
     
     private func performCopyShortcut() {
         let cmdC: [InputEvent] = [
-            .flagsChanged(Keystroke(.command, flags: .maskCommand), keyDown: true),
-            .keyDown(Keystroke(.c, flags: .maskCommand)),
-            .keyUp(Keystroke(.c, flags: .maskCommand)),
-            .flagsChanged(Keystroke(.command, flags: []), keyDown: false),
+            .flagsChanged(Keystroke(.command, flags: .maskCommand)),
+            .key(.down, Keystroke(.c, flags: .maskCommand)),
+            .key(.up, Keystroke(.c, flags: .maskCommand)),
+            .flagsChanged(Keystroke(.command, flags: [])),
         ]
         cmdC.forEach {
             systemEvents.postEvent($0, at: .cgSessionEventTap)
@@ -66,10 +66,10 @@ struct PasteboardTextReaderWriter {
     
     private func performPasteShortcut() {
         let cmdV: [InputEvent] = [
-            .flagsChanged(Keystroke(.command, flags: .maskCommand), keyDown: true),
-            .keyDown(Keystroke(.v, flags: .maskCommand)),
-            .keyUp(Keystroke(.v, flags: .maskCommand)),
-            .flagsChanged(Keystroke(.command, flags: []), keyDown: false),
+            .flagsChanged(Keystroke(.command, flags: .maskCommand)),
+            .key(.down, Keystroke(.v, flags: .maskCommand)),
+            .key(.up, Keystroke(.v, flags: .maskCommand)),
+            .flagsChanged(Keystroke(.command, flags: [])),
         ]
         cmdV.forEach {
             systemEvents.postEvent($0, at: .cgSessionEventTap)
@@ -95,11 +95,9 @@ class PasteboardItemStash: NSObject, NSPasteboardWriting {
         }
     }
     
-    #if DEBUG || TEST
     deinit {
         Log.selectedText.debug("PasteboardItemStash deinit")
     }
-    #endif
     
     func writableTypes(for pasteboard: NSPasteboard) -> [NSPasteboard.PasteboardType] {
         Log.selectedText.debug("Writable types: \(self.types)")
