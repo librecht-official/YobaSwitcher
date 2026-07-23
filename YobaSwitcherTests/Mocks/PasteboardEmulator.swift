@@ -7,6 +7,7 @@ import Testing
 @testable import YobaSwitcher
 
 final class PasteboardEmulator: NSPasteboardProtocol {
+    /// Some initial pateboard content before the copying
     var _initialItems: [NSPasteboardItem] = [
         build(NSPasteboardItem(), {
             $0.setData(Data("file:///.file/id=6571367.400663454".utf8), forType: .fileURL)

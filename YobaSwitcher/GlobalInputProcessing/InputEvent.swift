@@ -5,7 +5,6 @@
 //  Created by Vladislav Librecht on 11.01.2023.
 //
 
-import Carbon
 import CoreGraphics
 
 /// A value type that represents input event
@@ -21,25 +20,21 @@ enum InputEvent: Equatable {
     
     case mouseDown
     
-    static var shiftDown: InputEvent {
-        InputEvent.flagsChanged(Keystroke(.shift, flags: [.maskShift]))
+    // MARK: Convenience initializers
+    
+    static func key(_ keyCode: KeyCode, _ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
+        .key(direction, Keystroke(keyCode, flags: flags))
     }
     
-    static var shiftUp: InputEvent {
-        InputEvent.flagsChanged(Keystroke(.shift, flags: []))
+    static func shift(_ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
+        switch direction {
+        case .down:
+            return .flagsChanged(Keystroke(.shift, flags: flags.union(.maskShift)))
+        case .up:
+            return .flagsChanged(Keystroke(.shift, flags: flags))
+        }
     }
     
-    // TODO: Clean up
-//    static func key(_ keyCode: KeyCode, _ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
-//        .key(direction, Keystroke(keyCode, flags: flags))
-//    }
-//    
-//    static func v(_ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
-//        .key(.v, direction, flags)
-//    }
-//    static func z(_ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
-//        .key(.z, direction, flags)
-//    }
     static func option(_ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
         switch direction {
         case .down:
@@ -48,6 +43,7 @@ enum InputEvent: Equatable {
             return .flagsChanged(Keystroke(.option, flags: flags))
         }
     }
+    
     static func command(_ direction: Direction, _ flags: CGEventFlags = []) -> InputEvent {
         switch direction {
         case .down:

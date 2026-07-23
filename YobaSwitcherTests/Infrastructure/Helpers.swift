@@ -63,4 +63,12 @@ func * <C>(lhs: C, rhs: Int) -> [C.Element] where C: Sequence {
     return result
 }
 
+func withCapslockOn(_ events: [CGEvent]) -> [CGEvent] {
+    events.map {
+        let copy = $0.copy()!
+        copy.flags.insert(.maskAlphaShift)
+        return copy
+    }
+}
+
 final class EventTapProxyStub {}

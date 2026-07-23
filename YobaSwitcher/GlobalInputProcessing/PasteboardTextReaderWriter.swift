@@ -51,10 +51,10 @@ struct PasteboardTextReaderWriter {
     
     private func performCopyShortcut() {
         let cmdC: [InputEvent] = [
-            .flagsChanged(Keystroke(.command, flags: .maskCommand)),
-            .key(.down, Keystroke(.c, flags: .maskCommand)),
-            .key(.up, Keystroke(.c, flags: .maskCommand)),
-            .flagsChanged(Keystroke(.command, flags: [])),
+            .command(.down),
+            .key(.c, .down, .maskCommand),
+            .key(.c, .up, .maskCommand),
+            .command(.up),
         ]
         cmdC.forEach {
             systemEvents.postEvent($0, at: .cgSessionEventTap)
@@ -66,10 +66,10 @@ struct PasteboardTextReaderWriter {
     
     private func performPasteShortcut() {
         let cmdV: [InputEvent] = [
-            .flagsChanged(Keystroke(.command, flags: .maskCommand)),
-            .key(.down, Keystroke(.v, flags: .maskCommand)),
-            .key(.up, Keystroke(.v, flags: .maskCommand)),
-            .flagsChanged(Keystroke(.command, flags: [])),
+            .command(.down),
+            .key(.v, .down, .maskCommand),
+            .key(.v, .up, .maskCommand),
+            .command(.up),
         ]
         cmdV.forEach {
             systemEvents.postEvent($0, at: .cgSessionEventTap)

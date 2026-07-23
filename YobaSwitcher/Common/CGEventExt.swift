@@ -76,8 +76,7 @@ extension CGEvent: @retroactive CustomStringConvertible {
 
 extension CGEventFlags: Matchable {
     func matches(_ rhs: CGEventFlags) -> Bool {
-        guard contains(.maskAlphaShift) == rhs.contains(.maskAlphaShift),
-              contains(.maskShift) == rhs.contains(.maskShift),
+        guard contains(.maskShift) == rhs.contains(.maskShift),
               contains(.maskControl) == rhs.contains(.maskControl),
               contains(.maskAlternate) == rhs.contains(.maskAlternate),
               contains(.maskCommand) == rhs.contains(.maskCommand),
@@ -85,7 +84,7 @@ extension CGEventFlags: Matchable {
               contains(.maskSecondaryFn) == rhs.contains(.maskSecondaryFn),
               contains(.maskNumericPad) == rhs.contains(.maskNumericPad)
         else { return false }
-        // maskNonCoalesced is ignored intentionally
+        // maskAlphaShift and maskNonCoalesced are ignored intentionally
         return true
     }
 }

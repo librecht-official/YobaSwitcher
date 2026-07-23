@@ -31,7 +31,7 @@ struct GlobalInputProcessingTests {
         )
     }
     
-    // MARK: Typing traslation
+    // MARK: - Typing traslation: 'qwerty' <option> -> 'йцукен'
     
     /// Type 'hello' then press <option>.
     ///
@@ -209,8 +209,10 @@ struct GlobalInputProcessingTests {
     
     // MARK: - Selected Text switching
     
-    /// Switch selected text. Base case
-    @Test("Should switch selected text keyboard layout (launguage)", arguments: [
+    /// Have some text selected. Press <option>.
+    ///
+    /// It should copy the selected text and paste translated text. Pasteboard content should remain the same as before opertaion.
+    @Test("Switching keyboard layout (launguage) of selected text", arguments: [
         (TestData.engCharacters, TestData.rusCharacters),
         (TestData.rusCharacters, TestData.engCharacters),
         (TestData.engBeginsWithEmoji, TestData.rusBeginsWithEmoji),
@@ -236,7 +238,10 @@ struct GlobalInputProcessingTests {
         #expect(pasteboard.pasteboardItems == pasteboard._initialItems)
     }
     
-    @Test("Should switch selected text case", arguments: [
+    /// Have some text selected. Press <option>.
+    ///
+    /// It should copy the selected text and paste text with changed case. Pasteboard content should remain the same as before opertaion.
+    @Test("Selected text case switching", arguments: [
         (TestData.lowercased, TestData.uppercased),
         (TestData.uppercased, TestData.lowercased),
         (TestData.mixcased, TestData.uppercased),
@@ -247,7 +252,7 @@ struct GlobalInputProcessingTests {
         events.pasteboard = pasteboard
         pasteboard._selectedText = input
         // when
-        Input.crtlOptZ.forEach(processInputEvent)
+        Input.ctrlOptZ.forEach(processInputEvent)
         // then
         // it should perform copy-paste
         #expect(events.recordedEvents == Output.copyPaste)
@@ -257,17 +262,47 @@ struct GlobalInputProcessingTests {
         #expect(pasteboard.pasteboardItems == pasteboard._initialItems)
     }
     
-    @Test
-    func switchSelectedTextCase_NoText() {
+    /// Have no text selected. Press <option>. Or press <ctrl+opt+Z>.
+    ///
+    /// It should try to copy the selected text and do nothing. Pasteboard content should remain the same as before opertaion.
+    @Test("If no text is selected", arguments: [
+        Input.option, Input.ctrlOptZ
+    ])
+    func switchSelectedText_NoText(input: [CGEvent]) {
         // given
         events.pasteboard = pasteboard
         pasteboard._selectedText = nil
         // when
-        Input.crtlOptZ.forEach(processInputEvent)
+        input.forEach(processInputEvent)
         // then
         // it should perform only copy
         #expect(events.recordedEvents == Output.commandC)
-        // selected text should be case-switched
+        // selected text should be none
+        #expect(pasteboard._selectedText == nil)
+        // pasteboard should have the same content as before switching
+        #expect(pasteboard.pasteboardItems == pasteboard._initialItems)
+    }
+    
+    /// Have some selected text. Press <option> or <right option> or <ctrl+opt+Z> or <opt+ctrl+Z>. Also try each combination with <capslock> on.
+    ///
+    /// It should copy the selected text and paste text with changed case. Pasteboard content should remain the same as before opertaion.
+    @Test("Key combinations with Capslock on", arguments: zip(1 ... 100, [
+        Input.option, Input.rightOption,
+        Input.ctrlOptZ, Input.optCtrlZ,
+        
+        withCapslockOn(Input.option), withCapslockOn(Input.rightOption),
+        withCapslockOn(Input.ctrlOptZ), withCapslockOn(Input.optCtrlZ),
+    ]))
+    func switchSelectedText_KeyCombinations(number: Int, combination: [CGEvent]) {
+        // given
+        events.pasteboard = pasteboard
+        pasteboard._selectedText = nil
+        // when
+        combination.forEach(processInputEvent)
+        // then
+        // it should perform only copy
+        #expect(events.recordedEvents == Output.commandC, "Test #\(number)")
+        // selected text should be none
         #expect(pasteboard._selectedText == nil)
         // pasteboard should have the same content as before switching
         #expect(pasteboard.pasteboardItems == pasteboard._initialItems)
@@ -275,8 +310,9 @@ struct GlobalInputProcessingTests {
     
     // MARK: - Helpers
     
+    let proxyStub = EventTapProxyStub()
+    
     func processInputEvent(_ event: CGEvent) {
-        let proxyStub = EventTapProxyStub()
         let tapProxy = CGEventTapProxy(Unmanaged.passUnretained(proxyStub).toOpaque())
         _ = processor.handleEvent(event: event, proxy: tapProxy)
     }
@@ -670,7 +706,16 @@ private enum Input {
         CGEvent.mouseDown
     ]
     
-    static let crtlOptZ = [
+    static let ctrlOptZ = [
+        CGEvent.flagsChanged(kVK_Control, .maskControl),
+        CGEvent.flagsChanged(kVK_Option, [.maskControl, .maskAlternate]),
+        CGEvent.key(.down,   kVK_ANSI_Z, [.maskControl, .maskAlternate]),
+        CGEvent.key(.up,     kVK_ANSI_Z, [.maskControl, .maskAlternate]),
+        CGEvent.flagsChanged(kVK_Control, .maskAlternate),
+        CGEvent.flagsChanged(kVK_Option),
+    ]
+    
+    static let optCtrlZ = [
         CGEvent.flagsChanged(kVK_Option, .maskAlternate),
         CGEvent.flagsChanged(kVK_Control, [.maskControl, .maskAlternate]),
         CGEvent.key(.down,   kVK_ANSI_Z, [.maskControl, .maskAlternate]),

@@ -100,6 +100,10 @@ struct KeyCode: Equatable, RawRepresentable {
         CGKeyCode(rawValue)
     }
     
+    var isOption: Bool {
+        rawValue == kVK_Option || rawValue == kVK_RightOption
+    }
+    
     var isDelete: Bool {
         return rawValue == kVK_Delete || rawValue == kVK_ForwardDelete
     }
@@ -121,13 +125,11 @@ struct KeyCode: Equatable, RawRepresentable {
 
 extension KeyCode: Matchable {
     func matches(_ rhs: KeyCode) -> Bool {
-        if self.rawValue == kVK_Option || self.rawValue == kVK_RightOption {
-            guard rhs.rawValue == kVK_Option || rhs.rawValue == kVK_RightOption else {
-                return false
-            }
-        } else {
-            guard self.rawValue == rhs.rawValue else { return false }
+        if self.isOption && rhs.isOption {
+            return true
         }
+        guard self.rawValue == rhs.rawValue else { return false }
+        
         return true
     }
 }

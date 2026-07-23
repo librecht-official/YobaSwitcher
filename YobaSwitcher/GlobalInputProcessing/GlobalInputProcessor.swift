@@ -5,7 +5,6 @@
 //  Created by Vladislav Librecht on 01.01.2023.
 //
 
-import Carbon
 import CoreGraphics
 
 final class GlobalInputProcessor<Event: HIDEvent>: GlobalInputHandler {
@@ -67,7 +66,7 @@ final class GlobalInputProcessor<Event: HIDEvent>: GlobalInputHandler {
         
         let last2 = latestInputEvents.suffix(2)
         
-        if last2.matches(Patterns.optionPress) || last2.matches(Patterns.optionPressWithCapslock) {
+        if last2.matches(Patterns.optionPress) {
             Log.inputProcessing.debug("Hit Option")
             
             if characterKeystrokes.isEmpty {
@@ -134,11 +133,11 @@ final class GlobalInputProcessor<Event: HIDEvent>: GlobalInputHandler {
         var shift = false
         for keystroke in characterKeystrokes {
             if !shift && keystroke.flags.contains(.maskShift) {
-                systemEvents.postEvent(.shiftDown, proxy)
+                systemEvents.postEvent(.shift(.down), proxy)
                 shift = true
             }
             if shift && !keystroke.flags.contains(.maskShift) {
-                systemEvents.postEvent(.shiftUp, proxy)
+                systemEvents.postEvent(.shift(.up), proxy)
                 shift = false
             }
             
@@ -146,20 +145,12 @@ final class GlobalInputProcessor<Event: HIDEvent>: GlobalInputHandler {
             systemEvents.postEvent(.key(.up, keystroke), proxy)
         }
         if shift {
-            systemEvents.postEvent(.shiftUp, proxy)
+            systemEvents.postEvent(.shift(.up), proxy)
         }
     }
 }
 
 private enum Patterns {
-    static let optionPress: [InputEvent] = [
-        .flagsChanged(Keystroke(.option, flags: .maskAlternate)),
-        .flagsChanged(Keystroke(.option))
-    ]
-    static let optionPressWithCapslock: [InputEvent] = [
-        .flagsChanged(Keystroke(.option, flags: [.maskAlternate, .maskAlphaShift])),
-        .flagsChanged(Keystroke(.option, flags: .maskAlphaShift))
-    ]
-    static let ctrlOptZ: InputEvent =
-        .key(.down, Keystroke(.z, flags: [.maskControl, .maskAlternate]))
+    static let optionPress: [InputEvent] = [.option(.down), .option(.up)]
+    static let ctrlOptZ: InputEvent = .key(.z, .down, [.maskControl, .maskAlternate])
 }
